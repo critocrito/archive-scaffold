@@ -1,0 +1,9 @@
+{
+  "media": {
+    "data_dir": "./data"
+  },
+  "http": {
+    "data_dir":"./data",
+    "get_types":"image,file,pdf"
+  }
+}

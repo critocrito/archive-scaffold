@@ -1,0 +1,7 @@
+configs/secrets.json
+node_modules
+*.lock
+logs/*
+data/*
+!.keep
+.sugarcube_cache.json

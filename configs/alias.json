@@ -1,0 +1,5 @@
+{
+  "actions" : [
+    { "add" : { "index" : "ukraine-archive-01", "alias" : "ukraine-archive" } }
+  ]
+}
