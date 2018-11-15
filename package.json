@@ -13,6 +13,6 @@
     "@sugarcube/plugin-tap": "0.13.1",
     "@sugarcube/plugin-twitter": "0.13.1",
     "@sugarcube/plugin-workflow": "0.13.1",
-    "@sugarcube/plugin-youtube": "0.13.1"
+    "@sugarcube/plugin-youtube": "0.13.2"
   }
 }
