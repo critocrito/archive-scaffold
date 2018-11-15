@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "./configs/downloads.json",
+    "./configs/elasticsearch.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": "sheets_queries,youtube_video,media_youtubedl,elastic_export,sheets_move_queries",
+  "google": {
+    "query_default_type": "youtube_video",
+    "query_types_to_move": "youtube_video",
+    "query_fields": [
+      "record owner",
+      "description"
+    ],
+    "selection_list": [
+      "type:youtube_video"
+    ]
+  }
+}
