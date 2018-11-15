@@ -12,6 +12,12 @@
       "record owner",
       "location",
       "activity"
+    ],
+    "selection_list": [
+      "type:youtube_channel"
     ]
+  },
+  "workflow": {
+    "multiplex_continue_on_error": true
   }
 }

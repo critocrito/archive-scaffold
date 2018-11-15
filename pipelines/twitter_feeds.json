@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "./configs/downloads.json",
+    "./configs/elasticsearch.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": "sheets_queries,twitter_feed,media_youtubedl,http_get,elastic_export",
+  "google": {
+    "query_default_type": "twitter_user",
+    "selection_list": [
+      "type:twitter_user"
+    ]
+  }
+}
