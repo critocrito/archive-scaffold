@@ -5,14 +5,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@sugarcube/cli": "0.13.0",
-    "@sugarcube/plugin-elasticsearch": "0.13.0",
-    "@sugarcube/plugin-googlesheets": "0.13.0",
-    "@sugarcube/plugin-http": "0.13.0",
-    "@sugarcube/plugin-media": "0.13.0",
-    "@sugarcube/plugin-tap": "0.13.0",
-    "@sugarcube/plugin-twitter": "0.13.0",
-    "@sugarcube/plugin-workflow": "0.13.0",
-    "@sugarcube/plugin-youtube": "0.13.0"
+    "@sugarcube/cli": "0.13.1",
+    "@sugarcube/plugin-elasticsearch": "0.13.1",
+    "@sugarcube/plugin-googlesheets": "0.13.1",
+    "@sugarcube/plugin-http": "0.13.1",
+    "@sugarcube/plugin-media": "0.13.1",
+    "@sugarcube/plugin-tap": "0.13.1",
+    "@sugarcube/plugin-twitter": "0.13.1",
+    "@sugarcube/plugin-workflow": "0.13.1",
+    "@sugarcube/plugin-youtube": "0.13.1"
   }
 }
