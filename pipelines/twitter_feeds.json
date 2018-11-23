@@ -10,5 +10,8 @@
     "selection_list": [
       "type:twitter_user"
     ]
+  },
+  "media": {
+    "youtubedl_parallel": 6
   }
 }

@@ -17,6 +17,9 @@
       "type:youtube_channel"
     ]
   },
+  "media": {
+    "youtubedl_parallel": 6
+  },
   "workflow": {
     "multiplex_continue_on_error": true
   }

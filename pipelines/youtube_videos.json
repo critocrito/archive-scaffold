@@ -15,5 +15,8 @@
     "selection_list": [
       "type:youtube_video"
     ]
+  },
+  "media": {
+    "youtubedl_parallel": 6
   }
 }
