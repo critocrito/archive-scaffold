@@ -9,10 +9,10 @@ QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
 doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/youtube_channels.json \
-              -Q sheets_query:HistoricScrapes \
+              -Q sheets_query:YoutubeChannelsHistoric \
               --google.spreadsheet_id "$1" \
               --google.to_spreadsheet_id "$1" \
-              --google.to_sheet DailyScrapes \
+              --google.to_sheet YoutubeChannelsDaily \
               -d
 }
 
