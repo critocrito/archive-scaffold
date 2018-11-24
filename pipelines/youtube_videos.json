@@ -8,13 +8,8 @@
   "google": {
     "query_default_type": "youtube_video",
     "query_types_to_move": "youtube_video",
-    "query_fields": [
-      "record owner",
-      "description"
-    ],
-    "selection_list": [
-      "type:youtube_video"
-    ]
+    "query_fields": ["record owner", "description"],
+    "selection_list": ["type:youtube_video"]
   },
   "media": {
     "youtubedl_parallel": 6

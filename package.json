@@ -1,7 +1,14 @@
 {
   "private": true,
-  "name": "ukraine-archive",
+  "name": "archive-scaffold",
+  "license": "GPL-3.0",
+  "author": "Christo <christo@cryptodrunks.net>",
+  "homepage": "https://github.com/critocrito/archive-scaffold#readme",
+  "repository": "https://github.com/critocrito/archive-scaffold.git",
   "scripts": {
+    "fix": "yarn lint --fix",
+    "lint:js": "eslint src/**/*.js",
+    "lint:json": "prettier --write **/*.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -14,5 +21,10 @@
     "@sugarcube/plugin-twitter": "0.14.0",
     "@sugarcube/plugin-workflow": "0.14.0",
     "@sugarcube/plugin-youtube": "0.14.0"
+  },
+  "devDependencies": {
+    "@build-chores/eslint-config-lint": "^0.7.0",
+    "@build-chores/staged": "^0.7.0",
+    "husky": "^1.2.0"
   }
 }

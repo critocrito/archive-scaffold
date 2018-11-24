@@ -8,14 +8,8 @@
   "google": {
     "query_default_type": "youtube_channel",
     "query_types_to_move": "youtube_channel",
-    "query_fields": [
-      "record owner",
-      "location",
-      "activity"
-    ],
-    "selection_list": [
-      "type:youtube_channel"
-    ]
+    "query_fields": ["record owner", "location", "activity"],
+    "selection_list": ["type:youtube_channel"]
   },
   "media": {
     "youtubedl_parallel": 6
