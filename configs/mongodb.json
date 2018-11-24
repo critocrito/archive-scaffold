@@ -1,5 +1,5 @@
 {
   "mongodb": {
-    "uri": "mongodb://localhost:27017/sugarcube"
+    "uri": "mongodb://localhost:27017/archive-scaffold"
   }
 }
