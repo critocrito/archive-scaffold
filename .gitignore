@@ -5,3 +5,4 @@ logs/*
 data/*
 !.keep
 .sugarcube_cache.json
+tmp.*
