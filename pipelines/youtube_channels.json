@@ -11,6 +11,7 @@
     "workflow_multiplex",
     "youtube_channel",
     "media_youtubedl",
+    "elastic_supplement",
     "elastic_export",
     "sheets_move_queries",
     "workflow_multiplex_end",

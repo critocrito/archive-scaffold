@@ -10,6 +10,7 @@
     "sheets_queries",
     "youtube_video",
     "media_youtubedl",
+    "elastic_supplement",
     "elastic_export",
     "sheets_move_queries",
     "mail_pipeline_stats",
