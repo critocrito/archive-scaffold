@@ -13,7 +13,8 @@
     "elastic_export",
     "sheets_move_queries",
     "mail_pipeline_stats",
-    "mail_failed_stats"
+    "mail_failed_stats",
+    "tap_printf"
   ],
   "google": {
     "query_default_type": "youtube_video",
@@ -23,5 +24,8 @@
   },
   "media": {
     "youtubedl_parallel": 6
+  },
+  "tap": {
+    "select": "queries"
   }
 }

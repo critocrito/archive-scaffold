@@ -14,7 +14,8 @@
     "elastic_supplement",
     "elastic_export",
     "mail_pipeline_stats",
-    "mail_failed_stats"
+    "mail_failed_stats",
+    "tap_printf"
   ],
   "google": {
     "query_default_type": "twitter_user",
@@ -22,5 +23,8 @@
   },
   "media": {
     "youtubedl_parallel": 6
+  },
+  "tap": {
+    "select": "stats"
   }
 }
