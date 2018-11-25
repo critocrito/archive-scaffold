@@ -1,10 +1,21 @@
 {
+  "name": "Twitter Feeds",
   "extends": [
     "./configs/downloads.json",
     "./configs/elasticsearch.json",
+    "./configs/mail.json",
     "./configs/secrets.json"
   ],
-  "plugins": "sheets_queries,twitter_feed,media_youtubedl,http_get,elastic_export",
+  "plugins": [
+    "sheets_queries",
+    "twitter_feed",
+    "media_youtubedl",
+    "http_get",
+    "elastic_supplement",
+    "elastic_export",
+    "mail_pipeline_stats",
+    "mail_failed_stats"
+  ],
   "google": {
     "query_default_type": "twitter_user",
     "selection_list": ["type:twitter_user"]

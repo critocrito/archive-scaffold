@@ -9,6 +9,7 @@ QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
 doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/twitter_feeds.json \
+              -q queries/mail-recipients.json \
               -Q sheets_query:TwitterFeeds \
               --google.spreadsheet_id "$1" \
               -d

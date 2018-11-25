@@ -1,10 +1,22 @@
 {
+  "name": "Youtube Channels Historic",
   "extends": [
     "./configs/downloads.json",
     "./configs/elasticsearch.json",
+    "./configs/mail.json",
     "./configs/secrets.json"
   ],
-  "plugins": "sheets_queries,workflow_multiplex,youtube_channel,media_youtubedl,elastic_export,sheets_move_queries",
+  "plugins": [
+    "sheets_queries",
+    "workflow_multiplex",
+    "youtube_channel",
+    "media_youtubedl",
+    "elastic_export",
+    "sheets_move_queries",
+    "workflow_multiplex_end",
+    "mail_pipeline_stats",
+    "mail_failed_stats"
+  ],
   "google": {
     "query_default_type": "youtube_channel",
     "query_types_to_move": "youtube_channel",

@@ -9,6 +9,7 @@ QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
 doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/youtube_videos.json \
+              -q queries/mail-recipients.json \
               -Q sheets_query:YoutubeVideosIncoming \
               --google.spreadsheet_id "$1" \
               --google.to_spreadsheet_id "$1" \
