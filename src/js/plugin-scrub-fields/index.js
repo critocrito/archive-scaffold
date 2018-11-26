@@ -31,9 +31,18 @@ const cidUploadDate = (unit) => {
   });
 };
 
+const thumbnailType = (unit) =>
+  Object.assign({}, unit, {
+    _sc_media: unit._sc_media.map((media) =>
+      media.type === "thumbnail"
+        ? Object.assign(media, {type: "image"})
+        : media,
+    ),
+  });
+
 const scrubPlugin = (envelope) => {
   const data = envelope.data.map((unit) =>
-    [downloadTimeStamps, cidRelevant, cidUploadDate].reduce(
+    [downloadTimeStamps, cidRelevant, cidUploadDate, thumbnailType].reduce(
       (memo, f) => f(memo),
       unit,
     ),
