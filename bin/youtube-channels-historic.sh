@@ -6,6 +6,8 @@ DATE=$(date +%Y-%m-%d)
 COUNTER=0
 QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
 
+export NODE_OPTIONS=--max_old_space_size=16384
+
 doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/youtube_channels.json \
