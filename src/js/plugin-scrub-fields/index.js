@@ -40,12 +40,28 @@ const thumbnailType = (unit) =>
     ),
   });
 
+//
+const pipelinePubdates = (unit) => {
+  const {_sc_pubdates: pubDates, ...observation} = unit;
+  const {pipeline, fetch, ...others} = pubDates;
+  if (pipeline == null) return unit;
+  const fetchDate = fetch == null || fetch >= pipeline ? pipeline : fetch;
+  return Object.assign(
+    {},
+    {...observation},
+    {_sc_pubdates: {fetch: fetchDate, ...others}},
+  );
+};
+
 const scrubPlugin = (envelope) => {
   const data = envelope.data.map((unit) =>
-    [downloadTimeStamps, cidRelevant, cidUploadDate, thumbnailType].reduce(
-      (memo, f) => f(memo),
-      unit,
-    ),
+    [
+      downloadTimeStamps,
+      cidRelevant,
+      cidUploadDate,
+      thumbnailType,
+      pipelinePubdates,
+    ].reduce((memo, f) => f(memo), unit),
   );
 
   return env.envelope(data, envelope.queries);
