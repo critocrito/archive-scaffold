@@ -1,5 +1,6 @@
 const {envelope: env} = require("@sugarcube/core");
 
+// Remove failed timestamps to avoid mapping violations.
 const downloadTimeStamps = (unit) => {
   if (unit._sc_downloads == null) return unit;
   const downloads = unit._sc_downloads.map((download) => {
@@ -11,6 +12,7 @@ const downloadTimeStamps = (unit) => {
   return Object.assign({}, unit, {_sc_downloads: downloads});
 };
 
+// Use true booleans for cid.relevant that is stored as string.
 const cidRelevant = (unit) => {
   if (
     unit.cid == null ||
@@ -24,6 +26,7 @@ const cidRelevant = (unit) => {
   });
 };
 
+// Store the cid.upload_date as a real date.
 const cidUploadDate = (unit) => {
   if (unit.cid == null || unit.cid.upload_date == null) return unit;
   return Object.assign({}, unit, {
@@ -31,6 +34,7 @@ const cidUploadDate = (unit) => {
   });
 };
 
+// change the thumbnail media type to image to allow http_get to download it.
 const thumbnailType = (unit) =>
   Object.assign({}, unit, {
     _sc_media: unit._sc_media.map((media) =>
@@ -40,7 +44,7 @@ const thumbnailType = (unit) =>
     ),
   });
 
-//
+// rewrite the pipeline pubdate to use the new name fetch.
 const pipelinePubdates = (unit) => {
   const {_sc_pubdates: pubDates, ...observation} = unit;
   const {pipeline, fetch, ...others} = pubDates;
