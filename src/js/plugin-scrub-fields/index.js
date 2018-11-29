@@ -53,6 +53,15 @@ const pipelinePubdates = (unit) => {
   );
 };
 
+// Replace the dem content field with cid.
+const demContentField = (unit) => {
+  const demIndex = unit._sc_content_fields.indexOf("dem");
+  if (demIndex === -1) return unit;
+  // eslint-disable-next-line no-param-reassign
+  unit._sc_content_fields[demIndex] = "cid";
+  return unit;
+};
+
 const scrubPlugin = (envelope) => {
   const data = envelope.data.map((unit) =>
     [
@@ -61,6 +70,7 @@ const scrubPlugin = (envelope) => {
       cidUploadDate,
       thumbnailType,
       pipelinePubdates,
+      demContentField,
     ].reduce((memo, f) => f(memo), unit),
   );
 
