@@ -1,4 +1,9 @@
 {
   "extends": ["./configs/elasticsearch.json", "./configs/mongodb.json"],
-  "plugins": "mongodb_fetch_units,scrub_fields,elastic_export"
+  "plugins": [
+    "mongodb_fetch_units",
+    "scrub_fields",
+    "scrub_omit_fields",
+    "elastic_export"
+  ]
 }
