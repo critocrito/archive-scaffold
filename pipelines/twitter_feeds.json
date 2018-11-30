@@ -2,6 +2,7 @@
   "name": "Twitter Feeds",
   "extends": [
     "./configs/downloads.json",
+    "./configs/mongodb.json",
     "./configs/elasticsearch.json",
     "./configs/mail.json",
     "./configs/secrets.json"
@@ -11,7 +12,10 @@
     "twitter_feed",
     "media_youtubedl",
     "http_get",
+    "mongodb_supplement",
+    "mongodb_store",
     "elastic_supplement",
+    "scrub_omit_fields",
     "elastic_export",
     "mail_pipeline_stats",
     "mail_failed_stats",

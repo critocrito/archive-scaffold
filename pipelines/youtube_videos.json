@@ -2,6 +2,7 @@
   "name": "Youtube Videos",
   "extends": [
     "./configs/downloads.json",
+    "./configs/mongodb.json",
     "./configs/elasticsearch.json",
     "./configs/mail.json",
     "./configs/secrets.json"
@@ -10,7 +11,10 @@
     "sheets_queries",
     "youtube_video",
     "media_youtubedl",
+    "mongodb_supplement",
+    "mongodb_store",
     "elastic_supplement",
+    "scrub_omit_fields",
     "elastic_export",
     "sheets_move_queries",
     "mail_pipeline_stats",
@@ -27,6 +31,9 @@
     "youtubedl_parallel": 6
   },
   "tap": {
-    "select": "queries"
+    "select": "stats"
+  },
+  "workflow": {
+    "multiplex_size": 1000
   }
 }

@@ -2,6 +2,7 @@
   "name": "Youtube Channels Historic",
   "extends": [
     "./configs/downloads.json",
+    "./configs/mongodb.json",
     "./configs/elasticsearch.json",
     "./configs/mail.json",
     "./configs/secrets.json"
@@ -11,7 +12,10 @@
     "workflow_multiplex",
     "youtube_channel",
     "media_youtubedl",
+    "mongodb_supplement",
+    "mongodb_store",
     "elastic_supplement",
+    "scrub_omit_fields",
     "elastic_export",
     "sheets_move_queries",
     "workflow_multiplex_end",
