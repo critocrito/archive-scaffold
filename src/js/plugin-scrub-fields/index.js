@@ -218,6 +218,21 @@ const recordingLocation = (unit) => {
   });
 };
 
+// Turn twitter coordinates to a true location.
+const twitterLocation = (unit) => {
+  const {coordinates} = unit;
+  if (coordinates == null || coordinates.coordinates == null) return unit;
+  const [lon, lat] = coordinates.coordinates;
+  const item = {
+    location: {lon, lat},
+    type: "twitter_location",
+    term: [lon, lat],
+  };
+  return Object.assign({}, unit, {
+    _sc_locations: unit._sc_locations.concat(item),
+  });
+};
+
 // Replace the dem content field with cid.
 const demContentField = (unit) => {
   if (unit._sc_content_fields == null) return unit;
@@ -306,6 +321,7 @@ const scrubPlugin = (envelope) => {
       twitterVideoMedia,
       twitterVideoDownloads,
       recordingLocation,
+      twitterLocation,
     ].reduce((memo, f) => f(memo), unit);
 
   return env.fmapData(scrub, envelope);
