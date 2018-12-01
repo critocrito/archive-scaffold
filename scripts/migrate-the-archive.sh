@@ -22,6 +22,6 @@ find "$DIR" -type f -name "chunk*.json" | parallel --delay 5 \
                                                    -j 3 \
                                                    -k \
                                                    --group \
-                                                   'echo {}; "$(npm bin)"/sugarcube -c configs/migrate-archive.json -q {} -d'
+                                                   'echo {}; "$(npm bin)"/sugarcube -c pipelines/migrate-archive.json -q {} -d'
 
 rm -rf "$DIR"
