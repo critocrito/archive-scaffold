@@ -239,8 +239,58 @@ const twitterMediaId = (unit) => {
   return Object.assign({}, unit, {medias});
 };
 
+const twitterVideoMedia = (unit) => {
+  const twitterVideos = unit._sc_media.filter(
+    ({type}) => type === "twitter_video",
+  );
+  if (twitterVideos.length === 0) return unit;
+  const medias = unit._sc_media
+    .filter(({type}) => type !== "twitter_video")
+    .map((m) => {
+      const video = twitterVideos.find(({term}) => m.term === term);
+      if (video == null) return m;
+      return Object.assign({}, video, m, {
+        _sc_id_hash_legacy: video._sc_id_hash,
+      });
+    });
+  // lets catch any twitter-videos that we missed.
+  const missingMedias = twitterVideos
+    .filter(({term}) => {
+      if (medias.find((m) => m.term === term) == null) return true;
+      return false;
+    })
+    .map((m) => Object.assign(m, {type: "video"}));
+  return Object.assign({}, unit, {_sc_media: medias.concat(missingMedias)});
+};
+
+const twitterVideoDownloads = (unit) => {
+  const twitterVideos = unit._sc_downloads.filter(
+    ({type}) => type === "twitter_video",
+  );
+  if (twitterVideos.length === 0) return unit;
+  const downloads = unit._sc_downloads
+    .filter(({type}) => type !== "twitter_video")
+    .map((m) => {
+      const video = twitterVideos.find(({term}) => m.term === term);
+      if (video == null) return m;
+      return Object.assign({}, video, m, {
+        _sc_id_hash_legacy: video._sc_id_hash,
+      });
+    });
+  // lets catch any twitter-videos that we missed.
+  const missingDownloads = twitterVideos
+    .filter(({term}) => {
+      if (downloads.find((m) => m.term === term) == null) return true;
+      return false;
+    })
+    .map((m) => Object.assign(m, {type: "video"}));
+  return Object.assign({}, unit, {
+    _sc_downloads: downloads.concat(missingDownloads),
+  });
+};
+
 const scrubPlugin = (envelope) => {
-  const data = envelope.data.map((unit) =>
+  const scrub = (unit) =>
     [
       downloadTimeStamps,
       scLinksToMedia,
@@ -253,11 +303,12 @@ const scrubPlugin = (envelope) => {
       pipelinePubdates,
       demContentField,
       twitterMediaId,
+      twitterVideoMedia,
+      twitterVideoDownloads,
       recordingLocation,
-    ].reduce((memo, f) => f(memo), unit),
-  );
+    ].reduce((memo, f) => f(memo), unit);
 
-  return env.envelope(data, envelope.queries);
+  return env.fmapData(scrub, envelope);
 };
 
 const omitFieldsPlugin = (envelope) =>
