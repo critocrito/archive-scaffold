@@ -342,6 +342,14 @@ const omitFieldsPlugin = (envelope) =>
       {},
       rest,
       Object.keys(realSnippet).length > 0 ? {snippet: realSnippet} : {},
+      // Those fields are required by the CID annotation
+      statistics == null ? {} : {statistics: {viewCount: statistics.viewCount}},
+      contentDetails == null
+        ? {}
+        : {contentDetails: {duration: contentDetails.duration}},
+      user == null
+        ? {}
+        : {user: {screen_name: user.screen_name, user_id: user.user_id}},
     );
   }, envelope);
 

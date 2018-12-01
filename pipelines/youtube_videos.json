@@ -12,6 +12,7 @@
     "youtube_video",
     "media_youtubedl",
     "mongodb_supplement",
+    "cid_annotate",
     "mongodb_store",
     "elastic_supplement",
     "scrub_omit_fields",
