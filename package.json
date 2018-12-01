@@ -24,6 +24,7 @@
     "@sugarcube/plugin-twitter": "0.16.0",
     "@sugarcube/plugin-workflow": "0.16.0",
     "@sugarcube/plugin-youtube": "0.16.0",
+    "dms-conversion": "^3.1.1",
     "sugarcube-plugin-scrub": "file:./src/js/plugin-scrub-fields"
   },
   "devDependencies": {
