@@ -3,6 +3,7 @@
   "plugins": [
     "mongodb_fetch_units",
     "scrub_fields",
+    "mongodb_store",
     "scrub_omit_fields",
     "elastic_export"
   ]
