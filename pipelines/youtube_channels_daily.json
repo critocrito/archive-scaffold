@@ -1,0 +1,26 @@
+{
+  "name": "Youtube Channels Daily",
+  "extends": ["./pipelines/youtube_channels.json"],
+  "plugins": [
+    "sheets_queries",
+    "workflow_multiplex",
+    "youtube_channel",
+    "media_youtubedl",
+    "mongodb_supplement",
+    "cid_annotate",
+    "mongodb_store",
+    "elastic_supplement",
+    "scrub_omit_fields",
+    "elastic_export",
+    "workflow_multiplex_end",
+    "mail_pipeline_stats",
+    "mail_failed_stats",
+    "tap_printf"
+  ],
+  "youtube": {
+    "past_days": 8
+  },
+  "workflow": {
+    "multiplex_size": 200
+  }
+}
