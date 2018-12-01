@@ -2,7 +2,7 @@
 
 DIR="$(mktemp -d -p .)"
 COUNTER=0
-MONGODB_URI="$(jq '.mongodb.uri' < configs/mongodb.json | sed -e 's/^"\(.*\)"$/\1/')"
+MONGODB_URI="$(jq '.mongodb.from_uri' < configs/mongodb.json | sed -e 's/^"\(.*\)"$/\1/')"
 
 export NODE_OPTIONS=--max_old_space_size=16384
 

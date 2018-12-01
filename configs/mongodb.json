@@ -1,5 +1,6 @@
 {
   "mongodb": {
-    "uri": "mongodb://localhost:27017/archive-scaffold"
+    "uri": "mongodb://localhost:27017/archive-scaffold",
+    "from_uri": "mongodb://localhost:27017/archive-scaffold-source"
   }
 }
