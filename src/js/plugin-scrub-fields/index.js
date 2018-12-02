@@ -233,6 +233,22 @@ const twitterLocation = (unit) => {
   });
 };
 
+// Turn facebook place to a true location.
+const facebookLocation = (unit) => {
+  const {place} = unit;
+  if (place == null || place.location == null) return unit;
+  const {longitude, latitude, name} = place.location;
+  const item = {
+    location: {lon: longitude, lat: latitude},
+    type: "facebook_place",
+    description: name,
+    term: [longitude, latitude],
+  };
+  return Object.assign({}, unit, {
+    _sc_locations: unit._sc_locations.concat(item),
+  });
+};
+
 // Replace the dem content field with cid.
 const demContentField = (unit) => {
   if (unit._sc_content_fields == null) return unit;
@@ -322,6 +338,7 @@ const scrubPlugin = (envelope) => {
       twitterVideoDownloads,
       recordingLocation,
       twitterLocation,
+      facebookLocation,
     ].reduce((memo, f) => f(memo), unit);
 
   return env.fmapData(scrub, envelope);
