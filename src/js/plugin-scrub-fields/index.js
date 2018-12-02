@@ -225,7 +225,7 @@ const twitterLocation = (unit) => {
   const [lon, lat] = coordinates.coordinates;
   const item = {
     location: {lon, lat},
-    type: "twitter_location",
+    type: "tweet_location",
     term: [lon, lat],
   };
   return Object.assign({}, unit, {
