@@ -1,0 +1,17 @@
+{
+  "name": "Youtube Channels Failing",
+  "extends": ["./configs/mail.json", "./configs/secrets.json"],
+  "plugins": [
+    "sheets_queries",
+    "youtube_channel",
+    "mail_failed_stats",
+    "tap_printf"
+  ],
+  "youtube": {
+    "past_days": 8
+  },
+  "tap": {
+    "select": "stats"
+  },
+  "queries": [{ "type": "sheets_query", "term": "YoutubeChannelsDaily" }]
+}
