@@ -1,0 +1,20 @@
+{
+  "query": {
+    "nested": {
+      "path": "$sc_locations",
+      "query": {
+        "exists": {
+          "field": "$sc_locations.location"
+        }
+      }
+    }
+  },
+  "_source": [
+    "$sc_locations",
+    "$sc_id_hash",
+    "cid.description",
+    "cid.upload_date",
+    "cid.language"
+  ],
+  "size": 100
+}
