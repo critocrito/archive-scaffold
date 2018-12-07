@@ -8,3 +8,4 @@ data/*
 tmp.*
 .nrepl*
 .cpcache
+.rebel_readline_history
