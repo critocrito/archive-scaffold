@@ -1,0 +1,27 @@
+{
+  "query": {
+    "nested": {
+      "path": "$sc_locations",
+      "query": {
+        "exists": {
+          "field": "$sc_locations.location"
+        }
+      }
+    }
+  },
+  "aggs": {
+    "locations": {
+      "nested": {
+        "path": "$sc_locations"
+      },
+      "aggs": {
+        "location_type": {
+          "terms": {
+            "field": "$sc_locations.type"
+          }
+        }
+      }
+    }
+  },
+  "size": 0
+}

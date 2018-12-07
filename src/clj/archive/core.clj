@@ -1,5 +1,6 @@
 (ns archive.core
-  (:require [clojure.walk :refer (keywordize-keys)]
+  (:require [clojure.java.io :as io]
+            [clojure.walk :refer (keywordize-keys)]
             [clojure.string :as string]
             [cheshire.core :as json]))
 
@@ -34,3 +35,9 @@
         custom (:elastic (read-json file))
         cfg (merge default custom)]
     (str "http://" (:host cfg) ":" (:port cfg) "/" (:index cfg))))
+
+(defn elastic-query
+  "Read a JSON Elasticsearch query from disk."
+  [query-name]
+  (let [file (io/file (.getCanonicalPath (io/file "./es-queries")) (str query-name ".json"))]
+    (read-json file)))

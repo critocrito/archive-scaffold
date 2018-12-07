@@ -1,0 +1,10 @@
+{
+  "aggs": {
+    "sources": {
+      "terms": {
+        "field": "$sc_source.keyword"
+      }
+    }
+  },
+  "size": 0
+}

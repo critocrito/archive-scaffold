@@ -3,26 +3,11 @@
             [archive.http :as http]
             [archive.csv :as csv]))
 
-(def query
-  {:query
-   {:nested
-    {:path "$sc_locations"
-     :query
-     {:exists
-      {:field "$sc_locations.location"}}}}
-   :aggs
-   {:locations
-    {:nested {:path "$sc_locations"}
-     :aggs
-     {:location_type
-      {:terms
-       {:field "$sc_locations.type"}}}}}
-   :size 0})
-
 (defn -main
   "Stats by source type."
   []
-  (let [aggs (->> query
+  (let [query (core/elastic-query "location-aggs")
+        aggs (->> query
                   core/map->json-str
                   (#(assoc {:method :post
                             :url (str (core/elastic-url) "/_search")
