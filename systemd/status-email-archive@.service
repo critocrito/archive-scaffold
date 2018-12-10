@@ -1,0 +1,8 @@
+[Unit]
+Description=status email for %i to Archive
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/systemd-email <address> %i
+User=nobody
+Group=systemd-journal
