@@ -1,0 +1,9 @@
+[Unit]
+Description=Historic Youtube scrapes for %i-archive
+OnFailure=status-email-archive@%n.service
+
+[Service]
+Type=oneshot
+ExecStart=/home/%i/%i-archive/bin/youtube-channels-historic.sh
+User=%i
+WorkingDirectory=/home/%i/%i-archive
