@@ -16,6 +16,7 @@
     "cid_annotate",
     "mongodb_store",
     "elastic_supplement",
+    "enigio_timestamp",
     "scrub_omit_fields",
     "elastic_export",
     "mail_pipeline_stats",

@@ -26,7 +26,9 @@
     "@sugarcube/plugin-youtube": "0.17.0",
     "date-fns": "^1.29.0",
     "dms-conversion": "^3.1.1",
+    "node-fetch": "^2.3.0",
     "sugarcube-plugin-cid": "file:./src/js/plugin-cid",
+    "sugarcube-plugin-enigio": "file:./src/js/plugin-enigio",
     "sugarcube-plugin-scrub": "file:./src/js/plugin-scrub-fields"
   },
   "devDependencies": {
