@@ -4,6 +4,9 @@ OnFailure=status-email-archive@%n.service
 
 [Service]
 Type=oneshot
-ExecStart=/home/%i/%i-archive/bin/twitter-feeds.sh
+ExecStart=/bin/sh /home/%i/%i-archive/bin/twitter-feeds.sh
 User=%i
 WorkingDirectory=/home/%i/%i-archive
+
+[Install]
+RequiredBy=default.target

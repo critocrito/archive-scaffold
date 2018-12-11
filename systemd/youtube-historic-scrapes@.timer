@@ -2,7 +2,7 @@
 Description=Run Youtube historic scrapes daily
 
 [Timer]
-OnCalendar=*-*-* 00:00:00
+OnCalendar=*-*-* 01:00:00
 Persistent=true
 
 [Install]
