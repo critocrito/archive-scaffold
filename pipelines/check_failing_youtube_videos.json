@@ -3,6 +3,7 @@
   "extends": [
     "./configs/elasticsearch.json",
     "./configs/mail.json",
+    "./configs/csv.json",
     "./configs/secrets.json"
   ],
   "plugins": [
@@ -12,9 +13,6 @@
     "mail_failed_stats",
     "tap_printf"
   ],
-  "csv": {
-    "data_dir": "./csv"
-  },
   "tap": {
     "select": "stats"
   },

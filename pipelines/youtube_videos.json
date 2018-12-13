@@ -5,6 +5,7 @@
     "./configs/mongodb.json",
     "./configs/elasticsearch.json",
     "./configs/mail.json",
+    "./configs/csv.json",
     "./configs/secrets.json"
   ],
   "plugins": [
@@ -19,6 +20,7 @@
     "scrub_omit_fields",
     "elastic_export",
     "sheets_move_queries",
+    "csv_export_failed",
     "mail_pipeline_stats",
     "mail_failed_stats",
     "tap_printf"
