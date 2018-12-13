@@ -28,7 +28,7 @@ do
     echo "Processed $COUNTER queries"
   fi
 
-  doit "$ID" | tee -a ./logs/historic-youtube-channels-"$ID"-"$DATE".log
+  doit "$ID" | tee -a ./logs/youtube-channels-historic-"$ID"-"$DATE".log
 
   if [ "$QUERY_COUNT" -eq $((COUNTER + 1)) ]
   then

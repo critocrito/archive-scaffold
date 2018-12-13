@@ -13,4 +13,4 @@ doit() {
 
 echo "Starting a check for failing youtube videos."
 
-doit | tee -a ./logs/failing-videos-"$DATE".log
+doit | tee -a ./logs/failing-youtube-videos-"$DATE".log
