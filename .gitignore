@@ -3,6 +3,7 @@ node_modules
 *.lock
 logs/*
 data/*
+csv/*
 !.keep
 .sugarcube_cache.json
 tmp.*

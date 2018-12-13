@@ -1,0 +1,20 @@
+{
+  "_source": ["$sc_id_hash", "$sc_media"],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "nested": {
+            "path": "$sc_media",
+            "query": { "term": { "$sc_media.type": "video" } }
+          }
+        },
+        {
+          "terms": {
+            "$sc_source": ["youtube_video", "youtube_channel"]
+          }
+        }
+      ]
+    }
+  }
+}
