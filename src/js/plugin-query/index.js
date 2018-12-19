@@ -156,7 +156,7 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
       // No real query was configured.
       if (entries.length === 0 && from == null && till == null) {
         log.error(
-          `No query selection for column ${column}. Did you speify the right column?`,
+          `No query selection for column ${column}. Did you specify the right column?`,
         );
         return memo;
       }
@@ -166,7 +166,7 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
       const entriesInfo =
         entries.length === 0
           ? ""
-          : `for ${entries.length} entries of type ${type}`;
+          : `a total of ${entries.length} entries of type ${type}`;
       log.info(
         `Column '${column}': ${fromInfo} ${tillInfo} ${entriesInfo}`.replace(
           /\s\s+/,
