@@ -20,7 +20,7 @@ const youtubeAnnotations = (obs) => {
     creator: snippet.channelTitle,
     acquired_from: snippet.channelTitle,
     rights_owner: snippet.channelTitle,
-    view_count: statistics.viewCount,
+    view_count: statistics == null ? null : statistics.viewCount,
     duration: contentDetails.duration,
     filename: file.location,
     md5_hash: file.location,
