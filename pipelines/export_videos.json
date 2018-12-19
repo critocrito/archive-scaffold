@@ -1,0 +1,20 @@
+{
+  "name": "Export Videos",
+  "extends": [
+    "./configs/elasticsearch.json",
+    "./configs/sheet-fields.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": ["query_column", "elastic_import", "sheets_export", "tap_printf"],
+  "query": {
+    "sheet": "Exports"
+  },
+  "google": {
+    "copy_from_spreadsheet": "1n2L3xyfLmrJm2LoC68uRocx08CoBGWcuX8hBm4VZm_A",
+    "copy_from_sheet": "template",
+    "skip_empty": true
+  },
+  "tap": {
+    "select": "cfg"
+  }
+}
