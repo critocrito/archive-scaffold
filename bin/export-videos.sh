@@ -46,5 +46,5 @@ echo "Starting export of videos."
 
 while IFS="" read -r ID
 do
-  doit "$ID" "$COLUMNS" "$TARGET_SPREADSHEET" "$TARGET_SHEET" | tee -a ./logs/export-by-columns-"$DATE".log
+  doit "$ID" "$COLUMNS" "$TARGET_SPREADSHEET" "$TARGET_SHEET" 2>&1 | tee -a ./logs/export-by-columns-"$DATE".log
 done < "$SPREADSHEET_IDS"

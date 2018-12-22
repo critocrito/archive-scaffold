@@ -25,7 +25,7 @@ do
     echo "Processed $COUNTER queries"
   fi
 
-  doit "$ID" | tee -a ./logs/failing-twitter-feeds-"$ID"-"$DATE".log
+  doit "$ID" 2>&1 | tee -a ./logs/failing-twitter-feeds-"$ID"-"$DATE".log
 
   if [ "$QUERY_COUNT" -eq $((COUNTER + 1)) ]
   then
