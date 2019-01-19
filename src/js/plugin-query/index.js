@@ -24,6 +24,7 @@ const headerIndexes = (rows) => {
     "Search Term": "term",
     From: "from",
     Till: "till",
+    "Incident Code": "incidentCode",
     Comment: "comment",
     "Entry Type": "type",
     Entries: "entries",
@@ -66,7 +67,7 @@ const parseChannelQuery = (query) => {
 /**
  * Construct a query for Elasticsearch.
  */
-const queryBuilder = (from, till, videos, channels) => {
+const queryBuilder = (from, till, incidentCode, videos, channels) => {
   let dateQ;
   if (from != null || till != null) {
     const range = Object.assign(
@@ -76,6 +77,9 @@ const queryBuilder = (from, till, videos, channels) => {
     );
     dateQ = {range: {"cid.upload_date": {format: "yyyy-MM-dd", ...range}}};
   }
+  const incidentCodeQ = incidentCode
+    ? {match: {"cid.incident_code": incidentCode}}
+    : null;
   const videoQ =
     videos.length > 0
       ? {
@@ -106,6 +110,7 @@ const queryBuilder = (from, till, videos, channels) => {
           .concat(videoQ)
           .concat(channelQ)
           .concat(dateQ)
+          .concat(incidentCodeQ)
           .filter((q) => q != null),
       },
     },
@@ -140,6 +145,11 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
         rows[indexes.till][index] == null || rows[indexes.till][index] === ""
           ? null
           : rows[indexes.till][index];
+      const incidentCode =
+        rows[indexes.incidentCode][index] == null ||
+        rows[indexes.incidentCode][index] === ""
+          ? null
+          : rows[indexes.incidentCode][index];
       const type = rows[indexes.type][index];
       const entries = rows
         .slice(indexes.entries)
@@ -154,7 +164,12 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
         return memo;
       }
       // No real query was configured.
-      if (entries.length === 0 && from == null && till == null) {
+      if (
+        entries.length === 0 &&
+        from == null &&
+        till == null &&
+        incidentCode == null
+      ) {
         log.error(
           `No query selection for column ${column}. Did you specify the right column?`,
         );
@@ -163,20 +178,22 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
       // We have a query that is valid;
       const fromInfo = from == null ? "" : `from ${from}`;
       const tillInfo = till == null ? "" : `till ${till}`;
+      const incidentInfo =
+        incidentCode == null ? "" : ` For incident ${incidentCode}`;
       const entriesInfo =
         entries.length === 0
           ? ""
           : `a total of ${entries.length} entries of type ${type}`;
       log.info(
-        `Column '${column}': ${fromInfo} ${tillInfo} ${entriesInfo}`.replace(
+        `Column '${column}':${incidentInfo} ${fromInfo} ${tillInfo} ${entriesInfo}`.replace(
           /\s\s+/,
           " ",
         ),
       );
 
-      return memo.concat({entries, type, from, till});
+      return memo.concat({entries, type, incidentCode, from, till});
     }, [])
-    .map(({type, from, till, entries}) => {
+    .map(({type, from, incidentCode, till, entries}) => {
       let videos = [];
       let channels = [];
       switch (type) {
@@ -192,7 +209,9 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
 
       return {
         type: "elastic_query",
-        term: JSON.stringify(queryBuilder(from, till, videos, channels)),
+        term: JSON.stringify(
+          queryBuilder(from, till, incidentCode, videos, channels),
+        ),
       };
     });
 
