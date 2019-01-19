@@ -1,181 +1,124 @@
 {
+  "settings": {
+    "analysis": {
+      "filter": {
+        "trigrams_filter": {
+          "type": "ngram",
+          "min_gram": 3,
+          "max_gram": 3
+        }
+      },
+      "analyzer": {
+        "trigrams": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase", "trigrams_filter"]
+        },
+        "exact": {
+          "tokenizer": "standard",
+          "filter": ["lowercase"]
+        }
+      }
+    }
+  },
   "mappings": {
     "_doc": {
       "properties": {
-        "$sc_content_fields": {
+        "tweet": {
           "type": "text",
+          "analyzer": "arabic",
           "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "$sc_content_hash": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "$sc_downloads": {
-          "type": "nested"
-        },
-        "$sc_id_fields": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "$sc_id_hash": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "$sc_markers": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "$sc_media": {
-          "type": "nested",
-          "properties": {
-            "$sc_id_hash": {
+            "en": {
               "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
+              "analyzer": "english"
             },
-            "term": {
+            "general": {
               "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
+              "analyzer": "trigrams"
             },
-            "type": {
+            "exact": {
               "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            }
-          }
-        },
-        "$sc_pubdates": {
-          "properties": {
-            "fetch": {
-              "type": "date"
-            },
-            "pipeline": {
-              "type": "date"
-            },
-            "tika": {
-              "type": "date"
-            }
-          }
-        },
-        "$sc_queries": {
-          "type": "nested"
-        },
-        "$sc_relations": {
-          "type": "nested",
-          "properties": {
-            "$sc_id_hash": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "term": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "type": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            }
-          }
-        },
-        "$sc_source": {
-          "type": "text"
-        },
-
-        "description": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "href": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "href_text": {
-          "type": "text",
-          "index_options": "offsets"
-        },
-        "text": {
-          "type": "text",
-          "index_options": "offsets"
-        },
-        "title": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
+              "analyzer": "exact"
             }
           }
         },
         "message": {
           "type": "text",
-          "index_options": "offsets"
+          "analyzer": "arabic",
+          "fields": {
+            "en": {
+              "type": "text",
+              "analyzer": "english"
+            },
+            "general": {
+              "type": "text",
+              "analyzer": "trigrams"
+            },
+            "exact": {
+              "type": "text",
+              "analyzer": "exact"
+            }
+          }
+        },
+        "title": {
+          "type": "text",
+          "analyzer": "arabic",
+          "fields": {
+            "en": {
+              "type": "text",
+              "analyzer": "english"
+            },
+            "general": {
+              "type": "text",
+              "analyzer": "trigrams"
+            },
+            "exact": {
+              "type": "text",
+              "analyzer": "exact"
+            }
+          }
         },
         "snippet.description": {
           "type": "text",
-          "index_options": "offsets"
+          "index_options": "offsets",
+          "analyzer": "arabic",
+          "fields": {
+            "en": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "english"
+            },
+            "general": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "trigrams"
+            },
+            "exact": {
+              "type": "text",
+              "analyzer": "exact"
+            }
+          }
+        },
+        "notes": {
+          "type": "text",
+          "index_options": "offsets",
+          "analyzer": "arabic",
+          "fields": {
+            "en": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "english"
+            },
+            "general": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "trigrams"
+            },
+            "exact": {
+              "type": "text",
+              "analyzer": "exact"
+            }
+          }
         }
       }
     }
