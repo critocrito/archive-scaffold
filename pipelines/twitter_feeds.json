@@ -10,6 +10,7 @@
   ],
   "plugins": [
     "sheets_queries",
+    "workflow_multiplex",
     "twitter_feed",
     "media_youtubedl",
     "http_get",
@@ -20,6 +21,7 @@
     "enigio_timestamp",
     "scrub_omit_fields",
     "elastic_export",
+    "workflow_multiplex_end",
     "csv_export_failed",
     "mail_pipeline_stats",
     "mail_failed_stats",
@@ -31,6 +33,10 @@
   },
   "media": {
     "youtubedl_parallel": 6
+  },
+  "workflow": {
+    "multiplex_continue_on_error": true,
+    "multiplex_size": 100
   },
   "tap": {
     "select": "stats"
