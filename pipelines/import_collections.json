@@ -1,0 +1,29 @@
+{
+  "name": "Import Collections",
+  "extends": [
+    "./configs/mongodb.json",
+    "./configs/elasticsearch.json",
+    "./configs/sheet-fields.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": [
+    "workflow_multiplex",
+    "sheets_import",
+    "mongodb_supplement",
+    "mongodb_store",
+    "elastic_supplement",
+    "scrub_omit_fields",
+    "elastic_export",
+    "workflow_multiplex_end",
+    "tap_printf"
+  ],
+  "google": {
+    "sheet": "Collection"
+  },
+  "workflow": {
+    "multiplex_continue_on_error": true
+  },
+  "tap": {
+    "select": "stats"
+  }
+}
