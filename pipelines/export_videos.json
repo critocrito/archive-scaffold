@@ -10,8 +10,9 @@
     "sheet": "Exports"
   },
   "google": {
-    "copy_from_spreadsheet": "1n2L3xyfLmrJm2LoC68uRocx08CoBGWcuX8hBm4VZm_A",
-    "copy_from_sheet": "template",
-    "skip_empty": true
+    "copy_from_spreadsheet": "1Q4dBLm98zcYHm6kR3N4ardwVohWX-HPapNlv9Az_Er0",
+    "copy_from_sheet": ["Collection", "meta"],
+    "skip_empty": true,
+    "sheet": "Collection"
   }
 }

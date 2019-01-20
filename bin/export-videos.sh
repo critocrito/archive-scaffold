@@ -4,10 +4,9 @@ SPREADSHEET_IDS="./queries/export-spreadsheet-ids.txt"
 DATE=$(date +%Y-%m-%d)
 COLUMNS="$1"
 TARGET_SPREADSHEET="$2"
-TARGET_SHEET="$3"
 
 help() {
-  echo "Usage: ./bin/export-videos.sh <COLUMNS> <TARGET SPREADSHEET> [<TARGET SHEET>]"
+  echo "Usage: ./bin/export-videos.sh <COLUMNS> <TARGET SPREADSHEET>"
   echo ""
   echo "COLUMNS: Specify the columns to import from, e.g. B or B,C,AC"
   echo "TARGET SPREADSHEET: Supply the spreadsheet id of the target."
@@ -28,23 +27,18 @@ then
   exit 1
 fi
 
-if [ -z "$TARGET_SHEET" ];
-then
-  TARGET_SHEET="$COLUMNS"
-fi
-
 doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/export_videos.json \
               --query.spreadsheet_id "$1" \
               --query.export_columns "$2" \
               --google.spreadsheet_id "$3" \
-              --google.sheet "$4"
+              -d
 }
 
 echo "Starting export of videos."
 
 while IFS="" read -r ID
 do
-  doit "$ID" "$COLUMNS" "$TARGET_SPREADSHEET" "$TARGET_SHEET" 2>&1 | tee -a ./logs/export-by-columns-"$DATE".log
+  doit "$ID" "$COLUMNS" "$TARGET_SPREADSHEET" 2>&1 | tee -a ./logs/export-by-columns-"$DATE".log
 done < "$SPREADSHEET_IDS"
