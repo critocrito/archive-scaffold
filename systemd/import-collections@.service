@@ -1,0 +1,12 @@
+[Unit]
+Description=Import collections into the database for %i-archive
+OnFailure=status-email-archive@%n.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh /home/%i/%i-archive/bin/import-collections.sh
+User=%i
+WorkingDirectory=/home/%i/%i-archive
+
+[Install]
+RequiredBy=default.target
