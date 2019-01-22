@@ -1,6 +1,7 @@
 {
   "google": {
     "sheet_fields": [
+      "notes",
       "cid.incident_code",
       "cid.sa_link",
       "cid.need_scrape",
