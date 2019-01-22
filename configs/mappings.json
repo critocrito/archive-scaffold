@@ -42,6 +42,45 @@
             }
           }
         },
+        "cid.description": {
+          "type": "text",
+          "index_options": "offsets",
+          "analyzer": "arabic",
+          "fields": {
+            "en": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "english"
+            },
+            "general": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "trigrams"
+            },
+            "exact": {
+              "type": "text",
+              "analyzer": "exact"
+            }
+          }
+        },
+        "cid.online_title": {
+          "type": "text",
+          "analyzer": "arabic",
+          "fields": {
+            "en": {
+              "type": "text",
+              "analyzer": "english"
+            },
+            "general": {
+              "type": "text",
+              "analyzer": "trigrams"
+            },
+            "exact": {
+              "type": "text",
+              "analyzer": "exact"
+            }
+          }
+        },
         "message": {
           "type": "text",
           "analyzer": "arabic",
