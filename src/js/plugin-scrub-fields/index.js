@@ -347,6 +347,8 @@ const scrubPlugin = (envelope) => {
 const omitFieldsPlugin = (envelope) =>
   env.fmapData((unit) => {
     const {
+      // sugarcube
+      _sc_checker, // eslint-disable-line camelcase
       // youtube
       etag,
       contentDetails,
