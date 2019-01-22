@@ -67,7 +67,7 @@ const parseChannelQuery = (query) => {
 /**
  * Construct a query for Elasticsearch.
  */
-const queryBuilder = (from, till, incidentCode, videos, channels) => {
+const queryBuilder = (term, from, till, incidentCode, videos, channels) => {
   let dateQ;
   if (from != null || till != null) {
     const range = Object.assign(
@@ -102,6 +102,25 @@ const queryBuilder = (from, till, incidentCode, videos, channels) => {
         }
       : null;
 
+  const termQ =
+    term != null
+      ? {
+          multi_match: {
+            query: term,
+            fields: [
+              "cid.description*^1.5",
+              "cid.description.general",
+              "cid.online_title*^1.5",
+              "cid.online_title.general",
+              "notes*^1.5",
+              "notes.general",
+            ],
+            type: "most_fields",
+            minimum_should_match: "75%",
+          },
+        }
+      : null;
+
   return {
     _source: ["$sc_id_hash", "$sc_content_hash", "cid"],
     query: {
@@ -111,6 +130,7 @@ const queryBuilder = (from, till, incidentCode, videos, channels) => {
           .concat(channelQ)
           .concat(dateQ)
           .concat(incidentCodeQ)
+          .concat(termQ)
           .filter((q) => q != null),
       },
     },
@@ -137,6 +157,10 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
     .filter((column) => column !== "A")
     .reduce((memo, column) => {
       const index = colToIndex(column);
+      const term =
+        rows[indexes.term][index] == null || rows[indexes.term][index] === ""
+          ? null
+          : rows[indexes.term][index];
       const from =
         rows[indexes.from][index] == null || rows[indexes.from][index] === ""
           ? null
@@ -165,6 +189,7 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
       }
       // No real query was configured.
       if (
+        term == null &&
         entries.length === 0 &&
         from == null &&
         till == null &&
@@ -191,9 +216,9 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
         ),
       );
 
-      return memo.concat({entries, type, incidentCode, from, till});
+      return memo.concat({term, entries, type, incidentCode, from, till});
     }, [])
-    .map(({type, from, incidentCode, till, entries}) => {
+    .map(({term, type, from, incidentCode, till, entries}) => {
       let videos = [];
       let channels = [];
       switch (type) {
@@ -210,7 +235,7 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
       return {
         type: "elastic_query",
         term: JSON.stringify(
-          queryBuilder(from, till, incidentCode, videos, channels),
+          queryBuilder(term, from, till, incidentCode, videos, channels),
         ),
       };
     });
