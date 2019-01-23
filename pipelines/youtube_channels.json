@@ -30,14 +30,21 @@
   "google": {
     "query_default_type": "youtube_channel",
     "query_types_to_move": "youtube_channel",
-    "query_fields": ["record owner", "location", "activity"],
+    "query_fields": [
+      "record owner",
+      "location",
+      "activity",
+      "cid.incident_code",
+      "notes"
+    ],
     "selection_list": ["type:youtube_channel"]
   },
   "media": {
     "youtubedl_parallel": 6
   },
   "workflow": {
-    "multiplex_continue_on_error": true
+    "multiplex_continue_on_error": true,
+    "merge_query_fields": ["cid.incident_code", "notes"]
   },
   "tap": {
     "select": "stats"
