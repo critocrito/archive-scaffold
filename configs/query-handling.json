@@ -1,0 +1,15 @@
+{
+  "google": {
+    "query_fields": [
+      "record owner",
+      "location",
+      "activity",
+      "notes",
+      "cid.incident_code",
+      "last access"
+    ]
+  },
+  "workflow": {
+    "merge_query_fields": ["notes", "cid.incident_code"]
+  }
+}

@@ -6,6 +6,7 @@
     "./configs/elasticsearch.json",
     "./configs/mail.json",
     "./configs/csv.json",
+    "./configs/query-handling.json",
     "./configs/secrets.json"
   ],
   "plugins": [
@@ -14,6 +15,7 @@
     "media_youtubedl",
     "mongodb_supplement",
     "cid_annotate",
+    "workflow_merge_query",
     "mongodb_store",
     "elastic_supplement",
     "enigio_timestamp",
@@ -28,12 +30,6 @@
   "google": {
     "query_default_type": "youtube_video",
     "query_types_to_move": "youtube_video",
-    "query_fields": [
-      "record owner",
-      "description",
-      "last_access",
-      "cid.incident_code"
-    ],
     "selection_list": ["type:youtube_video"]
   },
   "media": {
@@ -43,7 +39,6 @@
     "select": "stats"
   },
   "workflow": {
-    "multiplex_size": 1000,
-    "merge_query_fields": ["cid.incident_code", "notes"]
+    "multiplex_size": 1000
   }
 }

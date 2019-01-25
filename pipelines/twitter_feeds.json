@@ -6,6 +6,7 @@
     "./configs/elasticsearch.json",
     "./configs/mail.json",
     "./configs/csv.json",
+    "./configs/query-handling.json",
     "./configs/secrets.json"
   ],
   "plugins": [
@@ -16,6 +17,7 @@
     "http_get",
     "mongodb_supplement",
     "cid_annotate",
+    "workflow_merge_query",
     "mongodb_store",
     "elastic_supplement",
     "enigio_timestamp",
@@ -29,13 +31,6 @@
   ],
   "google": {
     "query_default_type": "twitter_user",
-    "query_fields": [
-      "record owner",
-      "location",
-      "activity",
-      "cid.incident_code",
-      "notes"
-    ],
     "selection_list": ["type:twitter_user"]
   },
   "media": {
@@ -43,10 +38,9 @@
   },
   "workflow": {
     "multiplex_continue_on_error": true,
-    "multiplex_size": 100,
-    "merge_query_fields": ["cid.incident_code", "notes"]
+    "multiplex_size": 100
   },
   "tap": {
-    "select": "stats"
+    "select": "stats,data"
   }
 }
