@@ -1,0 +1,12 @@
+[Unit]
+Description=Twitter tweets scrapes for %i-archive
+OnFailure=status-email-archive@%n.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh /home/%i/%i-archive/bin/twitter-tweets.sh
+User=%i
+WorkingDirectory=/home/%i/%i-archive
+
+[Install]
+RequiredBy=default.target

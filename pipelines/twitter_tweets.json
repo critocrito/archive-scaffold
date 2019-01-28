@@ -1,0 +1,41 @@
+{
+  "name": "Twitter Tweets",
+  "extends": [
+    "./configs/downloads.json",
+    "./configs/mongodb.json",
+    "./configs/elasticsearch.json",
+    "./configs/mail.json",
+    "./configs/csv.json",
+    "./configs/query-handling.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": [
+    "sheets_queries",
+    "twitter_tweets",
+    "media_youtubedl",
+    "http_get",
+    "mongodb_supplement",
+    "cid_annotate",
+    "workflow_merge_query",
+    "mongodb_store",
+    "elastic_supplement",
+    "enigio_timestamp",
+    "scrub_omit_fields",
+    "elastic_export",
+    "sheets_move_queries",
+    "csv_export_failed",
+    "mail_pipeline_stats",
+    "mail_failed_stats",
+    "tap_printf"
+  ],
+  "google": {
+    "query_default_type": "twitter_tweet",
+    "selection_list": ["type:twitter_tweet"]
+  },
+  "media": {
+    "youtubedl_parallel": 6
+  },
+  "tap": {
+    "select": "stats"
+  }
+}

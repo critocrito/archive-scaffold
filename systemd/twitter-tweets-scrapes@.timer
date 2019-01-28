@@ -1,0 +1,9 @@
+[Unit]
+Description=Run Twitter tweets scrapes daily
+
+[Timer]
+OnCalendar=*-*-* 00:20:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
