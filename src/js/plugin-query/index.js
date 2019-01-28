@@ -1,3 +1,4 @@
+const {basename} = require("path");
 const {URL} = require("url");
 const {envelope: env, utils} = require("@sugarcube/core");
 const {SheetsDo} = require("@sugarcube/plugin-googlesheets");
@@ -65,9 +66,28 @@ const parseChannelQuery = (query) => {
 };
 
 /**
+ * Parse a tweet id either by id or URL.
+ */
+const parseTweetQuery = (id) => {
+  if (id.startsWith("http")) {
+    const u = new URL(id);
+    return basename(u.pathname);
+  }
+  return id;
+};
+
+/**
  * Construct a query for Elasticsearch.
  */
-const queryBuilder = (term, from, till, incidentCode, videos, channels) => {
+const queryBuilder = (
+  term,
+  from,
+  till,
+  incidentCode,
+  videos,
+  channels,
+  tweets,
+) => {
   let dateQ;
   if (from != null || till != null) {
     const range = Object.assign(
@@ -101,6 +121,14 @@ const queryBuilder = (term, from, till, incidentCode, videos, channels) => {
           },
         }
       : null;
+  const tweetQ =
+    tweets.length > 0
+      ? {
+          terms: {
+            tweet_id: tweets,
+          },
+        }
+      : null;
 
   const termQ =
     term != null
@@ -128,6 +156,7 @@ const queryBuilder = (term, from, till, incidentCode, videos, channels) => {
         must: []
           .concat(videoQ)
           .concat(channelQ)
+          .concat(tweetQ)
           .concat(dateQ)
           .concat(incidentCodeQ)
           .concat(termQ)
@@ -221,12 +250,16 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
     .map(({term, type, from, incidentCode, till, entries}) => {
       let videos = [];
       let channels = [];
+      let tweets = [];
       switch (type) {
         case "youtube_video":
           videos = entries.map(parseVideoQuery);
           break;
         case "youtube_channel":
           channels = entries.map(parseChannelQuery);
+          break;
+        case "twitter_tweet":
+          tweets = entries.map(parseTweetQuery);
           break;
         default:
           break;
@@ -235,7 +268,15 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
       return {
         type: "elastic_query",
         term: JSON.stringify(
-          queryBuilder(term, from, till, incidentCode, videos, channels),
+          queryBuilder(
+            term,
+            from,
+            till,
+            incidentCode,
+            videos,
+            channels,
+            tweets,
+          ),
         ),
       };
     });
