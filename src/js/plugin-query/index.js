@@ -25,7 +25,7 @@ const headerIndexes = (rows) => {
     "Search Term": "term",
     From: "from",
     Till: "till",
-    "Incident Code": "incidentCode",
+    "Incident Codes": "incidentCodes",
     Comment: "comment",
     "Entry Type": "type",
     Entries: "entries",
@@ -83,7 +83,7 @@ const queryBuilder = (
   term,
   from,
   till,
-  incidentCode,
+  incidentCodes,
   videos,
   channels,
   tweets,
@@ -97,9 +97,24 @@ const queryBuilder = (
     );
     dateQ = {range: {"cid.upload_date": {format: "yyyy-MM-dd", ...range}}};
   }
-  const incidentCodeQ = incidentCode
-    ? {match: {"cid.incident_code": incidentCode}}
-    : null;
+  const incidentCodeQ =
+    incidentCodes.length > 0
+      ? {
+          bool: {
+            should: incidentCodes.map((code) => {
+              if (/\*$/.test(code)) {
+                return {
+                  match_phrase_prefix: {
+                    "cid.incident_code": code.replace(/\*$/, ""),
+                  },
+                };
+              }
+              return {match: {"cid.incident_code": code}};
+            }),
+          },
+        }
+      : null;
+
   const videoQ =
     videos.length > 0
       ? {
@@ -198,11 +213,13 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
         rows[indexes.till][index] == null || rows[indexes.till][index] === ""
           ? null
           : rows[indexes.till][index];
-      const incidentCode =
-        rows[indexes.incidentCode][index] == null ||
-        rows[indexes.incidentCode][index] === ""
-          ? null
-          : rows[indexes.incidentCode][index];
+      const incidentCodes =
+        rows[indexes.incidentCodes][index] == null ||
+        rows[indexes.incidentCodes][index] === ""
+          ? []
+          : rows[indexes.incidentCodes][index]
+              .split(",")
+              .map((code) => code.trim());
       const type = rows[indexes.type][index];
       const entries = rows
         .slice(indexes.entries)
@@ -222,7 +239,7 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
         entries.length === 0 &&
         from == null &&
         till == null &&
-        incidentCode == null
+        incidentCodes.length === 0
       ) {
         log.error(
           `No query selection for column ${column}. Did you specify the right column?`,
@@ -233,7 +250,9 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
       const fromInfo = from == null ? "" : `from ${from}`;
       const tillInfo = till == null ? "" : `till ${till}`;
       const incidentInfo =
-        incidentCode == null ? "" : ` For incident ${incidentCode}`;
+        incidentCodes.length === 0
+          ? ""
+          : ` For incidents ${incidentCodes.join(",")}`;
       const entriesInfo =
         entries.length === 0
           ? ""
@@ -245,9 +264,9 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
         ),
       );
 
-      return memo.concat({term, entries, type, incidentCode, from, till});
+      return memo.concat({term, entries, type, incidentCodes, from, till});
     }, [])
-    .map(({term, type, from, incidentCode, till, entries}) => {
+    .map(({term, type, from, incidentCodes, till, entries}) => {
       let videos = [];
       let channels = [];
       let tweets = [];
@@ -272,7 +291,7 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
             term,
             from,
             till,
-            incidentCode,
+            incidentCodes,
             videos,
             channels,
             tweets,
