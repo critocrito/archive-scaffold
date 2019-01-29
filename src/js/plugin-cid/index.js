@@ -168,7 +168,9 @@ const annotate = (obs) => {
     ["youtube_channel", "youtube_video"].includes(source)
       ? youtubeAnnotations(obs)
       : {},
-    ["twitter_feed"].includes(source) ? twitterAnnotations(obs) : {},
+    ["twitter_feed", "twitter_tweet"].includes(source)
+      ? twitterAnnotations(obs)
+      : {},
     ["fs_unfold"].includes(source) ? fsAnnotations(obs) : {},
     ["facebook_api_feed"].includes(source) ? facebookAnnotations(obs) : {},
   );
