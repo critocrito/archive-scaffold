@@ -1,4 +1,5 @@
-const {envelope: env} = require("@sugarcube/core");
+const {isString, omit, map, pick} = require("lodash/fp");
+const {queries, envelope: env} = require("@sugarcube/core");
 const {parseDms} = require("dms-conversion");
 
 // Ensure date type for download timestamp.
@@ -47,7 +48,14 @@ const scLinksToMedia = (unit) => {
 
 // Make _sc lists unique.
 const scUniqueLists = (unit) => {
-  const fields = ["_sc_downloads", "_sc_media", "_sc_relations", "sc_queries"];
+  const fields = [
+    "_sc_downloads",
+    "_sc_media",
+    "_sc_relations",
+    "_sc_queries",
+    "_sc_locations",
+    "_sc_relations",
+  ];
   const lists = fields.reduce((memo, field) => {
     if (unit[field] == null) return Object.assign(memo, {[field]: []});
 
@@ -56,13 +64,11 @@ const scUniqueLists = (unit) => {
 
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < list.length; i++) {
-      const item = list[i];
+      let item = list[i];
 
-      // When in doubt about the identity, just add it anyways.
+      // Hash the item if there is no hash existing.
       if (item._sc_id_hash == null) {
-        data.push(list[i]);
-        // eslint-disable-next-line no-continue
-        continue;
+        item = queries.hashOne(item);
       }
 
       // See if we already have an occurence and merge, otherwise simply add
@@ -160,8 +166,13 @@ const cidLocation = (unit) => {
   )
     return unit;
   const {longitude, latitude, location} = unit.cid;
-  const lon = parseDms(longitude.trim());
-  const lat = parseDms(latitude.trim());
+  // A handful of lat/long values can be floats, and not strings.
+  const lon = parseDms(
+    isString(longitude) ? longitude.trim() : longitude.toString(),
+  );
+  const lat = parseDms(
+    isString(latitude) ? latitude.trim() : latitude.toString(),
+  );
   const item = {
     location: {lon, lat},
     type: "cid",
@@ -325,7 +336,6 @@ const scrubPlugin = (envelope) => {
     [
       downloadTimeStamps,
       scLinksToMedia,
-      scUniqueLists,
       cidEmptyStrings,
       cidBooleans,
       cidDates,
@@ -339,6 +349,7 @@ const scrubPlugin = (envelope) => {
       recordingLocation,
       twitterLocation,
       facebookLocation,
+      scUniqueLists,
     ].reduce((memo, f) => f(memo), unit);
 
   return env.fmapData(scrub, envelope);
@@ -388,7 +399,53 @@ const omitFieldsPlugin = (envelope) =>
     );
   }, envelope);
 
+const pickCollection = pick(["type", "term", "_sc_id_hash"]);
+const pickDownload = pick([
+  "type",
+  "term",
+  "_sc_id_hash",
+  "location",
+  "md5",
+  "sha256",
+]);
+const pickLocation = pick(["type", "term", "_sc_id_hash", "location"]);
+
+const pickFieldsPlugin = (envelope) =>
+  env.fmapData((unit) => {
+    const {
+      _sc_id_hash, // eslint-disable-line camelcase
+      _sc_content_hash, // eslint-disable-line camelcase
+      _sc_id_fields, // eslint-disable-line camelcase
+      _sc_content_fields, // eslint-disable-line camelcase
+      _sc_downloads, // eslint-disable-line camelcase
+      _sc_media, // eslint-disable-line camelcase
+      _sc_language, // eslint-disable-line camelcase
+      _sc_locations, // eslint-disable-line camelcase
+      _sc_queries, // eslint-disable-line camelcase
+      _sc_relations, // eslint-disable-line camelcase
+      _sc_source, // eslint-disable-line camelcase
+      _sc_pubdates, // eslint-disable-line camelcase
+      cid,
+    } = unit;
+    return {
+      _sc_id_hash,
+      _sc_content_hash,
+      _sc_id_fields,
+      _sc_content_fields,
+      _sc_language,
+      _sc_source,
+      _sc_pubdates,
+      _sc_relations: map(pickCollection, _sc_relations),
+      _sc_queries: map(pickCollection, _sc_queries),
+      _sc_media: map(pickCollection, _sc_media),
+      _sc_locations: map(pickLocation, _sc_locations),
+      _sc_downloads: map(pickDownload, _sc_downloads),
+      cid: omit(["notes"], cid),
+    };
+  }, envelope);
+
 module.exports.plugins = {
   scrub_fields: scrubPlugin,
   scrub_omit_fields: omitFieldsPlugin,
+  scrub_pick_fields: pickFieldsPlugin,
 };
