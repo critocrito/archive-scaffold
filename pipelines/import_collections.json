@@ -13,7 +13,7 @@
     "mongodb_supplement",
     "mongodb_store",
     "elastic_supplement",
-    "scrub_omit_fields",
+    "scrub_pick_fields",
     "elastic_export",
     "workflow_multiplex_end",
     "tap_printf"
