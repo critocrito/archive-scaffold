@@ -24,138 +24,545 @@
   "mappings": {
     "_doc": {
       "properties": {
-        "tweet": {
+        "$sc_id_hash": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+
+        "$sc_content_hash": {
+          "type": "keyword",
+          "ignore_above": 64
+        },
+
+        "$sc_id_fields": {
           "type": "text",
-          "analyzer": "arabic",
           "fields": {
-            "en": {
-              "type": "text",
-              "analyzer": "english"
-            },
-            "general": {
-              "type": "text",
-              "analyzer": "trigrams"
-            },
-            "exact": {
-              "type": "text",
-              "analyzer": "exact"
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
             }
           }
         },
-        "cid.description": {
+
+        "$sc_content_fields": {
           "type": "text",
-          "index_options": "offsets",
-          "analyzer": "arabic",
           "fields": {
-            "en": {
-              "type": "text",
-              "index_options": "offsets",
-              "analyzer": "english"
-            },
-            "general": {
-              "type": "text",
-              "index_options": "offsets",
-              "analyzer": "trigrams"
-            },
-            "exact": {
-              "type": "text",
-              "analyzer": "exact"
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
             }
           }
         },
-        "cid.online_title": {
-          "type": "text",
-          "analyzer": "arabic",
-          "fields": {
-            "en": {
-              "type": "text",
-              "analyzer": "english"
+
+        "$sc_downloads": {
+          "type": "nested",
+          "properties": {
+            "$sc_id_hash": {
+              "type": "keyword",
+              "ignore_above": 64
             },
-            "general": {
+
+            "location": {
               "type": "text",
-              "analyzer": "trigrams"
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             },
-            "exact": {
-              "type": "text",
-              "analyzer": "exact"
+
+            "md5": {
+              "type": "keyword",
+              "ignore_above": 32
+            },
+
+            "sha256": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+
+            "term": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+
+            "type": {
+              "type": "keyword",
+              "ignore_above": 256
             }
           }
         },
-        "message": {
-          "type": "text",
-          "analyzer": "arabic",
-          "fields": {
-            "en": {
-              "type": "text",
-              "analyzer": "english"
+
+        "$sc_language": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+
+        "$sc_locations": {
+          "type": "nested",
+          "properties": {
+            "$sc_id_hash": {
+              "type": "keyword",
+              "ignore_above": 64
             },
-            "general": {
-              "type": "text",
-              "analyzer": "trigrams"
+
+            "location": {
+              "type": "geo_point"
             },
-            "exact": {
-              "type": "text",
-              "analyzer": "exact"
+
+            "term": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+
+            "type": {
+              "type": "keyword",
+              "ignore_above": 256
             }
           }
         },
-        "title": {
-          "type": "text",
-          "analyzer": "arabic",
-          "fields": {
-            "en": {
-              "type": "text",
-              "analyzer": "english"
+
+        "$sc_media": {
+          "type": "nested",
+          "properties": {
+            "$sc_id_hash": {
+              "type": "keyword",
+              "ignore_above": 64
             },
-            "general": {
-              "type": "text",
-              "analyzer": "trigrams"
+
+            "term": {
+              "type": "keyword",
+              "ignore_above": 256
             },
-            "exact": {
-              "type": "text",
-              "analyzer": "exact"
+
+            "type": {
+              "type": "keyword",
+              "ignore_above": 256
             }
           }
         },
-        "snippet.description": {
-          "type": "text",
-          "index_options": "offsets",
-          "analyzer": "arabic",
-          "fields": {
-            "en": {
-              "type": "text",
-              "index_options": "offsets",
-              "analyzer": "english"
+
+        "$sc_pubdates": {
+          "properties": {
+            "fetch": {
+              "type": "date"
             },
-            "general": {
-              "type": "text",
-              "index_options": "offsets",
-              "analyzer": "trigrams"
-            },
-            "exact": {
-              "type": "text",
-              "analyzer": "exact"
+            "source": {
+              "type": "date"
             }
           }
         },
+
+        "$sc_queries": {
+          "type": "nested",
+          "properties": {
+            "$sc_id_hash": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+
+            "term": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+
+            "type": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+
+        "$sc_relations": {
+          "type": "nested",
+          "properties": {
+            "$sc_id_hash": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+
+            "term": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+
+            "type": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+
+        "$sc_source": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+
         "notes": {
           "type": "text",
           "index_options": "offsets",
-          "analyzer": "arabic",
           "fields": {
             "en": {
               "type": "text",
               "index_options": "offsets",
               "analyzer": "english"
             },
+            "exact": {
+              "type": "text",
+              "analyzer": "exact"
+            },
             "general": {
               "type": "text",
               "index_options": "offsets",
               "analyzer": "trigrams"
-            },
-            "exact": {
+            }
+          },
+          "analyzer": "arabic"
+        },
+
+        "cid": {
+          "properties": {
+            "acquired_from": {
               "type": "text",
-              "analyzer": "exact"
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "channel_id": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "collections": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "creator": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "creator_willing": {
+              "type": "boolean"
+            },
+
+            "date_of_acquisition": {
+              "type": "date"
+            },
+
+            "description": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "arabic",
+              "fields": {
+                "en": {
+                  "type": "text",
+                  "index_options": "offsets",
+                  "analyzer": "english"
+                },
+                "exact": {
+                  "type": "text",
+                  "analyzer": "exact"
+                },
+                "general": {
+                  "type": "text",
+                  "index_options": "offsets",
+                  "analyzer": "trigrams"
+                }
+              }
+            },
+
+            "duration": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "edited": {
+              "type": "boolean"
+            },
+
+            "filename": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "generation": {
+              "type": "boolean"
+            },
+
+            "graphic_content": {
+              "type": "boolean"
+            },
+
+            "incident_code": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "incident_date": {
+              "type": "date"
+            },
+
+            "incident_time": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "language": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "latitude": {
+              "type": "float"
+            },
+
+            "location": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "arabic",
+              "fields": {
+                "en": {
+                  "type": "text",
+                  "index_options": "offsets",
+                  "analyzer": "english"
+                },
+                "exact": {
+                  "type": "text",
+                  "analyzer": "exact"
+                },
+                "general": {
+                  "type": "text",
+                  "index_options": "offsets",
+                  "analyzer": "trigrams"
+                }
+              }
+            },
+
+            "longitude": {
+              "type": "float"
+            },
+
+            "md5_hash": {
+              "type": "keyword",
+              "ignore_above": 32
+            },
+
+            "online": {
+              "type": "boolean"
+            },
+
+            "online_link": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "online_title": {
+              "type": "text",
+              "fields": {
+                "en": {
+                  "type": "text",
+                  "analyzer": "english"
+                },
+                "exact": {
+                  "type": "text",
+                  "analyzer": "exact"
+                },
+                "general": {
+                  "type": "text",
+                  "analyzer": "trigrams"
+                }
+              },
+              "analyzer": "arabic"
+            },
+
+            "online_title_ar": {
+              "type": "text",
+              "analyzer": "arabic",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "online_title_en": {
+              "type": "text",
+              "analyzer": "english",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "public": {
+              "type": "boolean"
+            },
+
+            "ready_for_review": {
+              "type": "boolean"
+            },
+
+            "reference_code": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "relevant": {
+              "type": "boolean"
+            },
+
+            "rights_owner": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "sha256_hash": {
+              "type": "keyword",
+              "ignore_above": 64
+            },
+
+            "staff": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "staff_id": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+
+            "type_of_violation": {
+              "properties": {
+                "arbitrary_and_forcible_displacement": {
+                  "type": "boolean"
+                },
+                "arbitrary_arrest_and_unlawful_detention": {
+                  "type": "boolean"
+                },
+                "enforced_disappearance": {
+                  "type": "boolean"
+                },
+                "hostage_taking": {
+                  "type": "boolean"
+                },
+                "massacres_and_other_unlawful_killing": {
+                  "type": "boolean"
+                },
+                "sexual_and_gender_based_violence": {
+                  "type": "boolean"
+                },
+                "sieges_and_violations_of_economic_social_and_cultural_rights": {
+                  "type": "boolean"
+                },
+                "torture_and_ill_treatment_of_detainees": {
+                  "type": "boolean"
+                },
+                "unlawful_attacks": {
+                  "type": "boolean"
+                },
+                "use_of_illegal_weapons": {
+                  "type": "boolean"
+                },
+                "violations_against_specifically_protected_persons_and_objects": {
+                  "type": "boolean"
+                },
+                "violations_of_childrens_rights": {
+                  "type": "boolean"
+                }
+              }
+            },
+
+            "upload_date": {
+              "type": "date"
+            },
+
+            "verified": {
+              "type": "boolean"
+            },
+
+            "view_count": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             }
           }
         }
