@@ -405,6 +405,7 @@ const pickDownload = pick([
   "term",
   "_sc_id_hash",
   "location",
+  "mosaic",
   "md5",
   "sha256",
 ]);
