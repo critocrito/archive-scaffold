@@ -9,6 +9,7 @@
   "plugins": [
     "workflow_multiplex",
     "sheets_import",
+    "scrub_fields",
     "mongodb_supplement",
     "mongodb_store",
     "elastic_supplement",
