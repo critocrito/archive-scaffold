@@ -148,24 +148,26 @@ const queryBuilder = (
   const termQ =
     term != null
       ? {
-          multi_match: {
+          simple_query_string: {
             query: term,
             fields: [
               "cid.description*^1.5",
               "cid.description.general",
               "cid.online_title*^1.5",
               "cid.online_title.general",
+              "cid.location*^1.5",
+              "cid.location.general",
               "notes*^1.5",
               "notes.general",
             ],
-            type: "most_fields",
             minimum_should_match: "75%",
+            quote_field_suffix: ".exact",
           },
         }
       : null;
 
   return {
-    _source: ["$sc_id_hash", "$sc_content_hash", "cid"],
+    _source: ["$sc_id_hash", "$sc_content_hash", "cid", "notes"],
     query: {
       bool: {
         must: []
