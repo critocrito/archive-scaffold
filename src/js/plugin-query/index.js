@@ -151,16 +151,11 @@ const queryBuilder = (
           simple_query_string: {
             query: term,
             fields: [
-              "cid.description*^1.5",
-              "cid.description.general",
-              "cid.online_title*^1.5",
-              "cid.online_title.general",
-              "cid.location*^1.5",
-              "cid.location.general",
-              "notes*^1.5",
-              "notes.general",
+              "cid.description",
+              "cid.online_title",
+              "cid.location",
+              "notes",
             ],
-            minimum_should_match: "75%",
             quote_field_suffix: ".exact",
           },
         }
