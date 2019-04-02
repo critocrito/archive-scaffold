@@ -2,7 +2,7 @@ configs/secrets.json
 node_modules
 *.lock
 logs/*
-data/*
+data
 csv/*
 !.keep
 .sugarcube_cache.json
