@@ -159,27 +159,47 @@ const cidDates = (unit) => {
 
 // Set location from cid.
 const cidLocation = (unit) => {
-  if (
-    unit.cid == null ||
-    unit.cid.latitude == null ||
-    unit.cid.longitude == null
-  )
-    return unit;
-  const {longitude, latitude, location} = unit.cid;
-  // A handful of lat/long values can be floats, and not strings.
-  const lon = parseDms(
-    isString(longitude) ? longitude.trim() : longitude.toString(),
-  );
-  const lat = parseDms(
-    isString(latitude) ? latitude.trim() : latitude.toString(),
-  );
+  // Nothing to do here if we don't have a cid attribute.
+  if (unit.cid == null) return unit;
+
+  const {cid} = unit;
+
+  // longitude/latitude can be values like null, "", " ", "34.234",
+  // "35°48'45\"N" and can be different for each attribute. If any of the
+  // location attributes is null, we make sure that both are null since half a
+  // location seems useless.
+  if (cid.latitude == null || cid.longitude == null)
+    return Object.assign({}, unit, {
+      cid: Object.assign({}, cid, {latitude: null, longitude: null}),
+    });
+
+  const {location} = cid;
+  let {longitude, latitude} = cid;
+
+  // Coerce values to well formed strings, otherwise the proper conversion
+  // later on can fail.
+  longitude = isString(longitude) ? longitude.trim() : longitude.toString();
+  latitude = isString(latitude) ? latitude.trim() : latitude.toString();
+
+  // No empty strings allowed for longitude/latitude. Set to null instead.
+  if (longitude === "" || latitude === "")
+    return Object.assign({}, unit, {
+      cid: Object.assign({}, cid, {latitude: null, longitude: null}),
+    });
+
+  // Parse and convert the location attributes to a float.
+  const lon = parseDms(longitude);
+  const lat = parseDms(latitude);
+
   const item = {
     location: {lon, lat},
     type: "cid",
     term: [lon, lat],
     description: location,
   };
+
   return Object.assign({}, unit, {
+    cid: Object.assign({}, cid, {latitude: lat, longitude: lon}),
     _sc_locations: unit._sc_locations.concat(item),
   });
 };
