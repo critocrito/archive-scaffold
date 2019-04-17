@@ -2,7 +2,7 @@
   "aggs": {
     "sources": {
       "terms": {
-        "field": "$sc_source.keyword"
+        "field": "$sc_source"
       }
     }
   },
