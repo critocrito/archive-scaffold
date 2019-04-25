@@ -20,7 +20,7 @@
     "tap_printf"
   ],
   "youtube": {
-    "past_days": 8
+    "past_days": 3
   },
   "workflow": {
     "multiplex_size": 200
