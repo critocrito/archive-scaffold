@@ -13,6 +13,7 @@
     "sheets_queries",
     "youtube_video",
     "media_youtubedl",
+    "media_mosaic",
     "mongodb_supplement",
     "cid_annotate",
     "workflow_merge_query",
@@ -33,7 +34,8 @@
     "selection_list": ["type:youtube_video"]
   },
   "media": {
-    "youtubedl_parallel": 6
+    "youtubedl_parallel": 6,
+    "mosaic_parallel": 6
   },
   "tap": {
     "select": "stats"

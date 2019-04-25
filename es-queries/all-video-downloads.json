@@ -1,0 +1,26 @@
+{
+  "_source": ["$sc_id_hash", "$sc_downloads", "$sc_source"],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "nested": {
+            "path": "$sc_downloads",
+            "query": { "term": { "$sc_downloads.type": "video" } }
+          }
+        },
+        {
+          "terms": {
+            "$sc_source": [
+              "youtube_video",
+              "youtube_channel",
+              "twitter_tweets",
+              "twitter_feed",
+              "elastic_import"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

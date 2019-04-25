@@ -14,6 +14,7 @@
     "workflow_multiplex",
     "twitter_feed",
     "media_youtubedl",
+    "media_mosaic",
     "http_get",
     "mongodb_supplement",
     "cid_annotate",
@@ -34,7 +35,8 @@
     "selection_list": ["type:twitter_user"]
   },
   "media": {
-    "youtubedl_parallel": 6
+    "youtubedl_parallel": 6,
+    "mosaic_parallel": 6
   },
   "workflow": {
     "multiplex_continue_on_error": true,

@@ -1,0 +1,32 @@
+{
+  "name": "Mosaic Videos",
+  "extends": [
+    "./configs/mongodb.json",
+    "./configs/elasticsearch.json",
+    "./configs/mail.json",
+    "./configs/csv.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": [
+    "elastic_import",
+    "media_mosaic",
+    "mongodb_supplement",
+    "mongodb_store",
+    "elastic_supplement",
+    "scrub_pick_fields",
+    "elastic_export",
+    "csv_export_failed",
+    "mail_pipeline_stats",
+    "mail_failed_stats",
+    "tap_printf"
+  ],
+  "tap": {
+    "select": "stats"
+  },
+  "media": {
+    "mosaic_parallel": 8
+  },
+  "queries": [
+    { "type": "glob_pattern", "term": "./es-queries/all-video-downloads.json" }
+  ]
+}
