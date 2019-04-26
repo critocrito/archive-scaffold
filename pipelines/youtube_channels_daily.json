@@ -6,6 +6,7 @@
     "workflow_multiplex",
     "youtube_channel",
     "media_youtubedl",
+    "media_mosaic",
     "mongodb_supplement",
     "cid_annotate",
     "mongodb_store",
