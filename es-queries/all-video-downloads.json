@@ -15,8 +15,7 @@
               "youtube_video",
               "youtube_channel",
               "twitter_tweets",
-              "twitter_feed",
-              "elastic_import"
+              "twitter_feed"
             ]
           }
         }
