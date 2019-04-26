@@ -76,3 +76,24 @@ In the mongo shell.
 use archive-scaffold-source
 db.dropDatabase()
 ```
+
+### Statistics of failed youtube videos
+
+To generate a statistics count I ran the following shell command:
+
+```
+xsv select reason failed-stats-8251ee34b053b62f9cb03ca9e45f5166290013f4.csv \  # Select the right column of the CSV
+  | awk 'BEGIN {getline} /^".*[^"]$/{getline x}{print $0 " " x; x=""}' \       # Merge reasons that stretch across two lines into one
+  | sed 's/"//g' \          # Remove any quotes
+  | awk '{$1=$1};1' \       # Remove any leading and trailing whitespace
+  | sort \                  # Sort
+  | uniq -c \               # Count unique occurences
+  | sort -n \               # Sort by leading numeric value
+  | tac > failed-stats-count-reason.txt      # Reverse and output the results
+```
+
+To count the number of copyright violations I use this little snippet.
+
+```
+grep -i copyright failed-stats-count-reason.txt | awk '{c+=$1} END {print c}'
+```
