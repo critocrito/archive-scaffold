@@ -2,180 +2,76 @@
 
 > The source of all archives.
 
-## Installation
+This repository is used for any active development on the data infrastructure of the [Syrian Archive](https://syrianarchive.org/en), the [Yemeni Archive](https://yemeniarchive.org/en) and the Sudan Archive. Any changes are ported back into the respective code repositories [here](https://github.com/critocrito/syrian-archive), [here](https://github.com/critocrito/yemen-archive) and [here](https://github.com/critocrito/sudan-archive). To install your own version of this archive see the [installations instructions](./docs/installation.md) for further information.
 
-## Bootstrapping a new Archive
+## Overview
 
-```
-export archive="yemen-archive"
-git clone git@github.com:critocrito/archive-scaffold.git $archive
-cd $archive
-git remote rm origin
-git remote add scaffold git@github.com:critocrito/archive-scaffold.git
-git remote add origin git@github.com:critocrito/$archive.git
-git push -u origin master
-find . -type f -name "*.json" -exec sed -i -e 's/archive-scaffold/yemen-archive/g' {} \;
-```
+This repository contains all elements of the infrastructure of the Syrian Archive. At it's core it uses [SugarCube](https://github.com/critocrito/sugarcube) for it's data preservation and processing. Google Sheets are used as an interface to manage data sources, import and export collections and verification of data. All data is stored in a MongoDB and Elasticsearch.
 
-Make a new copy of the [Archive Queries Template](https://docs.google.com/spreadsheets/d/1Be0ZoDQkPQI8kUyHl-TkWcX0heP1aU300x5X5ECoymk/edit#gid=703301831) and replace the spreadsheet id in [`spreadsheet-ids.txt`](./queries/spreadsheet-ids.txt).
+This following diagram shows a high level view of the different parts.
 
-Also make a copy of the [Archive Queries Exports](https://docs.google.com/spreadsheets/d/1IsogK13dawk-dHGeHxDWW8HEzd8fAYlaU4ZvZcnjg2k/edit#gid=1718726577) and replace the spreadsheet id in [`export-spreadsheet-ids.txt`](./queries/export-spreadsheet-ids.txt).
+![high level overview](./docs/overview.jpg "Archive Overview")
 
-On the server take the following steps:
+All data processes are can be found in the `bin` directory. They are shell scripts and are responsible to call any SugarCube pipeline with the right configuration. The pipelines themselves are defined in the `pipelines` directory.
 
-Create a new user for the archive.
+### Data Processes
 
-```
-adduser --disabled-password yemen
-```
+The data processes that fetch data from a source are configured in a Google Spreadsheet. See [Archive Queries Template](https://docs.google.com/spreadsheets/d/1Be0ZoDQkPQI8kUyHl-TkWcX0heP1aU300x5X5ECoymk/edit?usp=sharing) for a template of such a spreadsheet. Every source has it's own sheet and the sources that should be preserved are collected there. Most of those processes are run automatically once a day.
 
-Become the new user to setup SSH and clone the repository. Add the public SSH key as a deploy key to the Github repository.
+#### `bin/youtube-videos.sh`
 
-```
-su - yemen
+This process fetches individual Youtube videos on an `incoming` sheet and once fetched moves it to the `done` sheet.
 
-ssh-keygen
-cat <<EOF > .ssh/authorized_keys
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjftAyMQCwRXdPTjpm1Tu5O7nxgyT/TEbWwGxaVqXBcILPdRjhglY6A6WteKtOxEFhFJhXJh38avI2hHnXmDVNI+qyJbE6eFiG2j7NETOpfHt1IOAdpgo9MWWP+hlEpqDVrMvNYqOvcFKYJAslUyRMcvqhgoiJxp/mjBVEA/xBhR/WgNcGR3bbeh5mNcqIx3tM47RZIdo0reCk7nukgwIFpFjJMCOX9IXlQOz1mjFX2d+ZN69Fmh0DpyzZxAqxXRDfIcse/h+UXi6J4bX0T6fnL3RwW2I4vHGh4WsuRPArQcxYLsXuquOl1iuojBvbqruXHQdDcLv9G6rUJwWCClvd crito@xmarksthespot
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCu9PJBoIUjgfG0YM42WRYH6MPt3w0Gdar6Jw/RjWx0xQGMLd9ervqQk8MpQBIobWcP7FbWCaFIm80/amVCjJgH62ETAUxHBiEXfs+2FiaE5orDYDFbQswmF/V7kMbuoxwlXdo8jiKWt8MoBVW/XNbjZ5VR9YGehi9KGfJzB+sP/ZBK4MalNZJp+Z2BbYJJLCllcnzpdzpgNZJWNFbzIt6pB5Gs1v02IkugMpji4DnIX5QTJcxylOHTTseb+WLmvHv4EUujfxZh2B8q6Yw8K63pjqUQ16BkUGHzOAWwRZabU1hi+pllXTp2/7Z4OSadfAuNxtdMt8oMcofJjsVXf4rZ hak@hakvillehost
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXf1geWijRyH3ebhfIcoeKHyDhSCEJjjkI78Xh4t+PjSL7I9UACvN/bfCgdQKuGnHICpgTcxA7XsV0uOuB4ivJumn16HJpT8J+baJXnAiQ0RCRBY7c6NAwxyMtBEknxBG/WUhJp7L9h3WayNeJ1HFjh8oLOUNtxqjt7e/jLHtVaDWnwSQH2J1JVUZni15aGaIkLJWNNpxvEKbfock5bExdW5itSOeDYdAFAag9iA3eQIkI9obJxNLik/L3PKeDT73EuS9o/Z8BDng9/0Bld/5ksqIE7iHwM7aOOaTRtXia+5diRDWdRjh5stABzFLbtRwJBfobUdFTTwX2cIlPZcR3 hak@mnemonic001
-EOF
+#### `bin/youtube-channels-historic.sh`
 
-git clone git@github.com:critocrito/yemen-archive.git
-cd yemen-archive
-yarn install
-```
+If a new channel is added, they are added to the `historic` sheet to make a full scrape of all videos. Once a channel has been preserved, it moves over to the `daily` sheet for the daily preservation of new videos.
 
-To set up Elasticsearch, create the index and set the alias.
+#### `bin/youtube-channels-daily.sh`
 
-```
-curl -X PUT -H "Content-Type: application/json" localhost:9200/yemen-archive-1 -d @configs/mappings.json
-curl -X POST -H "Content-Type: application/json" localhost:9200/_aliases -d @configs/alias.json
-```
+New videos published on a channel are preserved on a daily basis by this process.
 
-Prepare the MongoDB database with the right indexes:
+#### `bin/twitter-tweets.sh`
 
-```
-mongo localhost:27020
-use yemen-archive
-db.createCollection("units")
-db.units.createIndex({_sc_id_hash: 1})
-```
+This process fetches individual Tweets on an `incoming` sheet and once fetched moves it to the `done` sheet.
 
-Configure all secrets in `./configs/secrets.json`.
+#### `bin/twitter-feeds.sh`
 
-Create a GPG key for this account. Use the email address specified in the `secrets.json`. Add the new public GPG key to the project repository.
+User timelines are preserved using this data process. It runs daily.
 
-```
-gpg --gen-key
-gpg --import keys/*
-gpg --edit crito   # Trust the key, repeat for every key imported from ./keys
-gpg --export -a archive@dothorse.horse > keys/archive.gpg
-```
+#### `bin/export-videos.sh`
 
-Enable the timers for the new archive.
+Videos in the collection can be exported to a collections spreadsheet using this process. Search parameters for the export can be set in an export spreadsheet. See [Archive Exports Template](https://docs.google.com/spreadsheets/d/1IsogK13dawk-dHGeHxDWW8HEzd8fAYlaU4ZvZcnjg2k/edit?usp=sharing) for an example of such a spreadsheet. This process will either export to an existing collections spreadsheet, or create a new one based on an [Archive Collections Template](https://docs.google.com/spreadsheets/d/1Q4dBLm98zcYHm6kR3N4ardwVohWX-HPapNlv9Az_Er0/edit#gid=0).
 
-```
-cd /etc/systemd/system
-mkdir twitter-feeds-scrapes@sudan.timer.d
-mkdir twitter-tweets-scrapes@sudan.timer.d
-mkdir youtube-daily-scrapes@sudan.timer.d
+Since Google spreadsheets have a limitation on the amount of rows they allow (~40.000), there is a sibling process in `bin/estimate-export-videos.sh` that can be used to first verify the number of videos that would be exported.
 
-cat <<EOF > twitter-feeds-scrapes@sudan.timer.d/override.conf
-[Timer]
-OnCalendar=
-OnCalendar=*-*-* 02:00:00
-EOF
+#### `bin/import-collections.sh`
 
-cat <<EOF > twitter-tweets-scrapes@sudan.timer.d/override.conf
-[Timer]
-OnCalendar=
-OnCalendar=*-*-* 02:30:00
-EOF
+The various collection spreadsheets are used for verification and annotation purposes. This data process can sync those changes back into the database.
 
-cat <<EOF > youtube-daily-scrapes@sudan.timer.d/override.conf
-[Timer]
-OnCalendar=
-OnCalendar=*-*-* 02:20:00
-EOF
+#### `bin/youtube-videos-failing.sh`
 
-systemctl enable twitter-feeds-scrapes@yemen
-systemctl enable twitter-feeds-scrapes@yemen.timer
+Every month all videos in the database are checked if they are still accessible online. This process verifies Youtube videos.
 
-systemctl enable twitter-tweets-scrapes@yemen
-systemctl enable twitter-tweets-scrapes@yemen.timer
+#### `bin/youtube-channels-failing.sh`
 
-systemctl enable youtube-daily-scrapes@yemen
-systemctl enable youtube-daily-scrapes@yemen.timer
+The same as with videos, Youtube channels are also checked if they are still available online.
 
-systemctl start twitter-feeds-scrapes@yemen.timer
-systemctl start twitter-tweets-scrapes@yemen.timer
-systemctl start youtube-daily-scrapes@yemen.timer
-```
-## Workflow
+#### `bin/twitter-feeds-failing.sh`
 
-### Rebuilding full database
+This process verifies which of the twitter feeds are still available online.
 
-This is needed when I want to cleanup incosistencies in MongoDB as well as Elasticsearch.
+#### `bin/stats-sources.sh`
 
-1) Create a copy of the mongodb to act as a source. In the mongo shell.
+Quickly print some aggregates of the various sources in the database.
 
-```
-db.copyDatabase("archive-scaffold", "archive-scaffold-source", "localhost")
-use archive-scaffold
-db.dropDatabase()
+#### `bin/stats-locations.sh`
 
-# Recreate the collection and create an index. Performance is otherwise terrible.
-use archive-scaffold
-db.createCollection("units")
-db.units.createIndex({_sc_id_hash: 1})
-```
+Print statistics on observations in the database that have geo locations attached.
 
-2) Create a new mapping for the elasticsearch index.
+### Databases
 
-Use `curl localhost:9200/_cat/indices` and `curl localhost:9200/_cat/aliases?v` to determine the correct index.
+The primary database currently is MongoDB. It acts as a source of truth. This might change in the future to PostgreSQL. From this source of truth we can derive a version that stores the relevant fields in Elasticsearch. All search of data is done using this. Videos and images are stored as files on the file system. There are multiple backups of those files. Some data processes, e.g. the ones checking for failing data, produce additionally data in CSV format that is stored as files as well.
 
-```
-curl -X PUT -H "Content-Type: application/json" localhost:9200/archive-scaffold-X -d@configs/mappings.json
-curl -X POST -H "Content-Type: application/json" localhost:9200/_aliases -d @configs/alias.json
-```
+## License
 
-3) Migrate the archive.
-
-```
-./scripts/migrate-the-archive.sh
-```
-
-4) Clean up.
-
-```
-curl -X DELETE http://localhost:9200/archive-scaffold-X
-```
-
-In the mongo shell.
-
-```
-use archive-scaffold-source
-db.dropDatabase()
-```
-
-### Statistics of failed youtube videos
-
-To generate a statistics count I ran the following shell command:
-
-```
-xsv select reason failed-stats-8251ee34b053b62f9cb03ca9e45f5166290013f4.csv \  # Select the right column of the CSV
-  | awk 'BEGIN {getline} /^".*[^"]$/{getline x}{print $0 " " x; x=""}' \       # Merge reasons that stretch across two lines into one
-  | sed 's/"//g' \          # Remove any quotes
-  | awk '{$1=$1};1' \       # Remove any leading and trailing whitespace
-  | sort \                  # Sort
-  | uniq -c \               # Count unique occurences
-  | sort -n \               # Sort by leading numeric value
-  | tac > failed-stats-count-reason.txt      # Reverse and output the results
-```
-
-To count the number of copyright violations I use this little snippet.
-
-```
-grep -i copyright failed-stats-count-reason.txt | awk '{c+=$1} END {print c}'
-```
+[GPL3](./LICENSE) @ [Christo](christo@cryptodrunks.net) and [Syrian Archive](info@syrianarchive.org).
