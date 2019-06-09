@@ -13,4 +13,5 @@
              :main-opts ["-m" "depot.outdated.main"]}
   :stats-sources {:main-opts ["-m" "archive.stats.sources"]}
   :stats-locations {:main-opts ["-m" "archive.stats.locations"]}
-  :locations {:main-opts ["-m" "archive.scripts.locations"]}}}
+  :locations {:main-opts ["-m" "archive.scripts.locations"]}
+  :collection {:main-opts ["-m" "archive.stats.collection"]}}}
