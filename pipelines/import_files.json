@@ -1,0 +1,32 @@
+{
+  "name": "Import Files",
+  "extends": [
+    "./configs/downloads.json",
+    "./configs/mongodb.json",
+    "./configs/elasticsearch.json",
+    "./configs/mail.json",
+    "./configs/csv.json",
+    "./configs/query-handling.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": [
+    "fs_unfold",
+    "fs_media_type",
+    "tap_printf",
+    "media_mosaic",
+    "cid_annotate",
+    "scrub_pick_fields",
+    "csv_export_failed",
+    "mail_pipeline_stats",
+    "mail_failed_stats"
+  ],
+  "media": {
+    "mosaic_parallel": 6
+  },
+  "csv": {
+    "label": "import-files"
+  },
+  "tap": {
+    "select": "data,stats"
+  }
+}

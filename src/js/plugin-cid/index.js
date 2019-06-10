@@ -85,6 +85,34 @@ const facebookAnnotations = (obs) => {
   };
 };
 
+const liveuamapAnnotations = (obs) => {
+  const {description, lat, lon, location, href, source, localized} = obs;
+  const video = obs._sc_media.find(({type}) => type === "video") || {};
+  const file = obs._sc_downloads.find(({term}) => term === video.term) || {};
+  const localizedAr =
+    localized.ar == null
+      ? {}
+      : {
+          online_title_ar: localized.ar.description,
+        };
+
+  return {
+    language: obs._sc_language,
+    online_title: description,
+    online_title_en: description,
+    online_link: href,
+    channel_id: source,
+    filename: file.location,
+    md5_hash: file.location,
+    sha256_hash: file.sha256,
+    longitude: lon,
+    latitude: lat,
+    description,
+    location,
+    ...localizedAr,
+  };
+};
+
 const annotate = (obs) => {
   // Don't annotate if annotations already exist.
   if (obs.cid != null) return obs;
@@ -173,6 +201,7 @@ const annotate = (obs) => {
       : {},
     ["fs_unfold"].includes(source) ? fsAnnotations(obs) : {},
     ["facebook_api_feed"].includes(source) ? facebookAnnotations(obs) : {},
+    ["liveuamap_region"].includes(source) ? liveuamapAnnotations(obs) : {},
   );
 
   return Object.assign({}, obs, {

@@ -1,0 +1,38 @@
+{
+  "name": "Liveuamap Daily Region",
+  "extends": [
+    "./configs/downloads.json",
+    "./configs/mongodb.json",
+    "./configs/elasticsearch.json",
+    "./configs/mail.json",
+    "./configs/csv.json",
+    "./configs/query-handling.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": [
+    "liveuamap_region",
+    "twitter_tweets",
+    "youtube_video",
+    "media_youtubedl",
+    "mongodb_supplement",
+    "media_mosaic",
+    "http_get",
+    "cid_annotate",
+    "mongodb_store",
+    "elastic_supplement",
+    "enigio_timestamp",
+    "scrub_pick_fields",
+    "elastic_export",
+    "csv_export_failed",
+    "mail_pipeline_stats",
+    "mail_failed_stats",
+    "tap_printf"
+  ],
+  "media": {
+    "youtubedl_parallel": 6,
+    "mosaic_parallel": 6
+  },
+  "tap": {
+    "select": "stats"
+  }
+}
