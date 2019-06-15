@@ -37,7 +37,8 @@
     "sugarcube-plugin-enigio": "file:./src/js/plugin-enigio",
     "sugarcube-plugin-liveuamap": "file:./src/js/plugin-liveuamap",
     "sugarcube-plugin-query": "file:./src/js/plugin-query",
-    "sugarcube-plugin-scrub": "file:./src/js/plugin-scrub-fields"
+    "sugarcube-plugin-scrub": "file:./src/js/plugin-scrub-fields",
+    "sugarcube-plugin-telegram": "file:./src/js/plugin-telegram"
   },
   "devDependencies": {
     "@build-chores/eslint-config-lint": "^0.7.0",

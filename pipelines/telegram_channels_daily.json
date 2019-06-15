@@ -1,0 +1,30 @@
+{
+  "name": "Telegram Channels Daily",
+  "extends": ["./pipelines/telegram_channels.json"],
+  "plugins": [
+    "sheets_queries",
+    "workflow_multiplex",
+    "telegram_channel",
+    "media_youtubedl",
+    "http_get",
+    "mongodb_supplement",
+    "media_mosaic",
+    "cid_annotate",
+    "mongodb_store",
+    "elastic_supplement",
+    "enigio_timestamp",
+    "scrub_pick_fields",
+    "elastic_export",
+    "workflow_multiplex_end",
+    "csv_export_failed",
+    "mail_pipeline_stats",
+    "mail_failed_stats",
+    "tap_printf"
+  ],
+  "telegram": {
+    "past_days": 3
+  },
+  "workflow": {
+    "multiplex_size": 200
+  }
+}
