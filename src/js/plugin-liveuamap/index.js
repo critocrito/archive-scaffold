@@ -181,7 +181,7 @@ const regionPlugin = async (envelope, {log}) => {
   const additionalQueries = units.reduce((memo, unit) => {
     if (/twitter\.com\/.*\/status/.test(unit.source))
       return memo.concat({type: "twitter_tweet", term: unit.source});
-    if (/youtube/.test(unit.video) || /youtu\.be/.test(unit.video))
+    if (/youtu\.?be/.test(unit.video))
       return memo.concat({type: "youtube_video", term: unit.video});
     if (/t\.me/.test(unit.source))
       return memo.concat({type: "telegram_post", term: unit.source});
