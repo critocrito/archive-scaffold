@@ -22,6 +22,17 @@
                 :body %))
        http/make-http-call))
 
+(defn update-document
+  "Update a unit."
+  [elastic-url id unit]
+  (->> unit
+       map->json-str
+       (#(assoc {:method :put
+                 :url (str elastic-url "/_doc/" id)
+                 :headers {"Content-Type" "application/json"}}
+                :body %))
+       http/make-http-call))
+
 (defn scroll-request
   "Drain a scrolled Elastic query."
   [elastic-url scroll-id result-iter]
@@ -44,3 +55,11 @@
   (let [resp (post-search elastic-url query :params (merge (or params {}) {:scroll "1m"}))
         [scroll-id hits] [(get-in resp [:_scroll_id]) (get-in resp [:hits :hits])]]
     (scroll-request elastic-url scroll-id hits)))
+
+(defn find-one-by-id
+  "Search for a single unit by it's id hash. Returns the raw _source of the first result."
+  [elastic-url id]
+  (let [resp (post-search elastic-url {:query {:term {:$sc_id_hash id}}})
+        hits (get-in resp [:hits :hits])
+        source (:_source (first hits))]
+    source))

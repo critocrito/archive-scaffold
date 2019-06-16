@@ -1,6 +1,7 @@
 (ns archive.stats.collection
   (:require [archive.core :as core]
-            [archive.elastic :as elastic]))
+            [archive.elastic :as elastic]
+            [archive.mongodb :as mongodb]))
 
 (def duplicate-videos-query
   "Query for Elasticsearch to determine how many duplicate videos there are."
@@ -220,40 +221,63 @@
      :must_not [{:nested {:path "$sc_downloads" :query {:exists {:field "$sc_downloads.location"}}}}]}}
    :size 0})
 
-(defn run-stats
-  "Determine duplicate videos in the collection."
+(def legacy-location-but-no-location-query
+  {:$and
+  [{:_sc_downloads {:$elemMatch {:legacyLocation {:$exists true}}}}
+   {:$or
+    [{:_sc_downloads {:$elemMatch {:location {:$exists false}}}}
+     {:_sc_downloads {:$elemMatch {:location nil}}}]}]})
+
+(def legacy-location-but-no-location-verified-query
+  {:$and
+  [{:_sc_downloads {:$elemMatch {:legacyLocation {:$exists true}}}}
+   {:$or
+    [{:_sc_downloads {:$elemMatch {:location {:$exists false}}}}
+     {:_sc_downloads {:$elemMatch {:location nil}}}]}
+   {:cid.verified true}]})
+
+(defn count-elastic
+  "Count units by query in Elasticsearch."
   [query]
   (let [url (core/elastic-url)
         results (elastic/post-search url query)]
     (get-in results [:hits :total])))
 
+(defn count-mongodb
+  "Count units by query in MongoDB."
+  [query]
+  (let [[_ db] (mongodb/mongo-connection)]
+    (mongodb/count-by-query db query)))
+
 (defn -main
   []
-  (let [duplicate-videos (run-stats duplicate-videos-query)
-        duplicate-videos-verified (run-stats duplicate-videos-verified-query)
-        no-video-download (run-stats no-video-download-query)
-        no-video-download-verified (run-stats no-video-download-verified-query)
-        url-downloads (run-stats url-download-type-query)
-        missing-cid (run-stats missing-cid-query)
-        missing-video-downloads (run-stats video-without-download-query)
-        missing-video-downloads-verified (run-stats video-without-download-verified-query)
-        youtube-videos-missing-filename (run-stats youtube-videos-without-a-filename-query)
-        youtube-videos-missing-filename-verified (run-stats youtube-videos-without-a-filename-verified-query)
-        videos-missing-filename (run-stats videos-without-a-filename-query)
-        videos-missing-filename-verified (run-stats videos-without-a-filename-verified-query)
-        filename-russia (run-stats filename-in-russia-strikes-query)
-        filename-chemical (run-stats filename-in-chemical-weapons-query)
-        filename-videoapi (run-stats filename-in-videoapi-query)
-        filename-russia-verified (run-stats filename-in-russia-strikes-verified-query)
-        filename-chemical-verified (run-stats filename-in-chemical-weapons-verified-query)
-        filename-videoapi-verified (run-stats filename-in-videoapi-verified-query)
-        images-outside-collection (run-stats images-outside-collection-query)
-        downloads-outside-collection (run-stats downloads-outside-collection-query)
-        downloads-outside-collection-verified (run-stats downloads-outside-collection-verified-query)
-        images-that-are-videos (run-stats images-that-are-videos-query)
-        images-that-are-videos-verified (run-stats images-that-are-videos-verified-query)
-        cid-filename-without-download-locations (run-stats cid-filename-without-download-locations-query)
-        cid-filename-without-download-locations-verified (run-stats cid-filename-without-download-locations-verified-query)]
+  (let [duplicate-videos (count-elastic duplicate-videos-query)
+        duplicate-videos-verified (count-elastic duplicate-videos-verified-query)
+        no-video-download (count-elastic no-video-download-query)
+        no-video-download-verified (count-elastic no-video-download-verified-query)
+        url-downloads (count-elastic url-download-type-query)
+        missing-cid (count-elastic missing-cid-query)
+        missing-video-downloads (count-elastic video-without-download-query)
+        missing-video-downloads-verified (count-elastic video-without-download-verified-query)
+        youtube-videos-missing-filename (count-elastic youtube-videos-without-a-filename-query)
+        youtube-videos-missing-filename-verified (count-elastic youtube-videos-without-a-filename-verified-query)
+        videos-missing-filename (count-elastic videos-without-a-filename-query)
+        videos-missing-filename-verified (count-elastic videos-without-a-filename-verified-query)
+        filename-russia (count-elastic filename-in-russia-strikes-query)
+        filename-chemical (count-elastic filename-in-chemical-weapons-query)
+        filename-videoapi (count-elastic filename-in-videoapi-query)
+        filename-russia-verified (count-elastic filename-in-russia-strikes-verified-query)
+        filename-chemical-verified (count-elastic filename-in-chemical-weapons-verified-query)
+        filename-videoapi-verified (count-elastic filename-in-videoapi-verified-query)
+        images-outside-collection (count-elastic images-outside-collection-query)
+        downloads-outside-collection (count-elastic downloads-outside-collection-query)
+        downloads-outside-collection-verified (count-elastic downloads-outside-collection-verified-query)
+        images-that-are-videos (count-elastic images-that-are-videos-query)
+        images-that-are-videos-verified (count-elastic images-that-are-videos-verified-query)
+        cid-filename-without-download-locations (count-elastic cid-filename-without-download-locations-query)
+        cid-filename-without-download-locations-verified (count-elastic cid-filename-without-download-locations-verified-query)
+        legacy-location-but-no-location (count-mongodb legacy-location-but-no-location-query)
+        legacy-location-but-no-location-verified (count-mongodb legacy-location-but-no-location-verified-query)]
     (println (format "Duplicate videos: %s (%s)" duplicate-videos duplicate-videos-verified))
     (println (format "Outdated video type (youtube_video): %s (%s)" no-video-download no-video-download-verified))
     (println (format "URL Download type: %s" url-downloads))
@@ -268,4 +292,5 @@
     (println (format "Images that are actually a video: %s (%s)" images-that-are-videos images-that-are-videos-verified))
     (println (format "CID filenames without a download location: %s (%s)"
                      cid-filename-without-download-locations
-                     cid-filename-without-download-locations-verified))))
+                     cid-filename-without-download-locations-verified))
+    (println (format "Legacy location without a location: %s (%s)" legacy-location-but-no-location legacy-location-but-no-location-verified))))

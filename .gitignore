@@ -10,3 +10,4 @@ tmp.*
 .nrepl*
 .cpcache
 .rebel_readline_history
+fix-collections*.csv

@@ -2,7 +2,8 @@
   (:require [clojure.java.io :as io]
             [clojure.walk :refer (keywordize-keys)]
             [clojure.string :as string]
-            [cheshire.core :as json]))
+            [cheshire.core :as json]
+            [clojure.java.io :as io]))
 
 (defn json-str->map
   "Convert a JSON string to a map."
@@ -41,3 +42,11 @@
   [query-name]
   (let [file (io/file (.getCanonicalPath (io/file "./es-queries")) (str query-name ".json"))]
     (read-json file)))
+
+(defn mongo-url
+  "Fetch the MongoDB connection uri."
+  []
+  (let [file "./configs/mongodb.json"
+        cfg (:mongodb (read-json file))
+        uri (:uri cfg)]
+    uri))
