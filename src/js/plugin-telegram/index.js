@@ -33,9 +33,14 @@ const scrapeChannel = async (page) => {
     .map((row) => {
       const id = $(".tgme_widget_message", row).data("post");
       const author = $(".tgme_widget_message_owner_name", row).text();
-      const authorUrl = $(".tgme_widget_message_owner_name").attr("href");
-      const imageStyles = $(".tgme_widget_message_photo_wrap").attr("style");
-      const imageMatch = imageStyles.match(/background-image:url\('(.*)'\)/);
+      const authorUrl = $(".tgme_widget_message_owner_name", row).attr("href");
+      const imageStyles = $(".tgme_widget_message_photo_wrap", row).attr(
+        "style",
+      );
+      const imageMatch =
+        imageStyles == null
+          ? null
+          : imageStyles.match(/background-image:url\('(.*)'\)/);
       const image = imageMatch == null ? null : imageMatch[1];
       const video = $("video", row).attr("src");
       const description = $(".tgme_widget_message_text", row).text();
