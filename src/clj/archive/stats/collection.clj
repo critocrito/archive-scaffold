@@ -205,6 +205,21 @@
                                                             {:wildcard {:$sc_downloads.location "*mp4"}}]}}}}]}}
    :size 0})
 
+(def cid-filename-without-download-locations-query
+  {:query
+   {:bool
+    {:must [{:exists {:field "cid.filename"}}]
+     :must_not [{:nested {:path "$sc_downloads" :query {:exists {:field "$sc_downloads.location"}}}}]}}
+   :size 0})
+
+(def cid-filename-without-download-locations-verified-query
+  {:query
+   {:bool
+    {:must [{:term {:cid.verified true}}
+            {:exists {:field "cid.filename"}}]
+     :must_not [{:nested {:path "$sc_downloads" :query {:exists {:field "$sc_downloads.location"}}}}]}}
+   :size 0})
+
 (defn run-stats
   "Determine duplicate videos in the collection."
   [query]
@@ -236,7 +251,9 @@
         downloads-outside-collection (run-stats downloads-outside-collection-query)
         downloads-outside-collection-verified (run-stats downloads-outside-collection-verified-query)
         images-that-are-videos (run-stats images-that-are-videos-query)
-        images-that-are-videos-verified (run-stats images-that-are-videos-verified-query)]
+        images-that-are-videos-verified (run-stats images-that-are-videos-verified-query)
+        cid-filename-without-download-locations (run-stats cid-filename-without-download-locations-query)
+        cid-filename-without-download-locations-verified (run-stats cid-filename-without-download-locations-verified-query)]
     (println (format "Duplicate videos: %s (%s)" duplicate-videos duplicate-videos-verified))
     (println (format "Outdated video type (youtube_video): %s (%s)" no-video-download no-video-download-verified))
     (println (format "URL Download type: %s" url-downloads))
@@ -248,4 +265,7 @@
                      filename-russia filename-russia-verified filename-chemical filename-chemical-verified filename-videoapi filename-videoapi-verified))
     (println (format "Images outside of data collection: %s" images-outside-collection))
     (println (format "Downloads outside of data collection: %s (%s)" downloads-outside-collection downloads-outside-collection-verified))
-    (println (format "Images that are actually a video: %s (%s)" images-that-are-videos images-that-are-videos-verified))))
+    (println (format "Images that are actually a video: %s (%s)" images-that-are-videos images-that-are-videos-verified))
+    (println (format "CID filenames without a download location: %s (%s)"
+                     cid-filename-without-download-locations
+                     cid-filename-without-download-locations-verified))))
