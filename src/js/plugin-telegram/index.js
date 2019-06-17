@@ -73,8 +73,24 @@ const messageEntity = (querySource, query, post) =>
     _sc_content_fields: ["description"],
     _sc_pubdates: {source: post.createdAt},
     _sc_media: []
-      .concat(post.image == null ? [] : {type: "image", term: post.image})
-      .concat(post.video == null ? [] : {type: "video", term: post.video}),
+      .concat(
+        post.image == null
+          ? []
+          : {
+              type: "image",
+              term: `${post.id.replace("/", "-")}.jpg`,
+              href: post.image,
+            },
+      )
+      .concat(
+        post.video == null
+          ? []
+          : {
+              type: "video",
+              term: `${post.id.replace("/", "-")}.mp4`,
+              href: post.video,
+            },
+      ),
     _sc_queries: [{type: querySource, query}],
   });
 
