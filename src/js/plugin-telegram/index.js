@@ -3,7 +3,7 @@ const {get} = require("lodash/fp");
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const {flatmapP, retry} = require("dashp");
-const {subDays, parse, compareAsc} = require("date-fns");
+const {subDays, parse, compareAsc, distanceInWordsToNow} = require("date-fns");
 const {envelope: env} = require("@sugarcube/core");
 
 const scrapeChannel = async (page) => {
@@ -64,8 +64,7 @@ const scrapeChannel = async (page) => {
         href,
         createdAt: parse(createdAt),
       };
-    })
-    .sort((a, b) => compareAsc(a.createdAt, b.createdAt));
+    });
 };
 
 const messageEntity = (querySource, query, post) =>
@@ -115,41 +114,50 @@ const channelPlugin = async (envelope, {log, cfg}) => {
     log.info(
       untilDate == null
         ? `Historic scrape for ${url} Telegram channel.`
-        : `Fetching Telegram messages for ${url} since ${untilDate.toISOString()}`,
+        : `Fetching Telegram messages for ${url} for the past ${distanceInWordsToNow(
+            untilDate,
+          )}.`,
     );
 
     await retry(
       page.goto(url, {timeout: 60 * 1000, waitUntil: "domcontentloaded"}),
     );
+
+    // We scroll up until there are no more messages (historic scrape) or we
+    // hit the untilDate (if we use the pastDays option).
+    let messageCount = 0;
+    let delayCount = 0;
     let messages = [];
-    let oldestMessage;
 
     for (;;) {
+      // Scrape all messages that are currently in the view port. Sort them by
+      // created date as well to easily lookup the oldest message.
       messages = await scrapeChannel(page);
-      // No messages scraped.
-      if (messages.length === 0) break;
-
-      // Scrolling didn't yield any new messages.
-      if (
-        oldestMessage != null &&
-        oldestMessage.createdAt === messages[0].createdAt
-      )
-        break;
-
-      // eslint-disable-next-line prefer-destructuring
-      oldestMessage = messages[0];
-
-      if (untilDate != null && oldestMessage.createdAt <= untilDate) break;
+      messages.sort((a, b) => compareAsc(a.createdAt, b.createdAt));
+      const {createdAt: oldestMsg} = messages[0] || {createdAt: new Date()};
 
       log.debug(
         `Scraped ${
           messages.length
-        } messages since ${oldestMessage.createdAt.toISOString()}.`,
+        } messages for the past ${distanceInWordsToNow(oldestMsg)}.`,
       );
+
+      // We use a delayCount in case no new messages were scraped to allow for
+      // the scrolling to settle. This certainly isn't the prettiest, but
+      // works in practice.
+      if (messages.length <= messageCount) delayCount += 1;
+      if (messages.length > messageCount) delayCount = 0;
+      if (delayCount >= 5) break;
+      if (untilDate != null && oldestMsg <= untilDate) break;
+
+      messageCount = messages.length;
+
+      // Scroll up to scrape more messages.
       // eslint-disable-next-line no-undef, no-loop-func
       await page.evaluate(() => window.scrollTo(0, 0));
       await page.waitFor(5 * 1000);
     }
+
     return messages.map((unit) => messageEntity(querySource, channel, unit));
   }, queries);
 
