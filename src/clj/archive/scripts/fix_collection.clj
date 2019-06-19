@@ -56,7 +56,7 @@
         cid (merge cid {:filename (if (nil? location) (:filename cid) location) :md5_hash (:md5 video)})
         mongo-unit (merge unit {:cid cid :_sc_downloads downloads})]
     (mongodb/update-one-by-id db (:_id mongo-unit) (dissoc mongo-unit :_id))
-    {:id _sc_id_hash :old_location (:location video) :new_location location}))
+    {:id _sc_id_hash :old_location (:location video) :new_location location :verified (:verified cid)}))
 
 (defn merge-safe-duplicate-videos-elastic
   "Merge the duplicate video downloads that are safe to merge, Elasticsearch version."
@@ -72,7 +72,7 @@
         cid (merge cid {:filename (if (nil? location) (:filename cid) location) :md5_hash (:md5 video)})
         es-unit (merge unit {:cid cid :$sc_downloads downloads})]
     (elastic/update-document url $sc_id_hash es-unit)
-    {:id $sc_id_hash :old_location (:location video) :new_location location}))
+    {:id $sc_id_hash :old_location (:location video) :new_location location :verified (:verified cid)}))
 
 (defn merge-safe-duplicate-videos
   "Merge duplicate video downloads that are safe to merge."
@@ -99,8 +99,8 @@
                         :filename2 video-location})
         mongo-unit (merge unit {:cid cid :_sc_downloads downloads})]
     (mongodb/update-one-by-id db (:_id mongo-unit) (dissoc mongo-unit :_id))
-    [{:id _sc_id_hash :old_location (:location video) :new_location video-location}
-     {:id _sc_id_hash :old_location (:location video) :new_location youtube-video-location}]))
+    [{:id _sc_id_hash :old_location (:location video) :new_location video-location :verified (:verified cid)}
+     {:id _sc_id_hash :old_location (:location video) :new_location youtube-video-location :verified (:verified cid)}]))
 
 (defn merge-unsafe-duplicate-videos-elastic
   "Merge the duplicate video downloads that are safe to merge, Elasticsearch version."
@@ -121,8 +121,8 @@
                         :filename2 video-location})
         es-unit (merge unit {:cid cid :$sc_downloads downloads})]
     (elastic/update-document url $sc_id_hash es-unit)
-    [{:id $sc_id_hash :old_location (:location video) :new_location video-location}
-     {:id $sc_id_hash :old_location (:location youtube-video) :new_location youtube-video-location}]))
+    [{:id $sc_id_hash :old_location (:location video) :new_location video-location :verified (:verified cid)}
+     {:id $sc_id_hash :old_location (:location youtube-video) :new_location youtube-video-location :verified (:verified cid)}]))
 
 (defn merge-unsafe-duplicate-videos
   "Merge duplicate video downloads that are not safe to merge."
@@ -143,7 +143,7 @@
         cid (merge cid {:filename (if (nil? location) (:filename cid) location)})
         mongo-unit (merge unit {:cid cid :_sc_downloads downloads})]
     (mongodb/update-one-by-id db (:_id mongo-unit) (dissoc mongo-unit :_id))
-    {:id _sc_id_hash :old_location (:location video) :new_location location}))
+    {:id _sc_id_hash :old_location (:location video) :new_location location :verified (:verified cid)}))
 
 (defn rename-youtube-video-download-type-elastic
   "Fix the download type to video, Elasticsearch version."
@@ -158,7 +158,7 @@
         cid (merge cid {:filename (if (nil? location) (:filename cid) location)})
         es-unit (merge unit {:cid cid :$sc_downloads downloads})]
     (elastic/update-document url $sc_id_hash es-unit)
-    {:id $sc_id_hash :old_location (:location video) :new_location location}))
+    {:id $sc_id_hash :old_location (:location video) :new_location location :verified (:verified cid)}))
 
 (defn rename-youtube-video-download-type
   "Fix the download type to video."
@@ -191,13 +191,14 @@
                                      first)]
                   {:id _sc_id_hash
                    :old_location (:location old-image)
-                   :new_location (:location image)}))))))
+                   :new_location (:location image)
+                   :verified (:verified cid)}))))))
 
 (defn merge-images-outside-collection-elastic
   "Merge the duplicate video downloads that are safe to merge, Elasticsearch version."
   [url id]
   (let [unit (elastic/find-one-by-id url id)
-        {:keys [$sc_id_hash $sc_downloads]} unit
+        {:keys [$sc_id_hash $sc_downloads cid]} unit
         images (sugar/find-downloads "image" $sc_downloads)
         stripped-downloads (->> $sc_downloads
                                 (sugar/exclude-from-downloads "image"))
@@ -218,7 +219,8 @@
                                      first)]
                   {:id $sc_id_hash
                    :old_location (:location old-image)
-                   :new_location (:location image)}))))))
+                   :new_location (:location image)
+                   :verified (:verified cid)}))))))
 
 (defn merge-images-outside-collection
   "Move images outside the data collection into the collection."
@@ -293,7 +295,7 @@
         (map (fn [as] (pmap #(merge-images-outside-collection url db (:$sc_id_hash %)) as)))
         flatten)))
 
-(def csv-columns [:id :old_location :new_location])
+(def csv-columns [:id :old_location :new_location :verified])
 
 (defn -main
   "Fix inconsistencies in the collection."
