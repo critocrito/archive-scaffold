@@ -61,4 +61,4 @@
         transform #(->> % :_source website-observation)
         data (map transform (elastic/scrolled-post-search url verified-data-query))]
     (doall
-     (println (core/map->json-str data)))))
+     (println (core/map->json-str {:total (count data) :data data})))))
