@@ -230,11 +230,23 @@
 
 (def legacy-location-but-no-location-verified-query
   {:$and
-  [{:_sc_downloads {:$elemMatch {:legacyLocation {:$exists true}}}}
-   {:$or
-    [{:_sc_downloads {:$elemMatch {:location {:$exists false}}}}
-     {:_sc_downloads {:$elemMatch {:location nil}}}]}
-   {:cid.verified true}]})
+   [{:_sc_downloads {:$elemMatch {:legacyLocation {:$exists true}}}}
+    {:$or
+     [{:_sc_downloads {:$elemMatch {:location {:$exists false}}}}
+      {:_sc_downloads {:$elemMatch {:location nil}}}]}
+    {:cid.verified true}]})
+
+(def cid-filename-outside-collection-query
+  {:query
+   {:match {:cid.filename "/var/www"}}
+   :size 0})
+
+(def cid-filename-outside-collection-verified-query
+  {:query
+   {:bool
+    {:must [{:match {:cid.filename "/var/www"}}
+            {:term {:cid.verified true}}]}}
+   :size 0})
 
 (defn count-elastic
   "Count units by query in Elasticsearch."
@@ -277,7 +289,9 @@
         cid-filename-without-download-locations (count-elastic cid-filename-without-download-locations-query)
         cid-filename-without-download-locations-verified (count-elastic cid-filename-without-download-locations-verified-query)
         legacy-location-but-no-location (count-mongodb legacy-location-but-no-location-query)
-        legacy-location-but-no-location-verified (count-mongodb legacy-location-but-no-location-verified-query)]
+        legacy-location-but-no-location-verified (count-mongodb legacy-location-but-no-location-verified-query)
+        cid-filename-outside-collection (count-elastic cid-filename-outside-collection-query)
+        cid-filename-outside-collection-verified (count-elastic cid-filename-outside-collection-verified-query)]
     (println (format "Duplicate videos: %s (%s)" duplicate-videos duplicate-videos-verified))
     (println (format "Outdated video type (youtube_video): %s (%s)" no-video-download no-video-download-verified))
     (println (format "URL Download type: %s" url-downloads))
@@ -293,4 +307,5 @@
     (println (format "CID filenames without a download location: %s (%s)"
                      cid-filename-without-download-locations
                      cid-filename-without-download-locations-verified))
-    (println (format "Legacy location without a location: %s (%s)" legacy-location-but-no-location legacy-location-but-no-location-verified))))
+    (println (format "Legacy location without a location: %s (%s)" legacy-location-but-no-location legacy-location-but-no-location-verified))
+    (println (format "CID filenames outside of the collection: %s (%s)" cid-filename-outside-collection cid-filename-outside-collection-verified))))
