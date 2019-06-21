@@ -4,7 +4,8 @@
   http-kit/http-kit {:mvn/version "2.3.0"}
   com.cemerick/url {:mvn/version "0.1.1"}
   cheshire/cheshire {:mvn/version "5.8.1"}
-  com.novemberain/monger {:mvn/version "3.5.0"}}
+  com.novemberain/monger {:mvn/version "3.5.0"}
+  clj-time {:mvn/version "0.14.0"}}
  :paths
  ["src/clj" "resources"]
  :aliases
@@ -17,4 +18,5 @@
   :locations {:main-opts ["-m" "archive.scripts.locations"]}
   :collection {:main-opts ["-m" "archive.stats.collection"]}
   :fix-collection {:main-opts ["-m" "archive.scripts.fix-collection"]
-                   :jvm-opts ["-Xmx16G"]}}}
+                   :jvm-opts ["-Xmx16G"]}
+  :website-data {:main-opts ["-m" "archive.scripts.website-data"]}}}
