@@ -5,7 +5,8 @@
   com.cemerick/url {:mvn/version "0.1.1"}
   cheshire/cheshire {:mvn/version "5.8.1"}
   com.novemberain/monger {:mvn/version "3.5.0"}
-  clj-time {:mvn/version "0.14.0"}}
+  clj-time {:mvn/version "0.14.0"}
+  me.raynes/fs {:mvn/version "1.4.6"}}
  :paths
  ["src/clj" "resources"]
  :aliases
