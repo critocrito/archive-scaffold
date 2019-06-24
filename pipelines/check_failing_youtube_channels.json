@@ -1,22 +1,9 @@
 {
   "name": "Youtube Channels Failing",
-  "extends": [
-    "./configs/mail.json",
-    "./configs/csv.json",
-    "./configs/secrets.json"
-  ],
-  "plugins": [
-    "sheets_queries",
-    "youtube_channel",
-    "csv_export_failed",
-    "mail_failed_stats",
-    "tap_printf"
-  ],
+  "extends": ["./configs/csv.json", "./configs/secrets.json"],
+  "plugins": ["sheets_queries", "youtube_channel", "csv_export_failed"],
   "youtube": {
     "past_days": 8
-  },
-  "tap": {
-    "select": "stats"
   },
   "queries": [{ "type": "sheets_query", "term": "YoutubeChannelsDaily" }]
 }

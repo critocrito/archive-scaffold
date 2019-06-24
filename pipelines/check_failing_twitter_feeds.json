@@ -1,19 +1,6 @@
 {
   "name": "Twitter Feeds Failing",
-  "extends": [
-    "./configs/mail.json",
-    "./configs/csv.json",
-    "./configs/secrets.json"
-  ],
-  "plugins": [
-    "sheets_queries",
-    "twitter_feed",
-    "csv_export_failed",
-    "mail_failed_stats",
-    "tap_printf"
-  ],
-  "tap": {
-    "select": "stats"
-  },
+  "extends": ["./configs/csv.json", "./configs/secrets.json"],
+  "plugins": ["sheets_queries", "twitter_feed", "csv_export_failed"],
   "queries": [{ "type": "sheets_query", "term": "TwitterFeeds" }]
 }

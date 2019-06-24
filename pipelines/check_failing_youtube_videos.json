@@ -2,20 +2,10 @@
   "name": "Youtube Failing Videos",
   "extends": [
     "./configs/elasticsearch.json",
-    "./configs/mail.json",
     "./configs/csv.json",
     "./configs/secrets.json"
   ],
-  "plugins": [
-    "elastic_import",
-    "media_youtubedl_check",
-    "csv_export_failed",
-    "mail_failed_stats",
-    "tap_printf"
-  ],
-  "tap": {
-    "select": "stats"
-  },
+  "plugins": ["elastic_import", "media_youtubedl_check", "csv_export_failed"],
   "media": {
     "youtubedl_parallel": 8
   },

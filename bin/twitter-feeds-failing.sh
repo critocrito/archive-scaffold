@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
 SPREADSHEET_IDS="./queries/spreadsheet-ids.txt"
-
 DATE=$(date +%Y-%m-%d)
+MONTH=$(date +%B)
+YEAR=$(date +%Y)
+REPORT_DIR="reports/$YEAR/$MONTH"
 COUNTER=0
 QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
+
+mkdir -p "$REPORT_DIR"
 
 export NODE_OPTIONS=--max_old_space_size=16384
 
@@ -13,6 +17,7 @@ doit() {
               -c pipelines/check_failing_twitter_feeds.json \
               -q queries/mail-recipients.json \
               --google.spreadsheet_id "$1" \
+              --csv.data_dir "$REPORT_DIR" \
               -d
 }
 
@@ -25,7 +30,7 @@ do
     echo "Processed $COUNTER queries"
   fi
 
-  doit "$ID" 2>&1 | tee -a ./logs/failing-twitter-feeds-"$ID"-"$DATE".log
+  doit "$ID" 2>&1 | tee -a "$REPORT_DIR/twitter-feeds-$DATE.log"
 
   if [ "$QUERY_COUNT" -eq $((COUNTER + 1)) ]
   then

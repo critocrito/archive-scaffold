@@ -4,6 +4,7 @@ node_modules
 logs/*
 data
 csv/*
+reports/*
 !.keep
 .sugarcube_cache.json
 tmp.*
