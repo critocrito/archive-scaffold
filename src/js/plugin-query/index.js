@@ -318,6 +318,19 @@ queryPlugin.argv = {
   },
 };
 
+const queryToTweetsPlugin = (envelope, {log}) => {
+  const queries = envelope.data.map(({cid}) => ({
+    type: "twitter_tweet",
+    term: cid.online_link,
+  }));
+  log.info(`Mapping ${envelope.data.length} units to queries`);
+  return env.envelopeQueries(queries);
+};
+
+queryToTweetsPlugin.desc = "Map units to twitter tweets queries.";
+queryToTweetsPlugin.argv = {};
+
 module.exports.plugins = {
   query_column: queryPlugin,
+  query_to_tweets: queryToTweetsPlugin,
 };

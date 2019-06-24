@@ -1,0 +1,8 @@
+{
+  "_source": ["$sc_id_hash", "cid.online_link"],
+  "query": {
+    "terms": {
+      "$sc_source": ["twitter_feed", "twitter_tweets"]
+    }
+  }
+}

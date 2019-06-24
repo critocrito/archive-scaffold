@@ -1,0 +1,23 @@
+{
+  "name": "Twitter Failing Tweets",
+  "extends": [
+    "./configs/elasticsearch.json",
+    "./configs/mail.json",
+    "./configs/csv.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": [
+    "elastic_import",
+    "query_to_tweets",
+    "twitter_tweets",
+    "csv_export_failed",
+    "mail_failed_stats",
+    "tap_printf"
+  ],
+  "tap": {
+    "select": "stats"
+  },
+  "queries": [
+    { "type": "glob_pattern", "term": "./es-queries/all-twitter-tweets.json" }
+  ]
+}
