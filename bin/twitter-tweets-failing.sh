@@ -13,6 +13,8 @@ doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/check_failing_twitter_tweets.json \
               -q queries/mail-recipients.json \
+              --csv.data_dir "$REPORT_DIR" \
+              --csv.label twitter-tweets \
               -d
 }
 

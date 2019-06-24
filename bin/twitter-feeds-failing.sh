@@ -18,6 +18,7 @@ doit() {
               -q queries/mail-recipients.json \
               --google.spreadsheet_id "$1" \
               --csv.data_dir "$REPORT_DIR" \
+              --csv.label twitter-feeds \
               -d
 }
 

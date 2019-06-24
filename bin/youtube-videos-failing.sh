@@ -14,6 +14,7 @@ doit() {
               -c pipelines/check_failing_youtube_videos.json \
               -q queries/mail-recipients.json \
               --csv.data_dir "$REPORT_DIR" \
+              --csv.label youtube-videos \
               -d
 }
 
