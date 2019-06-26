@@ -43,3 +43,22 @@ do
   sleep $WAIT_TIME
   COUNTER=$((COUNTER+1))
 done < "$SPREADSHEET_IDS"
+
+FAILED_STATS=$(find "$REPORT_DIR"  -name "*failed-stats-youtube-channels*.csv" -type f -printf '%T+ %p\n' | sort -r | head -n 1 | awk '{print $2}')
+TOTAL=$(head -n 100 "$REPORT_DIR/youtube-channels-$DATE.log" | sed -n 's/.*Fetched a total of \([0-9]*\) quer\(y\|ies\).$/\1/p')
+if [ -n "$FAILED_STATS" ] && [ "$FAILED_STATS" != " " ]
+then
+  FAILED_COUNT=$(xsv count "$FAILED_STATS")
+else
+  FAILED_COUNT="0"
+fi
+
+REPORT="Report: Failing Youtube channels
+
+Verification Date: $DATE
+
+In total $(numfmt --grouping "$FAILED_COUNT") of $(numfmt --grouping "$TOTAL") Youtube channels failed.
+
+"
+
+echo "$REPORT" | tee "$REPORT_DIR/report-youtube-channels.txt"

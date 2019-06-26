@@ -43,3 +43,22 @@ do
   sleep $WAIT_TIME
   COUNTER=$((COUNTER+1))
 done < "$SPREADSHEET_IDS"
+
+FAILED_STATS=$(find "$REPORT_DIR" -name "*failed-stats-twitter-feeds*.csv" -type f -printf '%T+ %p\n' | sort -r | head -n 1 | awk '{print $2}')
+TOTAL=$(head -n 100 "$REPORT_DIR/twitter-feeds-$DATE.log" | sed -n 's/.*Fetched a total of \([0-9]*\) quer\(y\|ies\).$/\1/p')
+if [ -n "$FAILED_STATS" ] && [ "$FAILED_STATS" != " " ]
+then
+  FAILED_COUNT=$(xsv count "$FAILED_STATS")
+else
+  FAILED_COUNT="0"
+fi
+
+REPORT="Report: Failing Twitter feeds
+
+Verification Date: $DATE
+
+In total $(numfmt --grouping "$FAILED_COUNT") of $(numfmt --grouping "$TOTAL") Twitter feeds failed.
+
+"
+
+echo "$REPORT" | tee "$REPORT_DIR/report-twitter-feeds.txt"
