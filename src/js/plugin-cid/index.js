@@ -113,6 +113,24 @@ const liveuamapAnnotations = (obs) => {
   };
 };
 
+const facebookVideoAnnotations = (obs) => {
+  const {id, message, user, video} = obs;
+  const file = obs._sc_downloads.find(({term}) => term === video.term) || {};
+
+  return {
+    online_title: message,
+    online_link: video,
+    channel_id: id,
+    filename: file.location,
+    md5_hash: file.location,
+    sha256_hash: file.sha256,
+    description: message,
+    rights_owner: user,
+    acquired_from: user,
+    creator: user,
+  };
+};
+
 const annotate = (obs) => {
   // Don't annotate if annotations already exist.
   if (obs.cid != null) return obs;
@@ -202,6 +220,7 @@ const annotate = (obs) => {
     ["fs_unfold"].includes(source) ? fsAnnotations(obs) : {},
     ["facebook_api_feed"].includes(source) ? facebookAnnotations(obs) : {},
     ["liveuamap_region"].includes(source) ? liveuamapAnnotations(obs) : {},
+    ["facebook_video"].includes(source) ? facebookVideoAnnotations(obs) : {},
   );
 
   return Object.assign({}, obs, {

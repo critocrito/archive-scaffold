@@ -1,0 +1,43 @@
+{
+  "name": "Facebook Videos",
+  "extends": [
+    "./configs/downloads.json",
+    "./configs/mongodb.json",
+    "./configs/elasticsearch.json",
+    "./configs/mail.json",
+    "./configs/csv.json",
+    "./configs/query-handling.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": [
+    "sheets_queries",
+    "facebook_video",
+    "media_youtubedl",
+    "mongodb_supplement",
+    "media_mosaic",
+    "cid_annotate",
+    "workflow_merge_query",
+    "mongodb_store",
+    "elastic_supplement",
+    "enigio_timestamp",
+    "scrub_pick_fields",
+    "elastic_export",
+    "sheets_move_queries",
+    "csv_export_failed",
+    "mail_pipeline_stats",
+    "mail_failed_stats",
+    "tap_printf"
+  ],
+  "google": {
+    "query_default_type": "video_url",
+    "query_types_to_move": "video_url",
+    "selection_list": ["type:video_url"]
+  },
+  "media": {
+    "youtubedl_parallel": 6,
+    "mosaic_parallel": 6
+  },
+  "tap": {
+    "select": "data"
+  }
+}
