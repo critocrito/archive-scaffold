@@ -1,6 +1,7 @@
 {
   "name": "Liveuamap Daily Region",
   "extends": [
+    "./configs/media.json",
     "./configs/downloads.json",
     "./configs/mongodb.json",
     "./configs/elasticsearch.json",
@@ -28,10 +29,6 @@
     "mail_failed_stats",
     "tap_printf"
   ],
-  "media": {
-    "youtubedl_parallel": 6,
-    "mosaic_parallel": 6
-  },
   "tap": {
     "select": "stats"
   }

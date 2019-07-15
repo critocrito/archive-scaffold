@@ -1,6 +1,7 @@
 {
   "name": "Facebook Videos",
   "extends": [
+    "./configs/media.json",
     "./configs/downloads.json",
     "./configs/mongodb.json",
     "./configs/elasticsearch.json",
@@ -32,10 +33,6 @@
     "query_default_type": "video_url",
     "query_types_to_move": "video_url",
     "selection_list": ["type:video_url"]
-  },
-  "media": {
-    "youtubedl_parallel": 6,
-    "mosaic_parallel": 6
   },
   "tap": {
     "select": "data"

@@ -1,6 +1,7 @@
 {
   "name": "Telegram Channels Historic",
   "extends": [
+    "./configs/media.json",
     "./configs/downloads.json",
     "./configs/mongodb.json",
     "./configs/elasticsearch.json",
@@ -35,10 +36,6 @@
     "query_default_type": "telegram_channel",
     "query_types_to_move": "telegram_channel",
     "selection_list": ["type:telegram_channel"]
-  },
-  "media": {
-    "youtubedl_parallel": 6,
-    "mosaic_parallel": 6
   },
   "workflow": {
     "multiplex_continue_on_error": true
