@@ -27,7 +27,7 @@
       x
       (str "https://cube.syrianarchive.org/" project-dir "/files/" (.getName (io/file x))))))
 
-(defn website-observation
+(defn website-observation-nested
   [{:keys [$sc_id_hash cid]}]
   (let [date-formatter (f/formatter "yyyy-MM-dd HH:mm:ss")
         incident-date (if (nil? (:incident_time cid))
@@ -55,10 +55,37 @@
      :collections []
      :incidents_code []}))
 
+(defn website-observation-flat
+  [{:keys [$sc_id_hash cid]}]
+  (let [date-formatter (f/formatter "yyyy-MM-dd HH:mm:ss")
+        incident-date (if (nil? (:incident_time cid))
+                        (:incident_date cid)
+                        (f/unparse (f/formatters :date-time-no-ms)
+                                   (f/parse date-formatter (str (:incident_date cid) " " (:incident_time cid)))))
+        title_ar (if (nil? (:online_title_ar cid)) (:summary_ar cid) (:online_title_ar cid))
+        title_en (if (nil? (:online_title_en cid)) (:summary_en cid) (:online_title_en cid))
+        observation {:id $sc_id_hash
+                     :incident_date_time incident-date
+                     :link (:online_link cid)
+                     :location
+                     {:name (maybe-trim (:location cid))
+                      :lat (if (string? (:latitude cid)) (edn/read-string (:latitude cid)) (:latitude cid))
+                      :lon (if (string? (:longitude cid)) (edn/read-string (:longitude cid)) (:longitude cid))}
+                     :type_of_violation (:type_of_violation cid)
+                     :href (maybe-href (:filename cid))
+                     :collections []
+                     :incidents_code []}]
+    [(conj observation {:lang "ar" :title title_ar :summary (:summary_ar cid)})
+     (conj observation {:lang "en" :title title_en :summary (:summary_en cid)})]))
+
 (defn -main
   []
   (let [url (core/elastic-url)
-        transform #(->> % :_source website-observation)
-        data (map transform (elastic/scrolled-post-search url verified-data-query))]
+        data (into []
+                   (comp
+                    (map :_source)
+                    (map website-observation-flat))
+                   (elastic/scrolled-post-search url verified-data-query))]
     (doall
-     (println (core/map->json-str {:total (count data) :data data})))))
+     (let [xs (reduce into [] data)]
+       (println (core/map->json-str {:total (count xs) :data xs}))))))
