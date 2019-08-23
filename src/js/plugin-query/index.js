@@ -1,4 +1,4 @@
-const {basename} = require("path");
+// const {basename} = require("path");
 const {URL} = require("url");
 const {envelope: env, utils} = require("@sugarcube/core");
 const {SheetsDo} = require("@sugarcube/plugin-googlesheets");
@@ -68,14 +68,13 @@ const parseChannelQuery = (query) => {
 /**
  * Parse a tweet id either by id or URL.
  */
-const parseTweetQuery = (id) => {
-  if (id.startsWith("http")) {
-    const u = new URL(id);
-    return basename(u.pathname);
-  }
-  return id;
-};
-
+// FIXME: Change this to accept id's as well.
+const parseTweetQuery = (id) =>
+  // if (id.startsWith("http")) {
+  //   const u = new URL(id);
+  //   return basename(u.pathname);
+  // }
+  id;
 /**
  * Construct a query for Elasticsearch.
  */
@@ -140,7 +139,7 @@ const queryBuilder = (
     tweets.length > 0
       ? {
           terms: {
-            tweet_id: tweets,
+            "cid.online_link.keyword": tweets,
           },
         }
       : null;
