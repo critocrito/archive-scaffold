@@ -86,6 +86,7 @@ const queryBuilder = (
   videos,
   channels,
   tweets,
+  fbVideos,
 ) => {
   let dateQ;
   if (from != null || till != null) {
@@ -143,6 +144,14 @@ const queryBuilder = (
           },
         }
       : null;
+  const fbVideoQ =
+    fbVideos.length > 0
+      ? {
+          terms: {
+            "cid.online_link.keyword": fbVideos,
+          },
+        }
+      : null;
 
   const termQ =
     term != null
@@ -168,6 +177,7 @@ const queryBuilder = (
           .concat(videoQ)
           .concat(channelQ)
           .concat(tweetQ)
+          .concat(fbVideoQ)
           .concat(dateQ)
           .concat(incidentCodeQ)
           .concat(termQ)
@@ -266,6 +276,7 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
       let videos = [];
       let channels = [];
       let tweets = [];
+      let fbVideos = [];
       switch (type) {
         case "youtube_video":
           videos = entries.map(parseVideoQuery);
@@ -275,6 +286,9 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
           break;
         case "twitter_tweet":
           tweets = entries.map(parseTweetQuery);
+          break;
+        case "facebook_video":
+          fbVideos = entries;
           break;
         default:
           break;
@@ -291,6 +305,7 @@ const queryPlugin = async (envelope, {log, cfg, cache}) => {
             videos,
             channels,
             tweets,
+            fbVideos,
           ),
         ),
       };
