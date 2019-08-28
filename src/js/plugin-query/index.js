@@ -1,4 +1,4 @@
-// const {basename} = require("path");
+const {basename} = require("path");
 const {URL} = require("url");
 const {envelope: env, utils} = require("@sugarcube/core");
 const {SheetsDo} = require("@sugarcube/plugin-googlesheets");
@@ -41,13 +41,20 @@ const headerIndexes = (rows) => {
  */
 const parseVideoQuery = (query) => {
   let videoId = query;
+
   if (query.startsWith("http")) {
     const u = new URL(query);
-    // Accept youtube urls in the form of https://youtu.be and https://www.youtube.com
-    videoId = u.hostname.startsWith("youtu.be")
-      ? u.pathname.split("/").filter((segment) => segment.length > 0)[0]
-      : u.searchParams.get("v");
+
+    if (/embed/.test(u.pathname) || u.hostname.startsWith("youtu.be")) {
+      // Url types like https://www.youtube.com/embed/mN4axOKTpaE or
+      // https://youtu.be/ihFrJmJ2GcQ
+      videoId = basename(u.pathname);
+    } else {
+      // Url types like https://www.youtube.com/watch?v=9FrsqDlrn5w
+      videoId = u.searchParams.get("v");
+    }
   }
+
   return `https://www.youtube.com/watch?v=${videoId}`;
 };
 
