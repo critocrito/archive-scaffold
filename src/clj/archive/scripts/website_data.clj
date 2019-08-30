@@ -64,8 +64,8 @@
                                    (f/parse date-formatter (str (:incident_date cid) " " (:incident_time cid)))))
         title_ar (if (nil? (:online_title_ar cid)) (:summary_ar cid) (:online_title_ar cid))
         title_en (if (nil? (:online_title_en cid)) (:summary_en cid) (:online_title_en cid))
-        summary_ar (if (nil? (:summary_ar cid)) (title_ar) (:summary_ar cid))
-        summary_en (if (nil? (:summary_en cid)) (title_en) (:summary_en cid))
+        summary_ar (if (nil? (:summary_ar cid)) title_ar (:summary_ar cid))
+        summary_en (if (nil? (:summary_en cid)) title_en (:summary_en cid))
         observation {:id $sc_id_hash
                      :incident_date_time incident-date
                      :link (:online_link cid)
