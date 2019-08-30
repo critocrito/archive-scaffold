@@ -64,6 +64,8 @@
                                    (f/parse date-formatter (str (:incident_date cid) " " (:incident_time cid)))))
         title_ar (if (nil? (:online_title_ar cid)) (:summary_ar cid) (:online_title_ar cid))
         title_en (if (nil? (:online_title_en cid)) (:summary_en cid) (:online_title_en cid))
+        summary_ar (if (nil? (:summary_ar cid)) (title_ar) (:summary_ar cid))
+        summary_en (if (nil? (:summary_en cid)) (title_en) (:summary_en cid))
         observation {:id $sc_id_hash
                      :incident_date_time incident-date
                      :link (:online_link cid)
@@ -75,8 +77,8 @@
                      :href (maybe-href (:filename cid))
                      :collections []
                      :incidents_code []}]
-    [(conj observation {:lang "ar" :title title_ar :summary (:summary_ar cid)})
-     (conj observation {:lang "en" :title title_en :summary (:summary_en cid)})]))
+    [(conj observation {:lang "ar" :title title_ar :summary summary_ar})
+     (conj observation {:lang "en" :title title_en :summary summary_en})]))
 
 (defn -main
   []

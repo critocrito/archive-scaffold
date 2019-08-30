@@ -47,6 +47,18 @@
                        true
                        false)))))))
 
+(defn missing-summary
+  [observations]
+  (let [fn (fn [memo observation]
+            (let [summary (:summary observation)]
+              (if (or (nil? summary)
+                      (= "" summary))
+                (conj memo observation)
+                memo)))]
+    (->> observations
+         (reduce fn [])
+         map-observations)))
+
 (def columns
   [:id :location_name :location_lat :location_lng :href :title :summary :lang :incident_date_time])
 
@@ -63,4 +75,8 @@
            (not (nil? file))) (core/print-csv columns (->> (core/read-json file)
                                                            :data
                                                            link-checking))
+      (and (= op "missing-summary")
+           (not (nil? file))) (core/print-csv columns (->> (core/read-json file)
+                                                           :data
+                                                           missing-summary))
       :else (println op "unknown"))))
