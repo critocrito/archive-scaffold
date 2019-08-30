@@ -2,11 +2,17 @@
   (:require [org.httpkit.client :as http]
             [archive.core :as core]))
 
+(defn nil-or-empty?
+  [v]
+  (or (nil? v)
+      (= "" v)))
+
 (defn valid-location?
   [{:keys [location] :as data}]
   (let [is-valid (and (not (nil? location))
-                      (not (nil? (:lat location)))
-                      (not (nil? (:lon location))))]
+                      (not (nil-or-empty? (:lat location)))
+                      (not (nil-or-empty? (:lon location)))
+                      (not (nil-or-empty? (:name location))))]
     (if is-valid data nil)))
 
 (defn map-observations
@@ -50,11 +56,9 @@
 (defn missing-summary
   [observations]
   (let [fn (fn [memo observation]
-            (let [summary (:summary observation)]
-              (if (or (nil? summary)
-                      (= "" summary))
-                (conj memo observation)
-                memo)))]
+            (if (nil-or-empty? (:summary observation))
+              (conj memo observation)
+              memo))]
     (->> observations
          (reduce fn [])
          map-observations)))
