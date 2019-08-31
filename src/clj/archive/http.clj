@@ -5,9 +5,26 @@
 (defn make-http-call
   "Handle a single HTTP and parse inputs and outputs to and from JSON."
   [{:keys [method url] :as request}]
-  (let [{:keys [error body]} @(http/request request)]
+  (let [{:keys [error status body]} @(http/request request)]
+    (println status)
     (if error
-      (throw (Exception. (str method " request to " url " failed: " error)))
+      (do
+        (println error)
+        (println body)
+        (throw (Exception. (str method " request to " url " failed: " error))))
+      (json-str->map body))))
+
+(defn make-http-call-vultr
+  "Handle a single HTTP and parse inputs and outputs to and from JSON. This is a
+  specialized version that deals with the peculiarities of the API of
+  vultr.com."
+  [{:keys [method url] :as request}]
+  (let [{:keys [status error body]} @(http/request request)]
+    (if (or error (>= status 400))
+      (do
+        (println error)
+        (println body)
+        (throw (Exception. (str method " request to " url " failed: " error))))
       (json-str->map body))))
 
 (defn make-http-calls

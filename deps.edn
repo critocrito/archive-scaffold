@@ -1,5 +1,6 @@
 {:deps
  {org.clojure/clojure {:mvn/version "1.9.0"}
+  org.clojure/tools.cli {:mvn/version "0.4.2"}
   org.clojure/data.csv {:mvn/version "0.1.4"}
   http-kit/http-kit {:mvn/version "2.3.0"}
   com.cemerick/url {:mvn/version "0.1.1"}
@@ -21,4 +22,5 @@
   :fix-collection {:main-opts ["-m" "archive.scripts.fix-collection"]
                    :jvm-opts ["-Xmx16G"]}
   :website-data {:main-opts ["-m" "archive.scripts.website-data"]}
-  :verify-website-data {:main-opts ["-m" "archive.scripts.verify-website-data"]}}}
+  :verify-website-data {:main-opts ["-m" "archive.scripts.verify-website-data"]}
+  :provision-vps {:main-opts ["-m" "archive.scripts.provision-vps"]}}}

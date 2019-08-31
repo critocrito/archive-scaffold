@@ -3,7 +3,6 @@
             [clojure.string :refer [trim]]
             [clojure.edn :as edn]
             [clj-time.format :as f]
-            [me.raynes.fs :as fs]
             [archive.core :as core]
             [archive.elastic :as elastic]))
 
@@ -22,10 +21,10 @@
 
 (defn maybe-href
   [x]
-  (let [project-dir (.getName fs/*cwd*)]
+  (let [tag (core/project-tag)]
     (if (nil? x)
       x
-      (str "https://cube.syrianarchive.org/" project-dir "/files/" (.getName (io/file x))))))
+      (str "https://cube.syrianarchive.org/" tag "/files/" (.getName (io/file x))))))
 
 (defn website-observation-nested
   [{:keys [$sc_id_hash cid]}]

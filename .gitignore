@@ -12,3 +12,4 @@ tmp.*
 .cpcache
 .rebel_readline_history
 fix-collections*.csv
+.vps-state*.json

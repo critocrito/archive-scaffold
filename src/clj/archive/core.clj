@@ -2,6 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.walk :refer (keywordize-keys)]
             [clojure.string :as string]
+            [me.raynes.fs :as fs]
             [cheshire.core :as json]
             [clojure.data.csv :as csv]))
 
@@ -27,6 +28,13 @@
        slurp
        json-str->map
        keywordize-keys))
+
+(defn write-json
+  "Write a collection as JSON to a file."
+  [path coll]
+  (let [json (map->json-str coll)]
+    (with-open [file (io/writer path)]
+      (.write file json))))
 
 (defn elastic-url
   "Construct an Elasticsearch URL."
@@ -86,3 +94,7 @@
   (let [headers (map name columns)
         rows (maps->csv-data columns coll)]
     (csv/write-csv *out* (cons headers rows))))
+
+(defn project-tag
+  []
+  (.getName fs/*cwd*))
