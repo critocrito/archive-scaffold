@@ -1,0 +1,8 @@
+---
+
+- name: Setup Wireguard VPN on a remote server
+  hosts: all
+  #become: true
+  gather_facts: true
+  roles:
+    - {role: 'wireguard_role', tags: 'wireguard'}
