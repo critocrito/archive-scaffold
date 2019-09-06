@@ -70,18 +70,14 @@
   (create [this count]
     (let [api-key (:api_key cfg)
           ssh-key-name (:ssh_key cfg)
-          script-name (:startup_script cfg)
           tag (core/project-tag)
           regions (vps-vultr/list-regions)
-          ssh-key (vps-vultr/select-ssh-key ssh-key-name (vps-vultr/list-ssh-keys api-key))
-          script (vps-vultr/select-script script-name (vps-vultr/list-scripts api-key))]
+          ssh-key (vps-vultr/select-ssh-key ssh-key-name (vps-vultr/list-ssh-keys api-key))]
 
       (when-not regions
         (throw (ex-info "Regions not found" {:type ::not-found-error})))
       (when-not ssh-key
         (throw (ex-info "SSH key not found" {:type ::not-found-error})))
-      (when-not script
-        (throw (ex-info "Script not found" {:type ::not-found-error})))
 
       (println (format "Creating %d instances" count))
 
@@ -91,7 +87,7 @@
           (let [region (vps-vultr/random-region regions)]
             (println (format "Creating instance: %s/%s" (:name region) (:country region)))
             (future (do (Thread/sleep 1000)
-                        (vps-vultr/create api-key region ssh-key script tag)))))
+                        (vps-vultr/create api-key region ssh-key tag)))))
         (range count)))))
 
   (destroy [this ids]

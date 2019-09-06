@@ -3,6 +3,9 @@
 
 (def endpoint "https://api.vultr.com")
 
+(def osid 270)
+(def planid 201)
+
 (defn list-regions
   []
   (let [url (str endpoint "/v1/regions/list")
@@ -17,17 +20,6 @@
 (defn list-ssh-keys
   [api-key]
   (let [url (str endpoint "/v1/sshkey/list")
-        request {:method :get
-                 :url url
-                 :headers {"API-Key" api-key}}]
-    (Thread/sleep 500)
-    (try
-      (http/make-http-call-vultr request)
-      (catch Exception e (println (.getMessage e))))))
-
-(defn list-scripts
-  [api-key]
-  (let [url (str endpoint "/v1/startupscript/list")
         request {:method :get
                  :url url
                  :headers {"API-Key" api-key}}]
@@ -92,16 +84,14 @@
 
 (defn random-region
   [regions]
-  (let [region (rand-nth (keys regions))]
-    ((keyword region) regions)))
+  (->> regions
+       vals
+       (filter #(some #{planid} (:availability %)))
+       rand-nth))
 
 (defn select-ssh-key
   [ssh-key-name ssh-keys]
   (reduce-kv (fn [m k v] (if (= (:name v) ssh-key-name) v m)) nil ssh-keys))
-
-(defn select-script
-  [script-name scripts]
-  (reduce-kv (fn [m k v] (if (= (:name v) script-name) v m)) nil scripts))
 
 (defn select-server
   [server-id servers]
@@ -112,18 +102,17 @@
   (reduce (fn [m k] (if (select-server k servers) (conj m k) m)) [] ids))
 
 (defn create-request-body
-  [region-id ssh-key-id script-id tag]
+  [region-id ssh-key-id tag]
   {:DCID region-id
-   :VPSPLANID 201 ;; 1GB RAM, 1VCPU, 25GB SSD
-   :OSID 352      ;; Debian Buster x64
+   :VPSPLANID planid
+   :OSID osid
    :SSHKEYID ssh-key-id
-   :SCRIPTID script-id
    :tag tag})
 
 (defn create
-  [api-key region ssh-key script tag]
+  [api-key region ssh-key tag]
   (try
-    (let [body (create-request-body (:DCID region) (:SSHKEYID ssh-key) (:SCRIPTID script) tag)
+    (let [body (create-request-body (:DCID region) (:SSHKEYID ssh-key) tag)
           instance (create-server api-key body)
           server (deref (future (poll-server api-key (:SUBID instance))))]
       {:id (:SUBID server) :ip (:main_ip server) :provider :vultr})
