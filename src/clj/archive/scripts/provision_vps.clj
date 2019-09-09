@@ -19,6 +19,11 @@
     :parse-fn #(Integer/parseInt %)]
    ["-S" "--state PATH" "VPS provisioning state."
     :default "./vps-state.json"]
+   ["-P" "--plan PLAN" "VPS plan."
+    :default "small"
+    :default-fn #(keyword (:plan %))
+    :parse-fn #(keyword %)
+    :validate [#(contains? #{:small :medium :large} %) "Plan must be either: small, medium or large."]]
    ["-h" "--help"]])
 
 (defn exit [status msg]
@@ -70,12 +75,10 @@
   (create [this count]
     (let [api-key (:api_key cfg)
           ssh-key-name (:ssh_key cfg)
+          plan (:plan cfg)
           tag (core/project-tag)
-          regions (vps-vultr/list-regions)
           ssh-key (vps-vultr/select-ssh-key ssh-key-name (vps-vultr/list-ssh-keys api-key))]
 
-      (when-not regions
-        (throw (ex-info "Regions not found" {:type ::not-found-error})))
       (when-not ssh-key
         (throw (ex-info "SSH key not found" {:type ::not-found-error})))
 
@@ -84,10 +87,8 @@
       (doall
        (map
         (fn [_]
-          (let [region (vps-vultr/random-region regions)]
-            (println (format "Creating instance: %s/%s" (:name region) (:country region)))
-            (future (do (Thread/sleep 1000)
-                        (vps-vultr/create api-key region ssh-key tag)))))
+          (future (do (Thread/sleep 1000)
+                      (vps-vultr/create api-key ssh-key plan tag))))
         (range count)))))
 
   (destroy [this ids]
@@ -114,7 +115,8 @@
     (if exit-message
       (exit (if ok? 0 1) exit-message)
       (let [provider (:provider options)
-            cfg (get-in options [:secrets (keyword provider)])
+            plan (:plan options)
+            cfg (merge {:plan plan} (get-in options [:secrets (keyword provider)]))
             vps-connection (connect provider cfg)]
         (case action
           "create" (let [instances (remove nil? (map deref (.create vps-connection (:count options))))]

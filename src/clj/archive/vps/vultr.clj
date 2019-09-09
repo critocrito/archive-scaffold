@@ -4,7 +4,9 @@
 (def endpoint "https://api.vultr.com")
 
 (def osid 270)
-(def planid 201)
+(def small-planid 201)
+(def medium-planid 204)
+(def large-planid 208)
 
 (defn list-regions
   []
@@ -83,7 +85,7 @@
     (http/make-http-call-vultr request)))
 
 (defn random-region
-  [regions]
+  [regions planid]
   (->> regions
        vals
        (filter #(some #{planid} (:availability %)))
@@ -102,7 +104,7 @@
   (reduce (fn [m k] (if (select-server k servers) (conj m k) m)) [] ids))
 
 (defn create-request-body
-  [region-id ssh-key-id tag]
+  [region-id ssh-key-id planid tag]
   {:DCID region-id
    :VPSPLANID planid
    :OSID osid
@@ -110,12 +112,24 @@
    :tag tag})
 
 (defn create
-  [api-key region ssh-key tag]
+  [api-key ssh-key plan tag]
   (try
-    (let [body (create-request-body (:DCID region) (:SSHKEYID ssh-key) tag)
-          instance (create-server api-key body)
-          server (deref (future (poll-server api-key (:SUBID instance))))]
-      {:id (:SUBID server) :ip (:main_ip server) :provider :vultr})
+    (let [planid (case plan
+                   :small small-planid
+                   :medium medium-planid
+                   :large large-planid)
+          regions (list-regions)
+          region (random-region regions planid)
+          body (create-request-body (:DCID region) (:SSHKEYID ssh-key) planid tag)]
+
+      (when-not region
+        (throw (ex-info "Region not found" {:type ::not-found-error})))
+
+      (println (format "Creating instance: %s/%s" (:name region) (:country region)))
+
+      (let [instance (create-server api-key body)
+            server (deref (future (poll-server api-key (:SUBID instance))))]
+        {:id (:SUBID server) :ip (:main_ip server) :provider :vultr}))
     (catch Exception e (println (format "Failed to create instance: %s" (.getMessage e))))))
 
 (defn destroy
