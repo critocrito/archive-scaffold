@@ -340,11 +340,22 @@ queryPlugin.argv = {
 };
 
 const queryToTweetsPlugin = (envelope, {log}) => {
-  const queries = envelope.data.map(({cid}) => ({
-    type: "twitter_tweet",
-    term: cid.online_link,
-  }));
-  log.info(`Mapping ${envelope.data.length} units to queries`);
+  const queries = [];
+
+  for (let i = envelope.data.length - 1; i >= 0; i -= 1) {
+    const {cid} = envelope.data[i];
+
+    if (cid != null && cid.online_link != null)
+      queries.push({
+        type: "twitter_tweet",
+        term: cid.online_link,
+      });
+  }
+
+  log.info(
+    `Mapping ${envelope.data.length} units to ${queries.length} queries`,
+  );
+
   return env.envelopeQueries(queries);
 };
 
