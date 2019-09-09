@@ -16,6 +16,7 @@
   (->> query
        map->json-str
        (#(assoc {:method :post
+                 :timeout 60000
                  :url (str elastic-url "/_search")
                  :query-params params
                  :headers {"Content-Type" "application/json"}}
@@ -28,6 +29,7 @@
   (->> unit
        map->json-str
        (#(assoc {:method :put
+                 :timeout 60000
                  :url (str elastic-url "/_doc/" id)
                  :headers {"Content-Type" "application/json"}}
                 :body %))
@@ -40,6 +42,7 @@
         [hits id] (->> query
                        map->json-str
                        (#(assoc {:method :post
+                                 :timeout 60000
                                  :url (str (strip-index elastic-url) "/_search/scroll")
                                  :headers {"Content-Type" "application/json"}}
                                 :body %))

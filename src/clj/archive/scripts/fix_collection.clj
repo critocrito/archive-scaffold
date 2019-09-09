@@ -77,8 +77,8 @@
 (defn merge-safe-duplicate-videos
   "Merge duplicate video downloads that are safe to merge."
   [url db id]
-  (merge-safe-duplicate-videos-elastic url id)
-  (merge-safe-duplicate-videos-mongo db id))
+  (merge-safe-duplicate-videos-mongo db id)
+  (merge-safe-duplicate-videos-elastic url id))
 
 (defn merge-unsafe-duplicate-videos-mongo
   "Merge the duplicate video downloads that are safe to merge, MongoDB version."
@@ -127,8 +127,8 @@
 (defn merge-unsafe-duplicate-videos
   "Merge duplicate video downloads that are not safe to merge."
   [url db id]
-  (merge-unsafe-duplicate-videos-elastic url id)
-  (merge-unsafe-duplicate-videos-mongo db id))
+  (merge-unsafe-duplicate-videos-mongo db id)
+  (merge-unsafe-duplicate-videos-elastic url id))
 
 (defn rename-youtube-video-download-type-mongo
   "Fix the download type to video, MongoDB version."
@@ -163,8 +163,8 @@
 (defn rename-youtube-video-download-type
   "Fix the download type to video."
   [url db id]
-  (rename-youtube-video-download-type-elastic url id)
-  (rename-youtube-video-download-type-mongo db id))
+  (rename-youtube-video-download-type-mongo db id)
+  (rename-youtube-video-download-type-elastic url id))
 
 (defn merge-images-outside-collection-mongo
   "Merge the duplicate video downloads that are safe to merge, MongoDB version."
@@ -225,8 +225,8 @@
 (defn merge-images-outside-collection
   "Move images outside the data collection into the collection."
   [url db id]
-  (merge-images-outside-collection-elastic url id)
-  (merge-images-outside-collection-mongo db id))
+  (merge-images-outside-collection-mongo db id)
+  (merge-images-outside-collection-elastic url id))
 
 (defn duplicate-video-safe-to-merge?
   "Determine if this videos are safe to merge. We exclude any unit that
@@ -257,8 +257,8 @@
         (r/map :_source)
         (r/filter duplicate-video-safe-to-merge?)
         (into [])
-        (partition 20)
-        (map (fn [as] (pmap #(merge-safe-duplicate-videos url db (:$sc_id_hash %)) as)))
+        (partition 5)
+        (map (fn [as] (map #(merge-safe-duplicate-videos url db (:$sc_id_hash %)) as)))
         flatten)))
 
 (defn fix-unsafe-duplicate-videos
@@ -269,8 +269,8 @@
         (r/map :_source)
         (r/filter (comp not duplicate-video-safe-to-merge?))
         (into [])
-        (partition 20)
-        (map (fn [as] (pmap #(merge-unsafe-duplicate-videos url db (:$sc_id_hash %)) as)))
+        (partition 5)
+        (map (fn [as] (map #(merge-unsafe-duplicate-videos url db (:$sc_id_hash %)) as)))
         flatten)))
 
 (defn fix-youtube-video-downloads
@@ -280,8 +280,8 @@
    (->> (elastic/scrolled-post-search url youtube-video-downloads-query)
         (r/map :_source)
         (into [])
-        (partition 20)
-        (map (fn [as] (pmap #(rename-youtube-video-download-type url db (:$sc_id_hash %)) as)))
+        (partition 5)
+        (map (fn [as] (map #(rename-youtube-video-download-type url db (:$sc_id_hash %)) as)))
         flatten)))
 
 (defn fix-images-outside-collection
@@ -291,8 +291,8 @@
    (->> (elastic/scrolled-post-search url images-outside-data-collection-query)
         (r/map :_source)
         (into [])
-        (partition 20)
-        (map (fn [as] (pmap #(merge-images-outside-collection url db (:$sc_id_hash %)) as)))
+        (partition 5)
+        (map (fn [as] (map #(merge-images-outside-collection url db (:$sc_id_hash %)) as)))
         flatten)))
 
 (def csv-columns [:id :old_location :new_location :verified])
