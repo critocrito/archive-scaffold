@@ -1,15 +1,6 @@
 {
   "media": {
     "youtubedl_parallel": 6,
-    "youtubedl_source_addresses": [
-      "94.130.11.119",
-      "94.130.153.121",
-      "94.130.153.123",
-      "94.130.153.124",
-      "94.130.153.125",
-      "94.130.153.126"
-    ],
-    "youtubedl_delay": 10,
     "mosaic_parallel": 6
   }
 }
