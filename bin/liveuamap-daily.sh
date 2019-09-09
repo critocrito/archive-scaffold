@@ -5,6 +5,7 @@
 REGIONS="./queries/regions.txt"
 DATE=$(date +%Y-%m-%d)
 RUN_ID=$(make_id)
+RUN_DIR="$PWD/tmp/$RUN_ID"
 
 provision_vps "$RUN_ID" "small"
 
@@ -15,7 +16,7 @@ doit() {
               -c pipelines/liveuamap_daily.json \
               -q queries/mail-recipients.json \
               -Q liveuamap_region:"$1" \
-              --media.youtubedl_cmd "$PWD"/bin/youtube-dl-wrapper-sudo-"$RUN_ID".sh \
+              --media.youtubedl_cmd "$RUN_DIR"/youtube-dl-wrapper-sudo.sh \
               -d
 }
 

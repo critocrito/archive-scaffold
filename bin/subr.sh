@@ -6,7 +6,7 @@ provision_vps() {
   RUN_ID="$1"
   PLAN="$2"
   RUN_DIR="$PWD/tmp/$RUN_ID"
-  RUN_SCRIPT="$RUN_DIR/youtube-dl-wrapper-sudo-$RUN_ID.sh"
+  RUN_SCRIPT="$RUN_DIR/youtube-dl-wrapper-sudo.sh"
   VPS_STATE="$RUN_DIR/vps-state.json"
   HOSTS_INI="$RUN_DIR/hosts"
   NS="$USER$RUN_ID"
@@ -24,8 +24,8 @@ provision_vps() {
     echo "$ip namespace=$NS run_dir=$RUN_DIR" >> "$HOSTS_INI"
   done
 
-  echo "Sleeping 30 seconds to allow VPS to settle."
-  sleep 30
+  echo "Sleeping 60 seconds to allow VPS to settle."
+  sleep 60
 
   ansible-playbook wireguard_ansible/wireguard.yml -u root -i "$HOSTS_INI"
 

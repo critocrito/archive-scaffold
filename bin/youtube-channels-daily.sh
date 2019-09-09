@@ -8,6 +8,7 @@ DATE=$(date +%Y-%m-%d)
 COUNTER=0
 QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
 RUN_ID=$(make_id)
+RUN_DIR="$PWD/tmp/$RUN_ID"
 
 provision_vps "$RUN_ID" "small"
 
@@ -18,7 +19,7 @@ doit() {
               -c pipelines/youtube_channels_daily.json \
               -q queries/mail-recipients.json \
               -Q sheets_query:YoutubeChannelsDaily \
-              --media.youtubedl_cmd "$PWD"/bin/youtube-dl-wrapper-sudo-"$RUN_ID".sh \
+              --media.youtubedl_cmd "$RUN_DIR"/youtube-dl-wrapper-sudo.sh \
               --google.spreadsheet_id "$1" \
               -d
 }

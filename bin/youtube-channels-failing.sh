@@ -10,6 +10,7 @@ REPORT_DIR="reports/$YEAR/$MONTH"
 COUNTER=0
 QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
 RUN_ID=$(make_id)
+RUN_DIR="$PWD/tmp/$RUN_ID"
 
 provision_vps "$RUN_ID" "small"
 
@@ -21,7 +22,7 @@ doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/check_failing_youtube_channels.json \
               -q queries/mail-recipients.json \
-              --media.youtubedl_cmd "$PWD"/bin/youtube-dl-wrapper-sudo-"$RUN_ID".sh \
+              --media.youtubedl_cmd "$RUN_DIR"/youtube-dl-wrapper-sudo.sh \
               --google.spreadsheet_id "$1" \
               --csv.data_dir "$REPORT_DIR" \
               --csv.label youtube-channels \

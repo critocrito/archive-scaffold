@@ -7,6 +7,7 @@ MONTH=$(date +%B)
 YEAR=$(date +%Y)
 REPORT_DIR="reports/$YEAR/$MONTH"
 RUN_ID=$(make_id)
+RUN_DIR="$PWD/tmp/$RUN_ID"
 
 provision_vps "$RUN_ID" "small"
 
@@ -22,7 +23,7 @@ doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/check_failing_youtube_videos.json \
               -q queries/mail-recipients.json \
-              --media.youtubedl_cmd "$PWD"/bin/youtube-dl-wrapper-sudo-"$RUN_ID".sh \
+              --media.youtubedl_cmd "$RUN_DIR"/youtube-dl-wrapper-sudo.sh \
               --csv.data_dir "$REPORT_DIR" \
               --csv.label youtube-videos \
               -d
