@@ -139,7 +139,7 @@ const queryBuilder = (
     channels.length > 0
       ? {
           terms: {
-            "snippet.channelId.keyword": channels,
+            "cid.channel_id.keyword": channels,
           },
         }
       : null;
