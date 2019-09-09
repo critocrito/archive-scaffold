@@ -54,12 +54,12 @@ ansible-playbook wireguard.yml -u root -i hosts
 
 Give it a few minutes and the server set up will be complete.
 
-Ten client configs will be created on the VPN server in the folder /root/wg_clients. They will also be downloaded to the **wireguard_role/profiles** folder on your local host.
+Ten client configs will be created on the VPN server in the folder /root/wg_clients. They will also be downloaded to the **run_dir** folder on your local host, which normally is located in `./tmp/<run-id>`.
 
 
 Assuming you're using the first client config, copy it to **/etc/wireguard/** and you can start using the VPN tunnel on your client.
 
-To bring up the VPN interface 
+To bring up the VPN interface
 ```bash
 sudo wg-quick up wg0-client
 ```
@@ -80,7 +80,7 @@ sudo wg show
 You have the option of determining the vpn network subnet you prefer your clients to use by editing the file **wireguard_role/defaults/main.yml**, and setting the vpn_network variable as desired. You can also change the vpn server port and the number of client profiles you want generated in the same file:
 
 
-```bash 
+```bash
 vpn_network: '10.200.200'
 
 vpn_port: '51820'
@@ -103,7 +103,7 @@ Then run the setup process again but now with the tag **add_client** specified:
 ansible-playbook wireguard.yml -u root -k -i hosts -t add_client
 ```
 
-The new client config will then be downloaded to the **wireguard_role/profiles** folder on your local host.
+The new client config will then be downloaded to the **run_dir** folder on your local host.
 
 Note: This needs to be run from the directory the initial setup was done from and not from a newly cloned one.
 
@@ -121,5 +121,5 @@ This project has been structured as an ansible role. You can therefore include i
 # DNS
 
 If there is another service listening on port 53, you will have issues with getting DNS resolution working.
-It is therefore advisable to either disable or change the port of any service already using port 53. 
+It is therefore advisable to either disable or change the port of any service already using port 53.
 This will automatically be handled for you on Ubuntu 18.04 when you run this playbook.

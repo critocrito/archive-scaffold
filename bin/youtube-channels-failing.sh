@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+. bin/subr.sh
+
 SPREADSHEET_IDS="./queries/spreadsheet-ids.txt"
 DATE=$(date +%Y-%m-%d)
 MONTH=$(date +%B)
@@ -7,6 +9,9 @@ YEAR=$(date +%Y)
 REPORT_DIR="reports/$YEAR/$MONTH"
 COUNTER=0
 QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
+RUN_ID=$(make_id)
+
+provision_vps "$RUN_ID" "small"
 
 mkdir -p "$REPORT_DIR"
 
@@ -16,6 +21,7 @@ doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/check_failing_youtube_channels.json \
               -q queries/mail-recipients.json \
+              --media.youtubedl_cmd "$PWD"/bin/youtube-dl-wrapper-sudo-"$RUN_ID".sh \
               --google.spreadsheet_id "$1" \
               --csv.data_dir "$REPORT_DIR" \
               --csv.label youtube-channels \
@@ -35,6 +41,7 @@ do
 
   if [ "$QUERY_COUNT" -eq $((COUNTER + 1)) ]
   then
+    destroy_vps "$RUN_ID"
     exit 0
   fi
 

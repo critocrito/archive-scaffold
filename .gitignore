@@ -5,6 +5,7 @@ logs/*
 data
 csv/*
 reports/*
+tmp/*
 !.keep
 .sugarcube_cache.json
 tmp.*
@@ -12,4 +13,4 @@ tmp.*
 .cpcache
 .rebel_readline_history
 fix-collections*.csv
-.vps-state*.json
+.python-version

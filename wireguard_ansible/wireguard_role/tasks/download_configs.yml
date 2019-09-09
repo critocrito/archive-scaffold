@@ -1,6 +1,6 @@
-- name:  Download client configs to the "wireguard_role/profiles/" folder on your local host
+- name:  Download client configs to the run directory folder on your local host
   fetch:
     src: "~/wg_clients/client_1/wg0-client.conf"
-    dest: "{{ client_config_path }}/{{ namespace }}.conf"
+    dest: "{{ run_dir }}/{{ namespace }}.conf"
     flat: yes
   tags: "wg_fetch"
