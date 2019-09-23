@@ -1,6 +1,6 @@
 configs/secrets.json
 node_modules
-*.lock
+package-lock.json
 logs/*
 data
 csv/*
