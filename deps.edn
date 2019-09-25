@@ -2,7 +2,7 @@
  {org.clojure/clojure {:mvn/version "1.9.0"}
   org.clojure/tools.cli {:mvn/version "0.4.2"}
   org.clojure/data.csv {:mvn/version "0.1.4"}
-  http-kit/http-kit {:mvn/version "2.3.0"}
+  http-kit/http-kit {:mvn/version "2.4.0-alpha1"}
   com.cemerick/url {:mvn/version "0.1.1"}
   cheshire/cheshire {:mvn/version "5.8.1"}
   com.novemberain/monger {:mvn/version "3.5.0"}
