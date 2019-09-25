@@ -21,6 +21,7 @@
     "@sugarcube/plugin-mail": "0.27.2",
     "@sugarcube/plugin-media": "0.27.2",
     "@sugarcube/plugin-mongodb": "0.27.2",
+    "@sugarcube/plugin-statsd": "0.27.2",
     "@sugarcube/plugin-tap": "0.27.2",
     "@sugarcube/plugin-twitter": "0.27.2",
     "@sugarcube/plugin-workflow": "0.27.2",
