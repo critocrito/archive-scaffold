@@ -8,6 +8,7 @@
     "./configs/mail.json",
     "./configs/csv.json",
     "./configs/query-handling.json",
+    "./configs/instruments.json",
     "./configs/secrets.json"
   ],
   "plugins": [
@@ -24,7 +25,6 @@
     "scrub_pick_fields",
     "elastic_export",
     "sheets_move_queries",
-    "csv_export_failed",
     "mail_pipeline_stats",
     "mail_failed_stats",
     "tap_printf"

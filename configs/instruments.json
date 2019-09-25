@@ -1,0 +1,3 @@
+{
+  "instruments": ["statsd_metrics", "csv_failure_stats"]
+}
