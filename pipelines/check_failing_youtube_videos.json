@@ -4,9 +4,16 @@
     "./configs/media.json",
     "./configs/elasticsearch.json",
     "./configs/csv.json",
+    "./configs/mail.json",
+    "./configs/instruments.json",
     "./configs/secrets.json"
   ],
-  "plugins": ["elastic_import", "media_youtubedl_check", "csv_export_failed"],
+  "plugins": [
+    "elastic_import",
+    "youtube_filter_failing",
+    "media_youtubedl_check",
+    "mail_failed_stats"
+  ],
   "queries": [
     { "type": "glob_pattern", "term": "./es-queries/all-youtube-videos.json" }
   ]
