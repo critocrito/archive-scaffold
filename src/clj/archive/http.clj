@@ -6,7 +6,6 @@
   "Handle a single HTTP and parse inputs and outputs to and from JSON."
   [{:keys [method url] :as request}]
   (let [{:keys [error status body]} @(http/request request)]
-    (println status)
     (if error
       (do
         (println error)
