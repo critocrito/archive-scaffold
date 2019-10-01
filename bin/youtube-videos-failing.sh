@@ -2,14 +2,18 @@
 
 . bin/subr.sh
 
+PIPELINE_CFG="./pipelines/check_failing_youtube_videos.json"
+PIPELINE_NAME=$(pipeline_name "$PIPELINE_CFG")
+LABEL=$(snake_case "$PIPELINE_NAME")
 DATE=$(date +%Y-%m-%d)
 MONTH=$(date +%B)
 YEAR=$(date +%Y)
 REPORT_DIR="reports/$YEAR/$MONTH"
 RUN_ID=$(make_id)
 RUN_DIR="$PWD/tmp/$RUN_ID"
+LOGFILE="./$REPORT_DIR/youtube-videos-$DATE.log"
 
-provision_vps "$RUN_ID" "small"
+provision_vps "$RUN_ID" "small" "$LABEL" | tee -a "$LOGFILE"
 
 mkdir -p "$REPORT_DIR"
 
@@ -21,7 +25,7 @@ percent() {
 
 doit() {
   "$(npm bin)"/sugarcube \
-              -c pipelines/check_failing_youtube_videos.json \
+              -c "$PIPELINE_CFG" \
               -q queries/mail-recipients.json \
               --media.youtubedl_cmd "$RUN_DIR"/youtube-dl-wrapper-sudo.sh \
               --csv.data_dir "$REPORT_DIR" \
@@ -33,7 +37,7 @@ echo "Starting a check for failing youtube videos."
 
 ALL_YT_VIDEOS=$(./bin/stats-sources.sh | awk 'BEGIN{FS=","; c=0; } $1~/^youtube/{ c+=$2 } END{print c}')
 
-doit 2>&1 | tee -a "./$REPORT_DIR/youtube-videos-$DATE.log"
+doit 2>&1 | tee -a "$LOGFILE"
 
 destroy_vps "$RUN_ID"
 

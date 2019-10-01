@@ -4,19 +4,23 @@
 
 SPREADSHEET_IDS="./queries/spreadsheet-ids.txt"
 
+PIPELINE_CFG="./pipelines/youtube_videos.json"
+PIPELINE_NAME=$(pipeline_name "$PIPELINE_CFG")
+LABEL=$(snake_case "$PIPELINE_NAME")
 DATE=$(date +%Y-%m-%d)
 COUNTER=0
 QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
 RUN_ID=$(make_id)
 RUN_DIR="$PWD/tmp/$RUN_ID"
+LOGFILE="./logs/youtube-videos-$ID-$DATE.log"
 
-provision_vps "$RUN_ID" "small"
+provision_vps "$RUN_ID" "small" "$LABEL" | tee -a "$LOGFILE"
 
 export NODE_OPTIONS=--max_old_space_size=16384
 
 doit() {
   "$(npm bin)"/sugarcube \
-              -c pipelines/youtube_videos.json \
+              -c "$PIPELINE_CFG" \
               -q queries/mail-recipients.json \
               -Q sheets_query:YoutubeVideosIncoming \
               --media.youtubedl_cmd "$RUN_DIR"/youtube-dl-wrapper-sudo.sh \
@@ -35,7 +39,7 @@ do
     echo "Processed $COUNTER queries"
   fi
 
-  doit "$ID" 2>&1 | tee -a ./logs/youtube-videos-"$ID"-"$DATE".log
+  doit "$ID" 2>&1 | tee -a "$LOGFILE"
 
   if [ "$QUERY_COUNT" -eq $((COUNTER + 1)) ]
   then

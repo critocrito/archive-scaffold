@@ -104,15 +104,16 @@
   (reduce (fn [m k] (if (select-server k servers) (conj m k) m)) [] ids))
 
 (defn create-request-body
-  [region-id ssh-key-id planid tag]
+  [region-id ssh-key-id planid tag label]
   {:DCID region-id
    :VPSPLANID planid
    :OSID osid
    :SSHKEYID ssh-key-id
-   :tag tag})
+   :tag tag
+   :label label})
 
 (defn create
-  [api-key ssh-key plan tag]
+  [api-key ssh-key plan tag label]
   (try
     (let [planid (case plan
                    :small small-planid
@@ -120,7 +121,7 @@
                    :large large-planid)
           regions (list-regions)
           region (random-region regions planid)
-          body (create-request-body (:DCID region) (:SSHKEYID ssh-key) planid tag)]
+          body (create-request-body (:DCID region) (:SSHKEYID ssh-key) planid tag label)]
 
       (when-not region
         (throw (ex-info "Region not found" {:type ::not-found-error})))

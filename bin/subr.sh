@@ -5,6 +5,7 @@ make_id() {
 provision_vps() {
   RUN_ID="$1"
   PLAN="$2"
+  LABEL="$3"
   RUN_DIR="$PWD/tmp/$RUN_ID"
   RUN_SCRIPT="$RUN_DIR/youtube-dl-wrapper-sudo.sh"
   VPS_STATE="$RUN_DIR/vps-state.json"
@@ -15,9 +16,9 @@ provision_vps() {
 
   mkdir -p "tmp/$RUN_ID"
 
-  echo "Provision VPS for run $RUN_ID."
+  echo "Provision VPS: $RUN_ID/$PLAN/$LABEL."
 
-  clojure -A:provision-vps create -S "$VPS_STATE" -P "$PLAN"
+  clojure -A:provision-vps create -S "$VPS_STATE" -P "$PLAN" -l "$LABEL"
 
   echo "[all]" > "$HOSTS_INI"
   jq '.[].ip' "$VPS_STATE" | sed 's/^"\(.*\)"$/\1/g' | while read -r ip; do
@@ -53,4 +54,14 @@ destroy_vps() {
   sudo wireguard_ansible/bin/wg-quick down "$VPN_CONF"
 
   rm -rf "$RUN_DIR"
+}
+
+pipeline_name() {
+  jq -r '.name // "unnamed pipeline"' "$1"
+}
+
+snake_case() {
+  echo "$1" |
+    tr '[:upper:]' '[:lower:]' |
+    sed -e 's/[[:space:]]/_/g'
 }
