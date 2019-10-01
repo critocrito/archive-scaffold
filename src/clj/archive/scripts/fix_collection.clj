@@ -42,6 +42,37 @@
    :size 1000
    :_source {:include ["$sc_id_hash"]}})
 
+(def videos-outside-data-collection-query
+  "Query for Elasticsearch to determine how many downloads have a file path outside of the regular download directory."
+  {:query
+   {:bool
+    {:must
+     [{:nested {:path "$sc_downloads"
+                :query
+                {:bool
+                 {:must [{:term {:$sc_downloads.type "video"}}
+                         {:match {:$sc_downloads.location "/var/www"}}]}}}}]}}
+   :size 1000
+   :_source {:include ["$sc_id_hash"]}})
+
+(def cid-filename-outside-data-collection-query
+  "Query units that have cid.filename set to outside of the collection."
+  {:query
+   {:match {:cid.filename "/var/www"}}
+   :size 1000
+   :_source {:include ["$sc_id_hash"]}})
+
+(def videos-without-filename-query
+  "Merge videos without cid.filename set, Elasticsearch version."
+  {:query
+   {:bool
+    {:must
+     [{:nested {:path "$sc_downloads" :query {:term {:$sc_downloads.type "video"}}}}]
+     :must_not
+     [{:exists {:field "cid.filename"}}]}}
+   :size 1000
+   :_source {:include ["$sc_id_hash"]}})
+
 (defn merge-safe-duplicate-videos-mongo
   "Merge the duplicate video downloads that are safe to merge, MongoDB version."
   [db id]
@@ -228,6 +259,150 @@
   (merge-images-outside-collection-mongo db id)
   (merge-images-outside-collection-elastic url id))
 
+(defn merge-videos-outside-collection-mongo
+  "Merge video downloads that are outside of the regular collection path, MongoDB version."
+  [db id]
+  (let [unit (mongodb/find-one-by-id db id)
+        {:keys [_sc_id_hash _sc_downloads cid]} unit
+        videos (sugar/find-downloads "video" _sc_downloads)
+        stripped-downloads (->> _sc_downloads
+                                (sugar/exclude-from-downloads "video"))
+        downloads (->> videos
+                       (map (fn [video]
+                              (let [location (sugar/fmt-location-video _sc_id_hash (:location video))]
+                                (merge video {:location location}))))
+                       (concat stripped-downloads))
+        mongo-unit (merge unit {:_sc_downloads downloads})]
+    (mongodb/update-one-by-id db (:_id mongo-unit) (dissoc mongo-unit :_id))
+    (->> downloads
+         (filter #(= (:type %) "video"))
+         (map (fn [video]
+                (let [old-video (->> videos
+                                     (filter #(or (= (:_sc_id_hash %) (:_sc_id_hash video))
+                                                  (= (:sha256 %) (:sha256 video))
+                                                  (= (:md5 %) (:md5 video))))
+                                     first)]
+                  {:id _sc_id_hash
+                   :old_location (:location old-video)
+                   :new_location (:location video)
+                   :verified (:verified cid)}))))))
+
+(defn merge-videos-outside-collection-elastic
+  "Merge video downloads that are safe to merge, Elasticsearch version."
+  [url id]
+  (let [unit (elastic/find-one-by-id url id)
+        {:keys [$sc_id_hash $sc_downloads cid]} unit
+        videos (sugar/find-downloads "video" $sc_downloads)
+        stripped-downloads (->> $sc_downloads
+                                (sugar/exclude-from-downloads "video"))
+        downloads (->> videos
+                       (map (fn [video]
+                              (let [location (sugar/fmt-location-video $sc_id_hash (:location video))]
+                                (merge video {:location location}))))
+                       (concat stripped-downloads))
+        es-unit (merge unit {:$sc_downloads downloads})]
+    (elastic/update-document url $sc_id_hash es-unit)
+    (->> downloads
+         (filter #(= (:type %) "video"))
+         (map (fn [video]
+                (let [old-video (->> videos
+                                     (filter #(or (= (:$sc_id_hash %) (:$sc_id_hash video))
+                                                  (= (:sha256 %) (:sha256 video))
+                                                  (= (:md5 %) (:md5 video))))
+                                     first)]
+                  {:id $sc_id_hash
+                   :old_location (:location old-video)
+                   :new_location (:location video)
+                   :verified (:verified cid)}))))))
+
+(defn merge-videos-outside-collection
+  "Move video downloads outside the data collection into the collection."
+  [url db id]
+  (merge-videos-outside-collection-mongo db id)
+  (merge-videos-outside-collection-elastic url id))
+
+(defn merge-cid-filename-outside-collection-mongo
+  "Merge video downloads that are outside of the regular collection path, MongoDB version."
+  [db id]
+  (let [unit (mongodb/find-one-by-id db id)
+        {:keys [_sc_id_hash _sc_downloads cid]} unit
+        video (->> _sc_downloads
+                   (sugar/find-downloads "video")
+                   first)
+        location (sugar/fmt-location-video _sc_id_hash (:location video))
+        new-cid (merge cid {:filename (if (nil? location) (:filename cid) location) :md5_hash (:md5 video)})
+
+        mongo-unit (merge unit {:cid new-cid})]
+    (mongodb/update-one-by-id db (:_id mongo-unit) (dissoc mongo-unit :_id))
+    {:id _sc_id_hash
+     :old_location (:filename cid)
+     :new_location (:filename new-cid)
+     :verified (:verified cid)}))
+
+(defn merge-cid-filename-outside-collection-elastic
+  "Merge video downloads that are safe to merge, Elasticsearch version."
+  [url id]
+  (let [unit (elastic/find-one-by-id url id)
+        {:keys [$sc_id_hash $sc_downloads cid]} unit
+        video (->> $sc_downloads
+                   (sugar/find-downloads "video")
+                   first)
+        location (sugar/fmt-location-video $sc_id_hash (:location video))
+        new-cid (merge cid {:filename (if (nil? location) (:filename cid) location) :md5_hash (:md5 video)})
+        es-unit (merge unit {:cid new-cid})]
+    (println video location new-cid)
+    (elastic/update-document url $sc_id_hash es-unit)
+    {:id $sc_id_hash
+     :old_location (:filename cid)
+     :new_location (:filename new-cid)
+     :verified (:verified cid)}))
+
+(defn merge-cid-filename-outside-collection
+  "Move video downloads outside the data collection into the collection."
+  [url db id]
+  (merge-cid-filename-outside-collection-mongo db id)
+  (merge-cid-filename-outside-collection-elastic url id))
+
+(defn merge-videos-without-filename-mongo
+  "Merge videos without cid.filename set, MongoDB version."
+  [db id]
+  (let [unit (mongodb/find-one-by-id db id)
+        {:keys [_sc_id_hash _sc_downloads cid]} unit
+        video (->> _sc_downloads
+                   (sugar/find-downloads "video")
+                   first)
+        location (sugar/fmt-location-video _sc_id_hash (:location video))
+        new-cid (merge cid {:filename (if (nil? location) (:filename cid) location) :md5_hash (:md5 video)})
+        mongo-unit (merge unit {:cid new-cid})]
+    (mongodb/update-one-by-id db (:_id mongo-unit) (dissoc mongo-unit :_id))
+    {:id _sc_id_hash
+     :old_location (:location video)
+     :new_location (:location video)
+     :verified (:verified cid)}))
+
+(defn merge-videos-without-filename-elastic
+  "Merge videos without cid.filename set, Elasticsearch version."
+  [url id]
+  (let [unit (elastic/find-one-by-id url id)
+        {:keys [$sc_id_hash $sc_downloads cid]} unit
+        video (->> $sc_downloads
+                   (sugar/find-downloads "video")
+                   first)
+        location (sugar/fmt-location-video $sc_id_hash (:location video))
+        new-cid (merge cid {:filename (if (nil? location) (:filename cid) location) :md5_hash (:md5 video)})
+        es-unit (merge unit {:cid new-cid})]
+    (elastic/update-document url $sc_id_hash es-unit)
+    {:id $sc_id_hash
+     :old_location (:location video)
+     :new_location (:location video)
+     :verified (:verified cid)}))
+
+(defn merge-videos-without-filename-collection
+  "Merge videos without cid.filename set."
+  [url db id]
+  (merge-videos-without-filename-mongo db id)
+  (merge-videos-without-filename-elastic url id))
+
 (defn duplicate-video-safe-to-merge?
   "Determine if this videos are safe to merge. We exclude any unit that
   references a location in the russian_attacks, chemicalweapons or videpapi
@@ -257,7 +432,7 @@
         (r/map :_source)
         (r/filter duplicate-video-safe-to-merge?)
         (into [])
-        (partition 5)
+        (partition-all 5)
         (map (fn [as] (map #(merge-safe-duplicate-videos url db (:$sc_id_hash %)) as)))
         flatten)))
 
@@ -269,7 +444,7 @@
         (r/map :_source)
         (r/filter (comp not duplicate-video-safe-to-merge?))
         (into [])
-        (partition 5)
+        (partition-all 5)
         (map (fn [as] (map #(merge-unsafe-duplicate-videos url db (:$sc_id_hash %)) as)))
         flatten)))
 
@@ -280,7 +455,7 @@
    (->> (elastic/scrolled-post-search url youtube-video-downloads-query)
         (r/map :_source)
         (into [])
-        (partition 5)
+        (partition-all 5)
         (map (fn [as] (map #(rename-youtube-video-download-type url db (:$sc_id_hash %)) as)))
         flatten)))
 
@@ -291,8 +466,41 @@
    (->> (elastic/scrolled-post-search url images-outside-data-collection-query)
         (r/map :_source)
         (into [])
-        (partition 5)
+        (partition-all 5)
         (map (fn [as] (map #(merge-images-outside-collection url db (:$sc_id_hash %)) as)))
+        flatten)))
+
+(defn fix-videos-outside-collection
+  "Move videos back into the collection."
+  [url db]
+  (doall
+   (->> (elastic/scrolled-post-search url videos-outside-data-collection-query)
+        (r/map :_source)
+        (into [])
+        (partition-all 5)
+        (map (fn [as] (map #(merge-videos-outside-collection url db (:$sc_id_hash %)) as)))
+        flatten)))
+
+(defn fix-cid-filename-outside-collection
+  "Rewrite cid.filename field."
+  [url db]
+  (doall
+   (->> (elastic/scrolled-post-search url cid-filename-outside-data-collection-query)
+        (r/map :_source)
+        (into [])
+        (partition-all 5)
+        (map (fn [as] (map #(merge-cid-filename-outside-collection url db (:$sc_id_hash %)) as)))
+        flatten)))
+
+(defn fix-videos-without-filename
+  "Merge videos without cid.filename set."
+  [url db]
+  (doall
+   (->> (elastic/scrolled-post-search url videos-without-filename-query)
+        (r/map :_source)
+        (into [])
+        (partition-all 5)
+        (map (fn [as] (map #(merge-cid-filename-outside-collection url db (:$sc_id_hash %)) as)))
         flatten)))
 
 (def csv-columns [:id :old_location :new_location :verified])
@@ -307,10 +515,16 @@
         unsafe-duplicate-videos-csv (fix-unsafe-duplicate-videos url db)
         fixed-youtube-videos-csv (fix-youtube-video-downloads url db)
         images-outside-collection-csv (fix-images-outside-collection url db)
+        videos-outside-collection-csv (fix-videos-outside-collection url db)
+        cid-filename-outside-collection-csv (fix-cid-filename-outside-collection url db)
+        videos-without-filename-csv (fix-videos-without-filename url db)
         rows (pmap #(mapv % csv-columns) (->> []
                                               (cons safe-duplicate-videos-csv)
                                               (cons unsafe-duplicate-videos-csv)
                                               (cons fixed-youtube-videos-csv)
                                               (cons images-outside-collection-csv)
+                                              (cons videos-outside-collection-csv)
+                                              (cons cid-filename-outside-collection-csv)
+                                              (cons videos-without-filename-csv)
                                               flatten))]
     (csv/write-csv *out* (cons header rows))))
