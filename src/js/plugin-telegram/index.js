@@ -96,7 +96,7 @@ const messageEntity = (querySource, query, post) =>
 
 const querySource = "telegram_channel";
 
-const channelPlugin = async (envelope, {log, cfg}) => {
+const channelPlugin = async (envelope, {log, cfg, stats}) => {
   const pastDays = get("telegram.past_days", cfg);
   const queries = env.queriesByType(querySource, envelope);
 
@@ -157,6 +157,9 @@ const channelPlugin = async (envelope, {log, cfg}) => {
           messages.length
         } messages for the past ${distanceInWordsToNow(oldestMsg)}.`,
       );
+
+      stats.count("total", messages.length - messageCount);
+      stats.count("success", messages.length - messageCount);
 
       // We use a delayCount in case no new messages were scraped to allow for
       // the scrolling to settle. This certainly isn't the prettiest, but

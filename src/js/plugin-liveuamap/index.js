@@ -114,7 +114,7 @@ const scrapePage = async (page, {id, href}) => {
 
 const querySource = "liveuamap_region";
 
-const regionPlugin = async (envelope, {log}) => {
+const regionPlugin = async (envelope, {log, stats}) => {
   const queries = env.queriesByType(querySource, envelope);
 
   const browser = await retry(
@@ -149,6 +149,9 @@ const regionPlugin = async (envelope, {log}) => {
     }
 
     log.info(`Scraped ${posts.length} posts for ${region}.`);
+
+    stats.count("total", posts.length);
+    stats.count("success", posts.length);
 
     return posts.map((post) =>
       Object.assign(post, {
