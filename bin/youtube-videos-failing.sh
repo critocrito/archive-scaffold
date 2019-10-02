@@ -13,9 +13,9 @@ RUN_ID=$(make_id)
 RUN_DIR="$PWD/tmp/$RUN_ID"
 LOGFILE="./$REPORT_DIR/youtube-videos-$DATE.log"
 
-provision_vps "$RUN_ID" "small" "$LABEL" | tee -a "$LOGFILE"
-
 mkdir -p "$REPORT_DIR"
+
+provision_vps "$RUN_ID" "small" "$LABEL" | tee -a "$LOGFILE"
 
 export NODE_OPTIONS=--max_old_space_size=16384
 
@@ -39,7 +39,7 @@ ALL_YT_VIDEOS=$(./bin/stats-sources.sh | awk 'BEGIN{FS=","; c=0; } $1~/^youtube/
 
 doit 2>&1 | tee -a "$LOGFILE"
 
-destroy_vps "$RUN_ID"
+destroy_vps "$RUN_ID" | tee -a "$LOGFILE"
 
 FAILED_STATS=$(find "$REPORT_DIR"  -name "*failed-stats-youtube-video*.csv" -type f -printf '%T+ %p\n' | sort -r | head -n 1 | awk '{print $2}')
 FREQUENCIES="$REPORT_DIR/frequencies-youtube-videos.csv"

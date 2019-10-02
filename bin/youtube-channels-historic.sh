@@ -12,7 +12,9 @@ COUNTER=0
 QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
 RUN_ID=$(make_id)
 RUN_DIR="$PWD/tmp/$RUN_ID"
-LOGFILE="./logs/youtube-channels-historic-$ID-$DATE.log"
+LOGFILE="./logs/youtube-channels-historic/$DATE-$ID.log"
+
+mkdir -p "$(dirname "$LOGFILE")"
 
 provision_vps "$RUN_ID" "medium" "$LABEL" | tee -a "$LOGFILE"
 
@@ -43,7 +45,7 @@ do
 
   if [ "$QUERY_COUNT" -eq $((COUNTER + 1)) ]
   then
-    destroy_vps "$RUN_ID"
+    destroy_vps "$RUN_ID" | tee -a "$LOGFILE"
     exit 0
   fi
 

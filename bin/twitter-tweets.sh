@@ -5,6 +5,9 @@ SPREADSHEET_IDS="./queries/spreadsheet-ids.txt"
 DATE=$(date +%Y-%m-%d)
 COUNTER=0
 QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
+LOGFILE="./logs/twitter-tweets/$DATE-$ID.log"
+
+mkdir -p "$(dirname "$LOGFILE")"
 
 export NODE_OPTIONS=--max_old_space_size=16384
 
@@ -28,7 +31,7 @@ do
     echo "Processed $COUNTER queries"
   fi
 
-  doit "$ID" 2>&1 | tee -a ./logs/twitter-tweets-"$ID"-"$DATE".log
+  doit "$ID" 2>&1 | tee -a "$LOGFILE"
 
   if [ "$QUERY_COUNT" -eq $((COUNTER + 1)) ]
   then

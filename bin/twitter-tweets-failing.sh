@@ -4,6 +4,7 @@ DATE=$(date +%Y-%m-%d)
 MONTH=$(date +%B)
 YEAR=$(date +%Y)
 REPORT_DIR="reports/$YEAR/$MONTH"
+LOGFILE="./$REPORT_DIR/twitter-tweets-$DATE.log"
 
 mkdir -p "$REPORT_DIR"
 
@@ -22,7 +23,7 @@ echo "Starting a check for failing twitter tweets."
 
 ALL_TWEETS=$(./bin/stats-sources.sh | awk 'BEGIN{FS=","; c=0; } $1~/^twitter/{ c+=$2 } END{print c}')
 
-doit 2>&1 | tee -a "./$REPORT_DIR/twitter-tweets-$DATE.log"
+doit 2>&1 | tee -a "$LOGFILE"
 
 FAILED_STATS=$(find "$REPORT_DIR"  -name "*failed-stats-twitter-tweets*.csv" -type f -printf '%T+ %p\n' | sort -r | head -n 1 | awk '{print $2}')
 if [ -n "$FAILED_STATS" ] && [ "$FAILED_STATS" != " " ]
@@ -40,4 +41,4 @@ In total $(numfmt --grouping "$TOTAL") of $(numfmt --grouping "$ALL_TWEETS") twi
 
 "
 
-echo "$REPORT" | tee "$REPORT_DIR/report-twitter-tweets.txt"
+echo "$REPORT" | tee "$REPORT_DIR/report-twitter-tweets-$DATE.txt"

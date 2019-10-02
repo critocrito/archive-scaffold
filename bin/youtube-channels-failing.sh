@@ -9,6 +9,9 @@ YEAR=$(date +%Y)
 REPORT_DIR="reports/$YEAR/$MONTH"
 COUNTER=0
 QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
+LOGFILE="$REPORT_DIR/youtube-channels-$DATE.log"
+
+mkdir -p "$REPORT_DIR"
 
 export NODE_OPTIONS=--max_old_space_size=16384
 
@@ -31,7 +34,7 @@ do
     echo "Processed $COUNTER queries"
   fi
 
-  doit "$ID" 2>&1 | tee -a "$REPORT_DIR/youtube-channels-$DATE.log"
+  doit "$ID" 2>&1 | tee -a "$LOGFILE"
 
   if [ "$QUERY_COUNT" -eq $((COUNTER + 1)) ]
   then

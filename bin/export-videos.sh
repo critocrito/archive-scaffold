@@ -5,6 +5,8 @@ DATE=$(date +%Y-%m-%d)
 COLUMNS="$1"
 TARGET_SPREADSHEET="$2"
 
+LOGFILE="./logs/export-by-columns/$DATE.log"
+
 help() {
   echo "Usage: ./bin/export-videos.sh <COLUMNS> <TARGET SPREADSHEET>"
   echo ""
@@ -27,6 +29,8 @@ then
   exit 1
 fi
 
+mkdir -p "$(dirname "$LOGFILE")"
+
 doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/export_videos.json \
@@ -40,5 +44,5 @@ echo "Starting export of videos."
 
 while IFS="" read -r ID
 do
-  doit "$ID" "$COLUMNS" "$TARGET_SPREADSHEET" 2>&1 | tee -a ./logs/export-by-columns-"$DATE".log
+  doit "$ID" "$COLUMNS" "$TARGET_SPREADSHEET" 2>&1 | tee -a "$LOGFILE"
 done < "$SPREADSHEET_IDS"

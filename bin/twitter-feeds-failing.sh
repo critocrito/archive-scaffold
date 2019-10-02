@@ -7,6 +7,7 @@ YEAR=$(date +%Y)
 REPORT_DIR="reports/$YEAR/$MONTH"
 COUNTER=0
 QUERY_COUNT="$(wc -l < "$SPREADSHEET_IDS")"
+LOGFILE="$REPORT_DIR/twitter-feeds-$DATE.log"
 
 mkdir -p "$REPORT_DIR"
 
@@ -31,7 +32,7 @@ do
     echo "Processed $COUNTER queries"
   fi
 
-  doit "$ID" 2>&1 | tee -a "$REPORT_DIR/twitter-feeds-$DATE.log"
+  doit "$ID" 2>&1 | tee -a "$LOGFILE"
 
   if [ "$QUERY_COUNT" -eq $((COUNTER + 1)) ]
   then
@@ -61,4 +62,4 @@ In total $(numfmt --grouping "$FAILED_COUNT") of $(numfmt --grouping "$TOTAL") T
 
 "
 
-echo "$REPORT" | tee "$REPORT_DIR/report-twitter-feeds.txt"
+echo "$REPORT" | tee "$REPORT_DIR/report-twitter-feeds-$DATE.txt"

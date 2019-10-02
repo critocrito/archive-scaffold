@@ -3,6 +3,9 @@
 SPREADSHEET_IDS="./queries/import-spreadsheet-ids.txt"
 
 DATE=$(date +%Y-%m-%d)
+LOGFILE="./logs/import-collections/$DATE-$ID.log"
+
+mkdir -p "$(dirname "$LOGFILE")"
 
 export NODE_OPTIONS=--max_old_space_size=16384
 
@@ -18,5 +21,5 @@ echo "Starting the import of collections."
 
 while IFS="" read -r ID
 do
-  doit "$ID" 2>&1 | tee -a ./logs/import-collections-"$ID"-"$DATE".log
+  doit "$ID" 2>&1 | tee -a "$LOGFILE"
 done < "$SPREADSHEET_IDS"

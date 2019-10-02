@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 SPREADSHEET_IDS="./queries/export-spreadsheet-ids.txt"
-DATE=$(date +%Y-%m-%d)
 COLUMNS="$1"
 
 help() {

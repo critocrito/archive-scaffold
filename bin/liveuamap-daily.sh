@@ -9,7 +9,9 @@ REGIONS="./queries/regions.txt"
 DATE=$(date +%Y-%m-%d)
 RUN_ID=$(make_id)
 RUN_DIR="$PWD/tmp/$RUN_ID"
-LOGFILE="./logs/liveuamap-region-$REGION-$DATE.log"
+LOGFILE="./logs/liveuamap-region/$DATE.log"
+
+mkdir -p "$(dirname "$LOGFILE")"
 
 provision_vps "$RUN_ID" "small" "$LABEL" | tee -a "$LOGFILE"
 
@@ -31,4 +33,4 @@ do
   doit "$REGION" 2>&1 | tee -a "$LOGFILE"
 done < "$REGIONS"
 
-destroy_vps "$RUN_ID"
+destroy_vps "$RUN_ID" | tee -a "$LOGFILE"
