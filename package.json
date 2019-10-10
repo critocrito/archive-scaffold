@@ -1,10 +1,10 @@
 {
   "private": true,
-  "name": "sudan-archive",
+  "name": "archive-scaffold",
   "license": "GPL-3.0",
   "author": "Christo <christo@cryptodrunks.net>",
-  "homepage": "https://github.com/critocrito/sudan-archive#readme",
-  "repository": "https://github.com/critocrito/sudan-archive.git",
+  "homepage": "https://github.com/critocrito/archive-scaffold#readme",
+  "repository": "https://github.com/critocrito/archive-scaffold.git",
   "scripts": {
     "fix": "yarn lint --fix",
     "lint:js": "eslint src/**/*.js",
