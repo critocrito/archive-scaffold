@@ -1,10 +1,10 @@
 {
   "private": true,
-  "name": "archive-scaffold",
+  "name": "sudan-archive",
   "license": "GPL-3.0",
   "author": "Christo <christo@cryptodrunks.net>",
-  "homepage": "https://github.com/critocrito/archive-scaffold#readme",
-  "repository": "https://github.com/critocrito/archive-scaffold.git",
+  "homepage": "https://github.com/critocrito/sudan-archive#readme",
+  "repository": "https://github.com/critocrito/sudan-archive.git",
   "scripts": {
     "fix": "yarn lint --fix",
     "lint:js": "eslint src/**/*.js",
@@ -40,6 +40,7 @@
     "sugarcube-plugin-liveuamap": "file:./src/js/plugin-liveuamap",
     "sugarcube-plugin-query": "file:./src/js/plugin-query",
     "sugarcube-plugin-scrub": "file:./src/js/plugin-scrub-fields",
+    "sugarcube-plugin-sources": "file:./src/js/plugin-sources",
     "sugarcube-plugin-telegram": "file:./src/js/plugin-telegram"
   },
   "devDependencies": {

@@ -1,0 +1,33 @@
+{
+  "name": "Move Sources",
+  "extends": ["./configs/query-handling.json", "./configs/secrets.json"],
+  "plugins": ["sources_columns_move"],
+  "sources": {
+    "mappings": [
+      {
+        "default_type": "twitter_tweet",
+        "from_sheet": "TweetsDone",
+        "to_sheet": "TweetsIncoming",
+        "selection_list": ["type:twitter_tweet"]
+      },
+      {
+        "default_type": "twitter_user",
+        "from_sheet": "TwitterFeeds",
+        "to_sheet": "TwitterFeeds",
+        "selection_list": ["type:twitter_user"]
+      },
+      {
+        "default_type": "youtube_video",
+        "from_sheet": "YoutubeVideosDone",
+        "to_sheet": "YoutubeVideosIncoming",
+        "selection_list": ["type:youtube_video"]
+      },
+      {
+        "default_type": "youtube_channel",
+        "from_sheet": "YoutubeChannelsDaily",
+        "to_sheet": "YoutubeChannelsHistoric",
+        "selection_list": ["type:youtube_channel"]
+      }
+    ]
+  }
+}

@@ -5504,6 +5504,9 @@ strip-json-comments@2.0.1, strip-json-comments@^2.0.1, strip-json-comments@~2.0.
 "sugarcube-plugin-scrub@file:./src/js/plugin-scrub-fields":
   version "0.0.0"
 
+"sugarcube-plugin-sources@file:./src/js/plugin-sources":
+  version "0.0.0"
+
 "sugarcube-plugin-telegram@file:./src/js/plugin-telegram":
   version "0.0.0"
 
