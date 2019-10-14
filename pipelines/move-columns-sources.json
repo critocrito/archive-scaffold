@@ -30,8 +30,8 @@
       },
       {
         "default_type": "facebook_post",
-        "from_sheet": "FacebookPostsIncoming",
-        "to_sheet": "FacebookPostsDone",
+        "from_sheet": "FacebookPostsDone",
+        "to_sheet": "FacebookPostsIncoming",
         "selection_list": ["type:facebook_post"]
       }
     ]
