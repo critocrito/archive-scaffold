@@ -1,0 +1,44 @@
+{
+  "name": "Facebook Posts",
+  "extends": [
+    "./configs/media.json",
+    "./configs/downloads.json",
+    "./configs/mongodb.json",
+    "./configs/elasticsearch.json",
+    "./configs/mail.json",
+    "./configs/csv.json",
+    "./configs/query-handling.json",
+    "./configs/instruments.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": [
+    "sheets_queries",
+    "facebook_post",
+    "media_youtubedl",
+    "http_get",
+    "mongodb_supplement",
+    "media_mosaic",
+    "cid_annotate",
+    "workflow_merge_query",
+    "mongodb_store",
+    "elastic_supplement",
+    "enigio_timestamp",
+    "scrub_pick_fields",
+    "elastic_export",
+    "sheets_move_queries",
+    "mail_pipeline_stats",
+    "mail_failed_stats",
+    "tap_printf"
+  ],
+  "google": {
+    "query_default_type": "facebook_post",
+    "query_types_to_move": "facebook_post",
+    "selection_list": ["type:facebook_post"]
+  },
+  "tap": {
+    "select": "stats"
+  },
+  "workflow": {
+    "multiplex_size": 1000
+  }
+}

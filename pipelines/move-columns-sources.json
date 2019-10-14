@@ -27,6 +27,12 @@
         "from_sheet": "YoutubeChannelsDaily",
         "to_sheet": "YoutubeChannelsHistoric",
         "selection_list": ["type:youtube_channel"]
+      },
+      {
+        "default_type": "facebook_post",
+        "from_sheet": "FacebookPostsIncoming",
+        "to_sheet": "FacebookPostsDone",
+        "selection_list": ["type:facebook_post"]
       }
     ]
   }

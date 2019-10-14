@@ -36,7 +36,7 @@
     "puppeteer": "^1.17.0",
     "sugarcube-plugin-cid": "file:./src/js/plugin-cid",
     "sugarcube-plugin-enigio": "file:./src/js/plugin-enigio",
-    "sugarcube-plugin-facebook": "file:./src/js/plugin-facebook",
+    "sugarcube-plugin-facebook": "file:../sugarcube-plugin-facebook",
     "sugarcube-plugin-liveuamap": "file:./src/js/plugin-liveuamap",
     "sugarcube-plugin-query": "file:./src/js/plugin-query",
     "sugarcube-plugin-scrub": "file:./src/js/plugin-scrub-fields",

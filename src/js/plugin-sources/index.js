@@ -20,6 +20,10 @@ const {
   normalizeYoutubeVideoUrl,
   normalizeYoutubeChannelUrl,
 } = require("@sugarcube/plugin-youtube");
+const {
+  isFacebookPostUrl: isFacebookPost,
+  normalizeFacebookPostUrl,
+} = require("sugarcube-plugin-facebook");
 
 const querySource = "sources_sheet";
 
@@ -153,6 +157,13 @@ const plugin = (envelope, {log, cfg, cache, stats}) => {
           },
         ]);
 
+      if (isFacebookPost(url))
+        return memo.concat([
+          {
+            type: "facebook_post",
+            term: normalizeFacebookPostUrl(url),
+          },
+        ]);
       return memo;
     }, []);
 
