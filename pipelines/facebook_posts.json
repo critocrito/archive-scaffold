@@ -13,6 +13,7 @@
   ],
   "plugins": [
     "sheets_queries",
+    "workflow_multiplex",
     "facebook_post",
     "media_youtubedl",
     "http_get",
@@ -26,6 +27,7 @@
     "scrub_pick_fields",
     "elastic_export",
     "sheets_move_queries",
+    "workflow_multiplex_end",
     "mail_pipeline_stats",
     "mail_failed_stats",
     "tap_printf"
@@ -39,6 +41,6 @@
     "select": "stats"
   },
   "workflow": {
-    "multiplex_size": 1000
+    "multiplex_size": 100
   }
 }
