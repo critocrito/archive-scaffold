@@ -350,7 +350,6 @@
         location (sugar/fmt-location-video $sc_id_hash (:location video))
         new-cid (merge cid {:filename (if (nil? location) (:filename cid) location) :md5_hash (:md5 video)})
         es-unit (merge unit {:cid new-cid})]
-    (println video location new-cid)
     (elastic/update-document url $sc_id_hash es-unit)
     {:id $sc_id_hash
      :old_location (:filename cid)
