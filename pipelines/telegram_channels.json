@@ -16,7 +16,7 @@
     "workflow_multiplex",
     "telegram_channel",
     "media_youtubedl",
-    "http_get",
+    "media_fetch",
     "mongodb_supplement",
     "media_mosaic",
     "cid_annotate",

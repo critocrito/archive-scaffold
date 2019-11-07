@@ -18,7 +18,7 @@
     "media_youtubedl",
     "mongodb_supplement",
     "media_mosaic",
-    "http_get",
+    "media_fetch",
     "cid_annotate",
     "mongodb_store",
     "elastic_supplement",
