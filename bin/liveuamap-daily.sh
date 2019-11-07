@@ -20,7 +20,6 @@ export NODE_OPTIONS=--max_old_space_size=16384
 doit() {
   "$(npm bin)"/sugarcube \
               -c "$PIPELINE_CFG" \
-              -q queries/mail-recipients.json \
               -Q liveuamap_region:"$1" \
               --media.youtubedl_cmd "$RUN_DIR"/youtube-dl-wrapper-sudo.sh \
               -d

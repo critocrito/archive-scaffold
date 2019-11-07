@@ -24,17 +24,11 @@
     "enigio_timestamp",
     "scrub_pick_fields",
     "elastic_export",
-    "sheets_move_queries",
-    "mail_pipeline_stats",
-    "mail_failed_stats",
-    "tap_printf"
+    "sheets_move_queries"
   ],
   "google": {
     "query_default_type": "video_url",
     "query_types_to_move": "video_url",
     "selection_list": ["type:video_url"]
-  },
-  "tap": {
-    "select": "data"
   }
 }

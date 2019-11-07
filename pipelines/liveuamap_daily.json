@@ -24,12 +24,6 @@
     "elastic_supplement",
     "enigio_timestamp",
     "scrub_pick_fields",
-    "elastic_export",
-    "mail_pipeline_stats",
-    "mail_failed_stats",
-    "tap_printf"
-  ],
-  "tap": {
-    "select": "stats"
-  }
+    "elastic_export"
+  ]
 }

@@ -14,7 +14,6 @@ export NODE_OPTIONS=--max_old_space_size=16384
 doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/telegram_channels_daily.json \
-              -q queries/mail-recipients.json \
               -Q sheets_query:TelegramChannelsDaily \
               --google.spreadsheet_id "$1" \
               -d

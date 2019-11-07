@@ -14,7 +14,6 @@ export NODE_OPTIONS=--max_old_space_size=16384
 doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/twitter_tweets.json \
-              -q queries/mail-recipients.json \
               -Q sheets_query:TweetsIncoming \
               --google.spreadsheet_id "$1" \
               --google.to_spreadsheet_id "$1" \

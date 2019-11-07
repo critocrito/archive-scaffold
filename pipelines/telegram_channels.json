@@ -27,10 +27,7 @@
     "scrub_pick_fields",
     "elastic_export",
     "sheets_move_queries",
-    "workflow_multiplex_end",
-    "mail_pipeline_stats",
-    "mail_failed_stats",
-    "tap_printf"
+    "workflow_multiplex_end"
   ],
   "google": {
     "query_default_type": "telegram_channel",
@@ -39,8 +36,5 @@
   },
   "workflow": {
     "multiplex_continue_on_error": true
-  },
-  "tap": {
-    "select": "stats"
   }
 }

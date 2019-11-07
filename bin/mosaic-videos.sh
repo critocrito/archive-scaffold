@@ -9,7 +9,6 @@ mkdir -p "$(dirname "$LOGFILE")"
 doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/mosaic-videos.json \
-              -q queries/mail-recipients.json \
               -d
 }
 

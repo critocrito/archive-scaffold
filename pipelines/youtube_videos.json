@@ -24,18 +24,12 @@
     "enigio_timestamp",
     "scrub_pick_fields",
     "elastic_export",
-    "sheets_move_queries",
-    "mail_pipeline_stats",
-    "mail_failed_stats",
-    "tap_printf"
+    "sheets_move_queries"
   ],
   "google": {
     "query_default_type": "youtube_video",
     "query_types_to_move": "youtube_video",
     "selection_list": ["type:youtube_video"]
-  },
-  "tap": {
-    "select": "stats"
   },
   "workflow": {
     "multiplex_size": 1000

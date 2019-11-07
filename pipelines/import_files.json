@@ -16,9 +16,7 @@
     "tap_printf",
     "media_mosaic",
     "cid_annotate",
-    "scrub_pick_fields",
-    "mail_pipeline_stats",
-    "mail_failed_stats"
+    "scrub_pick_fields"
   ],
   "media": {
     "mosaic_parallel": 6

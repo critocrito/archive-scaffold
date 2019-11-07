@@ -15,16 +15,12 @@
     "elastic_supplement",
     "scrub_pick_fields",
     "elastic_export",
-    "workflow_multiplex_end",
-    "tap_printf"
+    "workflow_multiplex_end"
   ],
   "google": {
     "sheet": "Collection"
   },
   "workflow": {
     "multiplex_continue_on_error": true
-  },
-  "tap": {
-    "select": "stats"
   }
 }

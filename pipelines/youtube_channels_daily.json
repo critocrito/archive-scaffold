@@ -14,10 +14,7 @@
     "enigio_timestamp",
     "scrub_pick_fields",
     "elastic_export",
-    "workflow_multiplex_end",
-    "mail_pipeline_stats",
-    "mail_failed_stats",
-    "tap_printf"
+    "workflow_multiplex_end"
   ],
   "youtube": {
     "past_days": 3

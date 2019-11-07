@@ -16,7 +16,6 @@ export NODE_OPTIONS=--max_old_space_size=16384
 doit() {
   "$(npm bin)"/sugarcube \
               -c pipelines/check_failing_twitter_feeds.json \
-              -q queries/mail-recipients.json \
               --google.spreadsheet_id "$1" \
               --csv.data_dir "$REPORT_DIR" \
               --csv.label twitter-feeds \
