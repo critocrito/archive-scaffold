@@ -803,10 +803,10 @@
     pify "^3.0.0"
     request "^2.81.0"
 
-"@sugarcube/plugin-mail@0.31.0":
-  version "0.31.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-mail/-/plugin-mail-0.31.0.tgz#89bccab102d962dd6d5b3bad56b38165e6a8f8f8"
-  integrity sha512-ycHPRB85M8f/Gd+ywmxXLtUu/+fIIJWWbOPjEgpA+CG4tIrbtx4Y+wpjTMMI65r8jCtKv60u1TFxDQFeBknuOw==
+"@sugarcube/plugin-mail@0.31.1":
+  version "0.31.1"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-mail/-/plugin-mail-0.31.1.tgz#92dcd7b63ae2c2050059e710b5885e4254d80ca6"
+  integrity sha512-i3nB0EqwDg8Q+h7lZJHTfHIKPCfDXsNds1LEvCOYxxR3j3Nrk8KEGuZG86eVs0L8P7F8SrKs2iEgMSK70Dvukw==
   dependencies:
     "@sugarcube/core" "^0.31.0"
     "@sugarcube/plugin-fs" "^0.31.0"
@@ -817,10 +817,10 @@
     lodash "^4.17.4"
     nodemailer "^4.4.2"
 
-"@sugarcube/plugin-media@0.31.0":
-  version "0.31.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-media/-/plugin-media-0.31.0.tgz#8ab663d3730148ff5c4bc6adbe553fb99ae9e76f"
-  integrity sha512-NylAtocVOetOgQPl81WlbLYDtDFc5P075HlGK4EeVNwKprwwgNVLUIoapMWNmD2r9Anl6DsOELkPqg06RB3quQ==
+"@sugarcube/plugin-media@0.31.1":
+  version "0.31.2"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-media/-/plugin-media-0.31.2.tgz#9b8e176e29fd2697d2847c14ff9499f63f5f1d8e"
+  integrity sha512-pDElPQ5QKb4VlE3UlOszR4PIyI/gFrPI/2kDd0FLhpWmzEresV3VhcLIQkGflJ+OH5IjyTXWs5ACLZd69OwTwA==
   dependencies:
     "@sugarcube/core" "^0.31.0"
     "@sugarcube/plugin-fs" "^0.31.0"
@@ -867,10 +867,10 @@
     lodash "^4.17.4"
     pify "^3.0.0"
 
-"@sugarcube/plugin-twitter@0.31.0":
-  version "0.31.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-twitter/-/plugin-twitter-0.31.0.tgz#6da3a854043ce98e7a2cb8bd252836404ac71888"
-  integrity sha512-4zHgV9YjLGJiZLNV/SmbcJB1No11MTLZAMVkjQ9j4Y8TGbJQVUJ6KbrxZB2PbBptFliXzKQb+TefCCLz/iuHMQ==
+"@sugarcube/plugin-twitter@0.31.1":
+  version "0.31.2"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-twitter/-/plugin-twitter-0.31.2.tgz#b5866e44d526674329313bb8299e86a380d1f13c"
+  integrity sha512-/a9z/CdWOi2/0kfoptSkPtaY0IGMS1Wc0pz4cga4oUMGYk3Rw0lu53lckrI1VB+lXKLAYUMzm7VB992wmuNp9w==
   dependencies:
     "@sugarcube/core" "^0.31.0"
     "@sugarcube/utils" "^0.31.0"

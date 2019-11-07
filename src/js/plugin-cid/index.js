@@ -126,6 +126,20 @@ const facebookPostAnnotations = (obs) => {
   };
 };
 
+const httpImportAnnotations = (obs) => {
+  const {location, author, title, body} = obs;
+
+  return {
+    online_title: title,
+    online_title_en: title,
+    online_link: location,
+    description: body,
+    rights_owner: author,
+    acquired_from: author,
+    creator: author,
+  };
+};
+
 const annotate = (obs) => {
   // Don't annotate if annotations already exist.
   if (obs.cid != null) return obs;
@@ -216,6 +230,7 @@ const annotate = (obs) => {
     ["facebook_api_feed"].includes(source) ? facebookAnnotations(obs) : {},
     ["liveuamap_region"].includes(source) ? liveuamapAnnotations(obs) : {},
     ["facebook_post"].includes(source) ? facebookPostAnnotations(obs) : {},
+    ["http_url"].includes(source) ? httpImportAnnotations(obs) : {},
   );
 
   return Object.assign({}, obs, {
