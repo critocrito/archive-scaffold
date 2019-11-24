@@ -13,6 +13,9 @@
     "sheets_queries",
     "workflow_multiplex",
     "http_import",
+    "media_fetch",
+    "media_warc",
+    "media_screenshot",
     "mongodb_supplement",
     "cid_annotate",
     "workflow_merge_query",
@@ -24,6 +27,9 @@
     "sheets_move_queries",
     "workflow_multiplex_end"
   ],
+  "http": {
+    "import_parallel": 6
+  },
   "google": {
     "query_default_type": "http_url",
     "query_types_to_move": "http_url",

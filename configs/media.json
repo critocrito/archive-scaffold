@@ -1,6 +1,8 @@
 {
   "media": {
     "youtubedl_parallel": 6,
-    "mosaic_parallel": 6
+    "mosaic_parallel": 6,
+    "warc_parallel": 6,
+    "parallel": 6
   }
 }
