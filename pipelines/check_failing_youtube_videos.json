@@ -11,7 +11,6 @@
   "plugins": [
     "elastic_import",
     "youtube_filter_failing",
-    "media_youtubedl_check",
     "mail_failed_stats"
   ],
   "queries": [
