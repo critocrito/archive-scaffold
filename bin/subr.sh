@@ -25,8 +25,8 @@ provision_vps() {
     echo "$ip namespace=$NS run_dir=$RUN_DIR" >> "$HOSTS_INI"
   done
 
-  echo "Sleeping 60 seconds to allow VPS to settle."
-  sleep 60
+  echo "Sleeping 120 seconds to allow VPS to settle."
+  sleep 120
 
   ansible-playbook wireguard_ansible/wireguard.yml -u root -i "$HOSTS_INI"
 
