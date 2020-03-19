@@ -1,5 +1,5 @@
 {
-  "_source": ["$sc_id_hash", "cid.online_link"],
+  "_source": ["$sc_id_hash", "$sc_id", "$sc_source"],
   "query": {
     "terms": {
       "$sc_source": ["twitter_feed", "twitter_tweets"]

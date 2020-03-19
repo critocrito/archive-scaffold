@@ -1,17 +1,22 @@
 {
   "name": "Twitter Failing Tweets",
   "extends": [
-    "./configs/elasticsearch.json",
+    "./configs/media.json",
+    "./configs/mongodb.json",
     "./configs/csv.json",
+    "./configs/mail.json",
+    "./configs/instruments.json",
     "./configs/secrets.json"
   ],
   "plugins": [
-    "elastic_import",
-    "query_to_tweets",
-    "twitter_tweets",
-    "csv_export_failed"
+    "mongodb_query_units",
+    "twitter_filter_failing",
+    "mail_failed_stats"
   ],
   "queries": [
-    { "type": "glob_pattern", "term": "./es-queries/all-twitter-tweets.json" }
+    {
+      "type": "mongodb_query_units",
+      "term": { "_sc_source": { "$in": ["twitter_feed", "twitter_tweets"] } }
+    }
   ]
 }
