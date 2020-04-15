@@ -16,9 +16,9 @@
 
 - name: Purge unattended upgrades
   raw: apt-get -y purge unattended-upgrades    
-
-- name: Update apt cache
-  raw: apt-get -y update
+  register: purge_uu
+  until: purge_uu is not failed
+  retries: 10
 
 - name: Add the WireGuard PPA
   apt_repository:
@@ -35,3 +35,6 @@
       - python2.7
     state: present
     update_cache: true
+  register: install_wg
+  until: install_wg is not failed
+  retries: 10
