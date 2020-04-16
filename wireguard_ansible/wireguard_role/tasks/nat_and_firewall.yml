@@ -71,9 +71,14 @@
     jump: MASQUERADE
 
 - name: Install iptables-persistent
-  apt: pkg=iptables-persistent state=present update_cache=true
+  apt: 
+    name:
+      - iptables-persistent 
+    state: present
+    update_cache: true
+  register: install_iptables
+  until: install_iptables is not failed
+  retries: 10
 
 - name: Set up iptables persistence
   command: netfilter-persistent save
-
-

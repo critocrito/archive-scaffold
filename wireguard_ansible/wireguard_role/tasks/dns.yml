@@ -5,6 +5,9 @@
       - unbound-host
     state: present
     update_cache: true
+  register: install_unbound
+  until: install_unbound is not failed
+  retries: 10
 
 - name: Download the list of root DNS servers
   get_url:
