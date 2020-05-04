@@ -65,3 +65,15 @@ snake_case() {
     tr '[:upper:]' '[:lower:]' |
     sed -e 's/[[:space:]]/_/g'
 }
+
+_is_os() {
+  [ "$(uname)" = "$1" ]
+}
+
+is_mac() {
+  _is_os "Darwin"
+}
+
+is_linux() {
+  _is_os "Linux"
+}

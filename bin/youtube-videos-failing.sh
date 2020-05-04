@@ -9,11 +9,16 @@ DATE=$(date +%Y-%m-%d)
 MONTH=$(date +%B)
 YEAR=$(date +%Y)
 REPORT_DIR="reports/$YEAR/$MONTH"
+REPORT_TMP_DIR="$REPORT_DIR/tmp"
 RUN_ID=$(make_id)
 RUN_DIR="$PWD/tmp/$RUN_ID"
 LOGFILE="./$REPORT_DIR/youtube-videos-$DATE.log"
 
-mkdir -p "$REPORT_DIR"
+# on mac use the GNU version of find
+FIND="find"
+if (is_mac); then FIND="gfind"; fi
+
+mkdir -p "$REPORT_DIR/tmp"
 
 provision_vps "$RUN_ID" "small" "$LABEL" | tee -a "$LOGFILE"
 
@@ -23,24 +28,70 @@ percent() {
   echo "scale=2; $2*100/$1" | bc -l | sed -e 's/^\.\(.*\)/0\.\1/g'
 }
 
-doit() {
+do_prepare_videos() {
+  "$(npm bin)/sugarcube" \
+    -c "$PIPELINE_CFG" \
+    -p elastic_import,tap_writef \
+    --marker "$RUN_ID" \
+    --csv.data_dir "$REPORT_DIR" \
+    --csv.label youtube-videos \
+    --csv.append \
+    --tap.filename "$REPORT_TMP_DIR/videos.json" \
+    --tap.chunk_size 10000 \
+    -d
+}
+
+do_check() {
+  # $1 -> json input file
   "$(npm bin)"/sugarcube \
-              -c "$PIPELINE_CFG" \
-              --media.youtubedl_cmd "$RUN_DIR"/youtube-dl-wrapper-sudo.sh \
-              --csv.data_dir "$REPORT_DIR" \
-              --csv.label youtube-videos \
-              -d
+    -c "$PIPELINE_CFG" \
+    -p fs_from_json,youtube_filter_failing \
+    --marker "$RUN_ID" \
+    -Q glob_pattern:"$1" \
+    --csv.data_dir "$REPORT_DIR" \
+    --media.youtubedl_cmd "$RUN_DIR"/youtube-dl-wrapper-sudo.sh \
+    -d
 }
 
 echo "Starting a check for failing youtube videos."
 
 ALL_YT_VIDEOS=$(./bin/stats-sources.sh | awk 'BEGIN{FS=","; c=0; } $1~/^youtube/{ c+=$2 } END{print c}')
 
-doit 2>&1 | tee -a "$LOGFILE"
+do_prepare_videos 2>&1 | tee -a "$LOGFILE"
+
+COUNT_INPUT_FILES=$(ls -1 "$REPORT_TMP_DIR" | wc -l | sed 's/ //g')
+COUNTER=0
+
+# For every file with data we run a pipeline to check it's availability. We
+# suspend failure checking in the morning during the time of the daily scrapes.
+for f in "$REPORT_TMP_DIR"/*; do
+  while :; do
+   currenttime=$(date +%H:%M)
+   if [[ "$currenttime" > "23:45" ]] || [[ "$currenttime" < "04:15" ]]; then
+     echo "Suspending failure checks during daily scrape." | tee -a "$LOGFILE"
+     sleep 900
+   else
+     echo "No need to suspend during the daily scrapes." | tee -a "$LOGFILE"
+     break
+   fi
+  done
+
+  do_check "$f" 2>&1 | tee -a "$LOGFILE"
+
+  COUNTER=$((COUNTER+1))
+
+  echo ""
+  echo ""
+  echo "Processed $COUNTER/$COUNT_INPUT_FILES input files."
+  echo ""
+  echo ""
+done
 
 destroy_vps "$RUN_ID" | tee -a "$LOGFILE"
 
-FAILED_STATS=$(find "$REPORT_DIR"  -name "*failed-stats-youtube-video*.csv" -type f -printf '%T+ %p\n' | sort -r | head -n 1 | awk '{print $2}')
+rm -rf "$REPORT_TMP_DIR"
+
+FAILED_STATS=$("$FIND" "$REPORT_DIR"  -name "*failed-stats-youtube-video*.csv" -type f -printf '%T+ %p\n' | sort -r | head -n 1 | awk '{print $2}')
 FREQUENCIES="$REPORT_DIR/frequencies-youtube-videos.csv"
 
 {

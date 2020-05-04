@@ -2,18 +2,12 @@
   "name": "Youtube Failing Videos",
   "extends": [
     "./configs/media.json",
-    "./configs/elasticsearch.json",
     "./configs/csv.json",
-    "./configs/mail.json",
-    "./configs/instruments.json",
     "./configs/secrets.json"
   ],
-  "plugins": [
-    "elastic_import",
-    "youtube_filter_failing",
-    "mail_failed_stats"
-  ],
-  "queries": [
-    { "type": "glob_pattern", "term": "./es-queries/all-youtube-videos.json" }
-  ]
+  "csv": {
+    "append": true,
+    "label": "youtube-videos"
+  },
+  "instruments": ["statsd_metrics", "csv_failures_file"]
 }
