@@ -33,6 +33,7 @@ do_prepare_videos() {
     -c "$PIPELINE_CFG" \
     -p elastic_import,tap_writef \
     --marker "$RUN_ID" \
+    -Q glob_pattern:es-queries/all-youtube-videos.json \
     --csv.data_dir "$REPORT_DIR" \
     --csv.label youtube-videos \
     --csv.append \

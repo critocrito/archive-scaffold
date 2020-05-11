@@ -3,6 +3,7 @@
   "extends": [
     "./configs/media.json",
     "./configs/csv.json",
+    "./configs/elasticsearch.json",
     "./configs/secrets.json"
   ],
   "csv": {
