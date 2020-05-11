@@ -4,15 +4,13 @@
     "./configs/media.json",
     "./configs/mongodb.json",
     "./configs/csv.json",
-    "./configs/mail.json",
-    "./configs/instruments.json",
     "./configs/secrets.json"
   ],
-  "plugins": [
-    "mongodb_query_units",
-    "twitter_filter_failing",
-    "mail_failed_stats"
-  ],
+  "csv": {
+    "append": true,
+    "label": "twitter-tweets"
+  },
+  "instruments": ["statsd_metrics", "csv_failures_file"],
   "queries": [
     {
       "type": "mongodb_query_units",
