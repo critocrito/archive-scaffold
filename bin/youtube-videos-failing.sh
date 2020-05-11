@@ -101,7 +101,7 @@ else
   MISSING="0"
 fi
 
-EXISTING=$((ALL_TWEETS-MISSING))
+EXISTING=$((ALL_YT_VIDEOS-MISSING))
 
 # Send the metrics to statsd
 echo "sugarcube.$PROJECT_NAME.$LABEL.youtube_filter_failing.missing:$MISSING|c" | nc -w 1 -u localhost 8125
