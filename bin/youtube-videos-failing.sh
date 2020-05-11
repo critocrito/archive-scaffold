@@ -11,16 +11,16 @@ DATE=$(date +%Y-%m-%d)
 MONTH=$(date +%B)
 YEAR=$(date +%Y)
 REPORT_DIR="reports/$YEAR/$MONTH"
-REPORT_TMP_DIR="$REPORT_DIR/tmp"
 RUN_ID=$(make_id)
 RUN_DIR="$PWD/tmp/$RUN_ID"
+REPORT_TMP_DIR="$REPORT_DIR/tmp-$LABEL-$RUN_ID"
 LOGFILE="./$REPORT_DIR/youtube-videos-$DATE.log"
 
 # on mac use the GNU version of find
 FIND="find"
 if (is_mac); then FIND="gfind"; fi
 
-mkdir -p "$REPORT_DIR/tmp"
+mkdir -p "$REPORT_TMP_DIR"
 
 provision_vps "$RUN_ID" "small" "$LABEL" | tee -a "$LOGFILE"
 
@@ -92,8 +92,6 @@ done
 
 destroy_vps "$RUN_ID" | tee -a "$LOGFILE"
 
-rm -rf "$REPORT_TMP_DIR"
-
 FAILED_STATS=$("$FIND" "$REPORT_DIR"  -name "*failed-stats-youtube-video*.csv" -type f -printf '%T+ %p\n' | sort -r | head -n 1 | awk '{print $2}')
 
 if [ -n "$FAILED_STATS" ] && [ "$FAILED_STATS" != " " ]
@@ -106,9 +104,9 @@ fi
 EXISTING=$((ALL_TWEETS-MISSING))
 
 # Send the metrics to statsd
-echo "sugarcube.$PROJECT_NAME.$LABEL.youtube_filter_failing.missing:$MISSING|c" | nc -w 1 -cu localhost 8125
-echo "sugarcube.$PROJECT_NAME.$LABEL.youtube_filter_failing.existing:$EXISTING|c" | nc -w 1 -cu localhost 8125
-echo "sugarcube.$PROJECT_NAME.$LABEL.youtube_filter_failing.total:$ALL_YT_VIDEOS|c" | nc -w 1 -cu localhost 8125
+echo "sugarcube.$PROJECT_NAME.$LABEL.youtube_filter_failing.missing:$MISSING|c" | nc -w 1 -u localhost 8125
+echo "sugarcube.$PROJECT_NAME.$LABEL.youtube_filter_failing.existing:$EXISTING|c" | nc -w 1 -u localhost 8125
+echo "sugarcube.$PROJECT_NAME.$LABEL.youtube_filter_failing.total:$ALL_YT_VIDEOS|c" | nc -w 1 -u localhost 8125
 
 FREQUENCIES="$REPORT_DIR/frequencies-youtube-videos.csv"
 

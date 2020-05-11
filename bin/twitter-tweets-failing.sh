@@ -11,8 +11,8 @@ DATE=$(date +%Y-%m-%d)
 MONTH=$(date +%B)
 YEAR=$(date +%Y)
 REPORT_DIR="reports/$YEAR/$MONTH"
-REPORT_TMP_DIR="$REPORT_DIR/tmp"
 RUN_ID=$(make_id)
+REPORT_TMP_DIR="$REPORT_DIR/tmp-$LABEL-$RUN_ID"
 LOGFILE="./$REPORT_DIR/twitter-tweets-$DATE.log"
 
 # on mac use the GNU version of find
@@ -80,8 +80,6 @@ for f in "$REPORT_TMP_DIR"/*; do
   echo ""
   echo ""
 done
-
-rm -rf "$REPORT_TMP_DIR"
 
 FAILED_STATS=$("$FIND" "$REPORT_DIR"  -name "*failed-stats-twitter-tweets*.csv" -type f -printf '%T+ %p\n' | sort -r | head -n 1 | awk '{print $2}')
 if [ -n "$FAILED_STATS" ] && [ "$FAILED_STATS" != " " ]
