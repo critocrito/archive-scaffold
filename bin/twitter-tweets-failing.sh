@@ -2,7 +2,11 @@
 
 . bin/subr.sh
 
+PROJECT_DIR=$(basename "$PWD")
+PROJECT_NAME=$(snake_case "$PROJECT_DIR")
 PIPELINE_CFG="./pipelines/check_failing_twitter_tweets.json"
+PIPELINE_NAME=$(pipeline_name "$PIPELINE_CFG")
+LABEL=$(snake_case "$PIPELINE_NAME")
 DATE=$(date +%Y-%m-%d)
 MONTH=$(date +%B)
 YEAR=$(date +%Y)
@@ -82,10 +86,17 @@ rm -rf "$REPORT_TMP_DIR"
 FAILED_STATS=$("$FIND" "$REPORT_DIR"  -name "*failed-stats-twitter-tweets*.csv" -type f -printf '%T+ %p\n' | sort -r | head -n 1 | awk '{print $2}')
 if [ -n "$FAILED_STATS" ] && [ "$FAILED_STATS" != " " ]
 then
-  TOTAL=$(xsv count "$FAILED_STATS")
+  MISSING=$(xsv count "$FAILED_STATS")
 else
-  TOTAL="0"
+  MISSING="0"
 fi
+
+EXISTING=$((ALL_TWEETS-MISSING))
+
+# Send the metrics to statsd
+echo "sugarcube.$PROJECT_NAME.$LABEL.twitter_filter_failing.missing:$MISSING|c" | nc -w 1 -cu localhost 8125
+echo "sugarcube.$PROJECT_NAME.$LABEL.twitter_filter_failing.existing:$EXISTING|c" | nc -w 1 -cu localhost 8125
+echo "sugarcube.$PROJECT_NAME.$LABEL.twitter_filter_failing.total:$ALL_TWEETS|c" | nc -w 1 -cu localhost 8125
 
 FREQUENCIES="$REPORT_DIR/frequencies-twitter-tweets.csv"
 
@@ -104,7 +115,7 @@ REPORT="Report: Failing Twitter tweets
 
 Verification Date: $DATE
 
-In total $(numfmt --grouping "$TOTAL") of $(numfmt --grouping "$ALL_TWEETS") twitter tweets failed.
+In total $(numfmt --grouping "$MISSING") of $(numfmt --grouping "$ALL_TWEETS") twitter tweets failed.
 
 "
 

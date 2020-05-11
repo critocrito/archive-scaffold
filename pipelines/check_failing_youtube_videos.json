@@ -10,5 +10,5 @@
     "append": true,
     "label": "youtube-videos"
   },
-  "instruments": ["statsd_metrics", "csv_failures_file"]
+  "instruments": ["csv_failures_file"]
 }

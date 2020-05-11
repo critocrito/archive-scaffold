@@ -63,7 +63,8 @@ pipeline_name() {
 snake_case() {
   echo "$1" |
     tr '[:upper:]' '[:lower:]' |
-    sed -e 's/[[:space:]]/_/g'
+    sed -e 's/[[:space:]]/_/g' |
+    sed -e 's/-/_/g'
 }
 
 _is_os() {

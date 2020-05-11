@@ -2,6 +2,8 @@
 
 . bin/subr.sh
 
+PROJECT_DIR=$(basename "$PWD")
+PROJECT_NAME=$(snake_case "$PROJECT_DIR")
 PIPELINE_CFG="./pipelines/check_failing_youtube_videos.json"
 PIPELINE_NAME=$(pipeline_name "$PIPELINE_CFG")
 LABEL=$(snake_case "$PIPELINE_NAME")
@@ -93,6 +95,21 @@ destroy_vps "$RUN_ID" | tee -a "$LOGFILE"
 rm -rf "$REPORT_TMP_DIR"
 
 FAILED_STATS=$("$FIND" "$REPORT_DIR"  -name "*failed-stats-youtube-video*.csv" -type f -printf '%T+ %p\n' | sort -r | head -n 1 | awk '{print $2}')
+
+if [ -n "$FAILED_STATS" ] && [ "$FAILED_STATS" != " " ]
+then
+  MISSING=$(xsv count "$FAILED_STATS")
+else
+  MISSING="0"
+fi
+
+EXISTING=$((ALL_TWEETS-MISSING))
+
+# Send the metrics to statsd
+echo "sugarcube.$PROJECT_NAME.$LABEL.youtube_filter_failing.missing:$MISSING|c" | nc -w 1 -cu localhost 8125
+echo "sugarcube.$PROJECT_NAME.$LABEL.youtube_filter_failing.existing:$EXISTING|c" | nc -w 1 -cu localhost 8125
+echo "sugarcube.$PROJECT_NAME.$LABEL.youtube_filter_failing.total:$ALL_YT_VIDEOS|c" | nc -w 1 -cu localhost 8125
+
 FREQUENCIES="$REPORT_DIR/frequencies-youtube-videos.csv"
 
 {

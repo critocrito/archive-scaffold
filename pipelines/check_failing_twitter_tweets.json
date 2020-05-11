@@ -10,7 +10,7 @@
     "append": true,
     "label": "twitter-tweets"
   },
-  "instruments": ["statsd_metrics", "csv_failures_file"],
+  "instruments": ["csv_failures_file"],
   "queries": [
     {
       "type": "mongodb_query_units",
