@@ -92,9 +92,9 @@ fi
 EXISTING=$((ALL_TWEETS-MISSING))
 
 # Send the metrics to statsd
-echo "sugarcube.$PROJECT_NAME.$LABEL.twitter_filter_failing.missing:$MISSING|c" | nc -w 1 -cu localhost 8125
-echo "sugarcube.$PROJECT_NAME.$LABEL.twitter_filter_failing.existing:$EXISTING|c" | nc -w 1 -cu localhost 8125
-echo "sugarcube.$PROJECT_NAME.$LABEL.twitter_filter_failing.total:$ALL_TWEETS|c" | nc -w 1 -cu localhost 8125
+echo "sugarcube.$PROJECT_NAME.$LABEL.twitter_filter_failing.missing:$MISSING|c" | nc -w 1 -u localhost 8125
+echo "sugarcube.$PROJECT_NAME.$LABEL.twitter_filter_failing.existing:$EXISTING|c" | nc -w 1 -u localhost 8125
+echo "sugarcube.$PROJECT_NAME.$LABEL.twitter_filter_failing.total:$ALL_TWEETS|c" | nc -w 1 -u localhost 8125
 
 FREQUENCIES="$REPORT_DIR/frequencies-twitter-tweets.csv"
 
