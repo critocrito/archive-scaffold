@@ -1,0 +1,9 @@
+{
+  "name": "Export Bundle",
+  "extends": [
+    "./configs/mongodb.json",
+    "./configs/downloads.json",
+    "./configs/secrets.json"
+  ],
+  "plugins": ["sheets_import", "mongodb_supplement", "tap_writef"]
+}
