@@ -1,7 +1,3 @@
-- name: Determine the running kernel release
-  command: uname -r
-  register: kernel_release
-
 - name: Disable timers for unattended upgrade, so that none will be triggered by the `date -s` call.
   raw: systemctl disable --now {{item}}
   with_items:
@@ -28,8 +24,8 @@
 - name: Install WireGuard and other requirements
   apt:
     name:
-      - linux-headers-{{ kernel_release.stdout }}
-      - linux-headers-generic
+      - linux-image-generic-hwe-18.04
+      - linux-headers-generic-hwe-18.04
       - wireguard-dkms
       - wireguard-tools
       - python2.7
@@ -38,3 +34,16 @@
   register: install_wg
   until: install_wg is not failed
   retries: 10
+
+- name: Reboot the server
+  shell: sleep 2 && shutdown -r now
+  async: 1
+  poll: 0
+  ignore_errors: true
+  
+- name: Wait for the reboot to complete if there was a change.
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
