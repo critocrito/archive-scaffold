@@ -10,7 +10,8 @@ provision_vps() {
   RUN_SCRIPT="$RUN_DIR/youtube-dl-wrapper-sudo.sh"
   VPS_STATE="$RUN_DIR/vps-state.json"
   HOSTS_INI="$RUN_DIR/hosts"
-  NS="$USER$RUN_ID"
+  USER_SHORT=`echo $USER | cut -c1-7`
+  NS="$USER_SHORT$RUN_ID"
   # Make sure to use $PWD here, so that we use a full path when calling sudo.
   VPN_CONF="$RUN_DIR/$NS.conf"
 
@@ -44,7 +45,8 @@ destroy_vps() {
   RUN_ID="$1"
   RUN_DIR="tmp/$RUN_ID"
   VPS_STATE="$RUN_DIR/vps-state.json"
-  NS="$USER$RUN_ID"
+  USER_SHORT=`echo $USER | cut -c1-7`
+  NS="$USER_SHORT$RUN_ID"
   # Make sure to use $PWD here, so that we use a full path when calling sudo.
   VPN_CONF="$PWD/$RUN_DIR/$NS.conf"
 
