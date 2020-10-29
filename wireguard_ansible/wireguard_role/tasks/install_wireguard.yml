@@ -16,18 +16,13 @@
   until: purge_uu is not failed
   retries: 10
 
-- name: Add the WireGuard PPA
-  apt_repository:
-    repo: 'ppa:wireguard/wireguard'
-
 # Using with_items loop for apt module is deprecated
 - name: Install WireGuard and other requirements
   apt:
     name:
       - linux-image-generic-hwe-18.04
       - linux-headers-generic-hwe-18.04
-      - wireguard-dkms
-      - wireguard-tools
+      - wireguard
       - python2.7
     state: present
     update_cache: true
