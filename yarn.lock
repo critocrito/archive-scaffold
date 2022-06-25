@@ -707,12 +707,12 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@sugarcube/cli@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/cli/-/cli-0.37.0.tgz#012b47a7dd718b56e3952b14a5c0c15dc39523d4"
-  integrity sha512-lrgzRZO7SsRQQfBxfFp1EUdV374B75IUJC3adszTHFyzkk0Viplz0OzGwpJTRuYhS6tC6OerQyLDVLTP8d8/eA==
+"@sugarcube/cli@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/cli/-/cli-0.38.0.tgz#da0b51726dd5a1f6c85a078b5f6fa313587a7071"
+  integrity sha512-9AEsvsaHGyJSR+lk18QRvdmcpMTscAFC+AXZBqKTAG9IhVErDM9cjFqG5ZWwmACoNiTnzhJ7RRTfXEP/bx1dmg==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
     date-fns "^2.2.1"
     dotenv "^4.0.0"
     lodash "^4.17.4"
@@ -721,10 +721,10 @@
     winston "^3.2.1"
     yargs "^11.0.0"
 
-"@sugarcube/core@0.37.0", "@sugarcube/core@^0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/core/-/core-0.37.0.tgz#725d30def7af1176f560ef17ba95e7bf9ab53192"
-  integrity sha512-d980LQL0wGGumeqCWd5zpf2K+RkEkGtfh9IbGdrKZRcTKlaTt+4ZRqde42WTg11n/GhV2Y5/T1kmIW6usYOq/A==
+"@sugarcube/core@0.38.0", "@sugarcube/core@^0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/core/-/core-0.38.0.tgz#76264eecb0304f70d5931b8380da5f07bff8c45d"
+  integrity sha512-pllTnwTu/W51WTbuDI9chdpXMZDOLDuSd//Cji9+72uGYpcdpgLBN3zm5BqjQrM7guAJS87rGNDTl2GM3mrI3Q==
   dependencies:
     dashp "^0.10.1"
     lodash "^4.17.4"
@@ -737,24 +737,24 @@
     dashp "^0.10.1"
     lodash "^4.17.4"
 
-"@sugarcube/plugin-csv@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-csv/-/plugin-csv-0.37.0.tgz#37acfe7beb7d81f009ee51565a5a4a46d0486e05"
-  integrity sha512-HzrSqp/DuiWkuEeiKyH9QQ7X2NnAyt02xHXkrV9nl9sh6QiVxNFKNDkTkBHVHlcMTemcxSiO3X0fRMi44gLCTw==
+"@sugarcube/plugin-csv@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-csv/-/plugin-csv-0.38.0.tgz#10357fc0a06c053aa4c9eb7b5ec8e0aa2da89487"
+  integrity sha512-WeYbNhiPlTmmKoGqe9nGvM2e2MYq34Vhoreb86Tgoa9gKD2S8gbW0mh7l7iC+wx9a0iejOFIGJXRr1Koy01ARw==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
-    "@sugarcube/plugin-fs" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
+    "@sugarcube/plugin-fs" "^0.38.0"
     csv-parse "^4.6.5"
     csv-stringify "^5.3.3"
     dashp "^0.10.1"
     lodash "^4.17.4"
 
-"@sugarcube/plugin-elasticsearch@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-elasticsearch/-/plugin-elasticsearch-0.37.0.tgz#8976ddbc9986e6f91b135d175aef1aa12a407e7a"
-  integrity sha512-2S0ihjXVDDGJJG8J5hzd/quLtgGrr0uFCGdT3UvNKn9sujhmRiGnHr8Bifwol+JblOmxkNyVf2AGsEtdj2K6Tw==
+"@sugarcube/plugin-elasticsearch@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-elasticsearch/-/plugin-elasticsearch-0.38.0.tgz#1a962801da5178d04ec94acacc1a16cf90a6857b"
+  integrity sha512-O7Y6kd0WnynpcXi10/GoFa736Yr4QFTTqmblL1oByAbMoSD0D7lNCDSqfXkA2Hs2/J7MQSKjG1N1TDOLeOZGqA==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
     dashp "^0.10.1"
     es6 "npm:@elastic/elasticsearch@6"
     es7 "npm:@elastic/elasticsearch@7"
@@ -763,39 +763,39 @@
     node-fetch "^2.6.0"
     pify "^3.0.0"
 
-"@sugarcube/plugin-fs@^0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-fs/-/plugin-fs-0.37.0.tgz#4eb036e19985a9c3623f4db0730c4cfc05a6299d"
-  integrity sha512-cAGf2onoSNwUgYqpi5DTXAKrIZh4RTimwLuy5+uOKJ731LQFGWA/UQWq1HoPMG7r55peIX5FlivSxl6URdi9Yw==
+"@sugarcube/plugin-fs@^0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-fs/-/plugin-fs-0.38.0.tgz#bed69704fa6e53347d945b98bd5d79a4a0419722"
+  integrity sha512-mlCjLQIdZGKpo8Vip31CMzI2quteQSikmuav74t7gUeneL1HNGATaoPf6KT1DmtdS54syn/QGz2kwZGU/AoHmA==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
-    "@sugarcube/utils" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
+    "@sugarcube/utils" "^0.38.0"
     dashp "^0.10.1"
     file-type "^10.11.0"
     glob "^7.1.2"
     lodash "^4.17.4"
     read-chunk "^3.2.0"
 
-"@sugarcube/plugin-googlesheets@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-googlesheets/-/plugin-googlesheets-0.37.0.tgz#2b518dcf05440885c039e4b7ccaebc5a1826776b"
-  integrity sha512-aHBo1N5TbwZNUPwKpy1d2niA0Rz0JuJTp1vHGHUX5HUYYJEluBVfuwtv8LVph6H6dCbT+CtLvNIDRjHlL1cevw==
+"@sugarcube/plugin-googlesheets@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-googlesheets/-/plugin-googlesheets-0.38.0.tgz#32a97421a2b58df589b5f8cd1c64faa34668a1de"
+  integrity sha512-84071vLwTqJp2iOG7uQA+fwN7dlzJIzVpqebZigh1WNq52BBMpcdV+Ice2XFoa5JKS0nYYD0z3O8iisP7wdR4Q==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
     dashp "^0.10.1"
     google-auth-library "^1.3.1"
     googleapis "^27.0.0"
     lodash "^4.17.4"
     pify "^3.0.0"
 
-"@sugarcube/plugin-http@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-http/-/plugin-http-0.37.0.tgz#d17e495f12b70a4fd74e9acac4822d618f1e7ef7"
-  integrity sha512-4NpDERIzCiUr4DZU+awUYLbgOefYlqva2YEzLJPFnVXZknSQL+UNNvJjVCmIE2PBZjXq2yHlRYe0hX6xr6I0DQ==
+"@sugarcube/plugin-http@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-http/-/plugin-http-0.38.0.tgz#b870580f439c38826b0ad504a69582dd2131ead9"
+  integrity sha512-WRdEPUJTXbPg9JsFBR3APJFwKOq8jEfz4SX2cvUusIptS6yPZdTanbWyg1ITquPXVJNm24uqE7FVbV09UMVNmw==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
-    "@sugarcube/plugin-fs" "^0.37.0"
-    "@sugarcube/utils" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
+    "@sugarcube/plugin-fs" "^0.38.0"
+    "@sugarcube/utils" "^0.38.0"
     content-type "^1.0.4"
     dashp "^0.10.1"
     lodash "^4.17.4"
@@ -806,13 +806,13 @@
     puppeteer-extra-plugin-stealth "^2.2.2"
     request "^2.81.0"
 
-"@sugarcube/plugin-mail@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-mail/-/plugin-mail-0.37.0.tgz#d0b571c279cc45fc39754cf12799af28de649eb4"
-  integrity sha512-iBzh+HN/m/9Jq+ZAdq1d84he9sNl2ajIjwTnEYyNxFmCW8J25n5wXYPO6u0CkaQOn0JL4MkTyE3Ah/AAWukRGQ==
+"@sugarcube/plugin-mail@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-mail/-/plugin-mail-0.38.0.tgz#690f6b7b1a1884e1ad1d64fbbed8b44cfb8de4df"
+  integrity sha512-E2zoRpMIE9oOeFJGs7XWNtu7Ogjo+bXhqw2CrDgJzIzAHSRQR3txEE861v6TVWqml4h+vMkebvwQi8dhM4RQ9g==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
-    "@sugarcube/plugin-fs" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
+    "@sugarcube/plugin-fs" "^0.38.0"
     dashp "^0.10.1"
     date-fns "^2.2.1"
     dot "^1.1.2"
@@ -820,14 +820,14 @@
     lodash "^4.17.4"
     nodemailer "^4.4.2"
 
-"@sugarcube/plugin-media@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-media/-/plugin-media-0.37.0.tgz#0eb4fad81703eb194c67776572db7f25d30a563e"
-  integrity sha512-bCb5sAqiBlvbnzLmdHZ0GND/PJAT7DZNKE+dRTVjCZL9H9FCmkzuMIvtOW4NEVW35VQzVDZYyRC3N1yCughnUw==
+"@sugarcube/plugin-media@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-media/-/plugin-media-0.38.0.tgz#f35f6d9e177b990f14d31c99587d16124499e72d"
+  integrity sha512-ftcXTFgnOPMV1LPS0CEJexQYt52Eecjlc62CJ0c7XThryh3NdgF0Vcf2FydHbFL3/8RWrdGiG+A94nYo1h9HOA==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
-    "@sugarcube/plugin-fs" "^0.37.0"
-    "@sugarcube/utils" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
+    "@sugarcube/plugin-fs" "^0.38.0"
+    "@sugarcube/utils" "^0.38.0"
     dashp "^0.10.1"
     file-type "^12.4.0"
     gm "^1.23.0"
@@ -840,76 +840,76 @@
     puppeteer-extra-plugin-stealth "^2.2.2"
     request "^2.81.0"
 
-"@sugarcube/plugin-mongodb@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-mongodb/-/plugin-mongodb-0.37.0.tgz#b9957d080636b0d8f2211bc2931cb1d2fc5b67e5"
-  integrity sha512-SgX/f8MOvoQMg+OG8fK5yaf4Pem0sunqWDVZAGW17krI9jTiaFYLFXkIZM4gTVA76EAzwH6SsusamKqMePuPxw==
+"@sugarcube/plugin-mongodb@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-mongodb/-/plugin-mongodb-0.38.0.tgz#30dbf4f2f7eca07b8bb5f70150e1ce16475ee73a"
+  integrity sha512-3aQ08Np+Bh0YNLG8+PWp0W/5S7uWEoHyjK+wgOEIsphHHcS4Ggk13KL4QEfMGVZCLY/xgcrZlGSibY9nqxH2wg==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
     bluebird "^3.5.1"
     dashp "^0.10.1"
     lodash "^4.17.4"
     moment "^2.17.1"
     mongodb "^2.1.18"
 
-"@sugarcube/plugin-statsd@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-statsd/-/plugin-statsd-0.37.0.tgz#268dcbec349252ba61636e1bb1307acb615460a2"
-  integrity sha512-ydP0az9GJO5SnTESqNF+UGv9ERk23e1Ltvj0g2haRlfCvECWiKGjemS8bF9d/j0gaH275gUG4K+KrHIShNB26A==
+"@sugarcube/plugin-statsd@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-statsd/-/plugin-statsd-0.38.0.tgz#676b6186e4a5dfe3664dfedaf17c5e8d8a210b0a"
+  integrity sha512-yCWpYd8WMMi4O2vhlrlBVlZwBd6SZ7g0jp/TvkA/Ux+G4M/2MiMbPASvSmSZ4G+Ez4G9I8c9+RTFIl5IzqTL9g==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
     dashp "^0.10.1"
     hot-shots "^6.4.1"
     lodash "^4.17.11"
 
-"@sugarcube/plugin-tap@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-tap/-/plugin-tap-0.37.0.tgz#f4b2cd9e1e2fa443482ab7e874431f9073dfea04"
-  integrity sha512-nRCRAuFsm6M3IE4AYvUujU3x/SGpmZh69JpS9X9WVDwoxJYGTIoVKTGbHJ+y8RpdcavGey9HYWL8qOBelSIvGQ==
+"@sugarcube/plugin-tap@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-tap/-/plugin-tap-0.38.0.tgz#23b629a7b3da70a477895a0280ac2c040faace8a"
+  integrity sha512-lRvNdpJO4C1KI8fPdr42SSFPFqg9j2jMg6MYcf1gLbih5goTTuZZvObejVj2OxUXaxG50QMxX7z9Dk0ix3LzNA==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
     lodash "^4.17.4"
     pify "^3.0.0"
 
-"@sugarcube/plugin-twitter@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-twitter/-/plugin-twitter-0.37.0.tgz#5f7e4458b8313f44d477726595f81d9040807d14"
-  integrity sha512-cf5oBe29G+7CQsOrY7m+9OEjytxzsejopXIjuq6Z0uYV8UpZLt3u5uTf6XzDLQAMmQeA9Bv4E6vnIq/nDkYrvw==
+"@sugarcube/plugin-twitter@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-twitter/-/plugin-twitter-0.38.0.tgz#293dbece8886c344eba3d0fbb99027206930c858"
+  integrity sha512-9uknBmTmy+sqXYbqhuLRXsZEMMLEnlO4PZRKIntUG411c6OH/cwyMbuiZXkhBltCb6qUTsDTrlNKvBE2NA4ciA==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
-    "@sugarcube/utils" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
+    "@sugarcube/utils" "^0.38.0"
     dashp "^0.10.1"
     lodash "^4.17.4"
     moment "^2.19.1"
     pify "^3.0.0"
     twitter "^1.7.1"
 
-"@sugarcube/plugin-workflow@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-workflow/-/plugin-workflow-0.37.0.tgz#7dd812567e08a3e85d5a9480633c3f83983d96e1"
-  integrity sha512-PJucNnmuXeKrl4mB8c/wTSEwbAcCTHjVDbYv7awi7NvanTbVBJAVlvgFRbq3wT3efpDhtHeqRLS9cDEsTUvWhQ==
+"@sugarcube/plugin-workflow@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-workflow/-/plugin-workflow-0.38.0.tgz#bfa91287082225b7344e041140312ffa3fa5c442"
+  integrity sha512-BkChDgfc8VNHXlvKpuCsvhMYOSBwvej2mJ9tdNYd0ilmI9Ul73G2wv/QfNXhwxcwKs5u7olncjAbIztjHmXcYw==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
     deepmerge "^4.2.2"
     lodash "^4.17.5"
 
-"@sugarcube/plugin-youtube@0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-youtube/-/plugin-youtube-0.37.0.tgz#17c2d8145eacccf1ace74b874c567a80b2a42c6c"
-  integrity sha512-/t9UGeo8nvYCIVbcDQeIJkjBZiPewgKJ9pjjfV/ey/kTUiNjk2cQvLkARuAFBZN92TvX3xQuX7WVI9++HFXh2Q==
+"@sugarcube/plugin-youtube@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/plugin-youtube/-/plugin-youtube-0.38.0.tgz#c56d79d539fae37ef78d38e609cdabaa4cdc7580"
+  integrity sha512-RENmy7ltx0Gn8KVgsZgNy+Pp1CIdQrjNgqer0B1D1dMZhDfK/VpgleghNtAGcJHUtbtVEDAjE4eQoeIDIXeDkg==
   dependencies:
-    "@sugarcube/core" "^0.37.0"
-    "@sugarcube/utils" "^0.37.0"
+    "@sugarcube/core" "^0.38.0"
+    "@sugarcube/utils" "^0.38.0"
     dashp "^0.10.1"
     date-fns "^1.29.0"
     lodash "^4.17.4"
     pify "^3.0.0"
     request "^2.78.0"
 
-"@sugarcube/utils@^0.37.0":
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/@sugarcube/utils/-/utils-0.37.0.tgz#d76bfeb174a0d79b667eb762d66061c56315e46e"
-  integrity sha512-X9ehtQ9nG02DYy382FCIVltD0wTj/NFxoapMcui4okzkgz3cf2Mpus7kNbmEmPojSHj9Vnp3g0/zGhaTBZGpdA==
+"@sugarcube/utils@^0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@sugarcube/utils/-/utils-0.38.0.tgz#1eeb4cc0efae08015809683f73d4292b78345e7a"
+  integrity sha512-/CB14tIBJJC/x4hF4XzrcF3OaifvDD9HN9Z7A6+RslRYcvqPTcaVkAS/mjm67WWIjcx4auQYeH/zZW1ky9IHrg==
   dependencies:
     dashp "^0.10.1"
     date-fns "^2.6.0"
@@ -4235,15 +4235,12 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-node-fetch@^2.1.1, node-fetch@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
-  integrity sha512-MOd8pV3fxENbryESLgVIeaGKrdl+uaYhCSSVkjeOb/31/njTpcis5aWfdqgNlHIrKOLRbMnfPINPOML2CIFeXA==
-
-node-fetch@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
-  integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
+node-fetch@^2.1.1, node-fetch@^2.6.0, node-fetch@^2.6.7:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
+  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
+  dependencies:
+    whatwg-url "^5.0.0"
 
 node-forge@^0.7.4:
   version "0.7.6"
@@ -5854,6 +5851,11 @@ tough-cookie@~2.4.3:
     psl "^1.1.24"
     punycode "^1.4.1"
 
+tr46@~0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
+  integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
+
 "traverse@>=0.3.0 <0.4":
   version "0.3.9"
   resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.3.9.tgz#717b8f220cc0bb7b44e40514c22b2e8bbc70d8b9"
@@ -6075,10 +6077,23 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
+webidl-conversions@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-3.0.1.tgz#24534275e2a7bc6be7bc86611cc16ae0a5654871"
+  integrity sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==
+
 whatwg-fetch@>=0.10.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.0.0.tgz#fc804e458cc460009b1a2b966bc8817d2578aefb"
   integrity sha512-9GSJUgz1D4MfyKU7KRqwOjXCXTqWdFNvEr7eUBYchQiVc744mqK/MzXPNR2WsPkmkOa4ywfg8C2n8h+13Bey1Q==
+
+whatwg-url@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-5.0.0.tgz#966454e8765462e37644d3626f6742ce8b70965d"
+  integrity sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==
+  dependencies:
+    tr46 "~0.0.3"
+    webidl-conversions "^3.0.0"
 
 whet.extend@~0.9.9:
   version "0.9.9"
